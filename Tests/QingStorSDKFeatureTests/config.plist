@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>access_key_id</key>
+	<string>ACCESS_KEY_ID</string>
+	<key>secret_access_key</key>
+	<string>SECRET_ACCESS_KEY</string>
+	<key>protocol</key>
+	<string>https</string>
+	<key>host</key>
+	<string>qingstor.com</string>
+	<key>port</key>
+	<string>443</string>
+</dict>
+</plist>

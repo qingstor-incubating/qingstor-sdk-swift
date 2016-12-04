@@ -1,0 +1,481 @@
+{{- define "Type" -}}
+	{{- $typeName := . -}}
+
+	{{- if eq $typeName "string" -}}
+		String
+	{{- else if eq $typeName "boolean" -}}
+		Bool
+	{{- else if eq $typeName "integer" -}}
+		Int
+	{{- else if eq $typeName "timestamp" -}}
+		Date
+	{{- else if eq $typeName "binary" -}}
+		InputStream
+	{{- else if eq $typeName "array" -}}
+		Array
+	{{- else if eq $typeName "object" -}}
+		AnyObject
+	{{- else if eq $typeName "map" -}}
+		Dictionay
+	{{- else if eq $typeName "any" -}}
+		Any
+	{{- else -}}
+		{{$typeName | camelCase}}Model
+	{{- end -}}
+{{- end -}}
+
+
+{{- define "PropertyType" -}}
+	{{- $property := index . 0 -}}
+	{{- $checkOptionalType := index . 1 -}}
+	{{- $needNilDefault := index . 2 -}}
+	{{- $inBody := index . 3 -}}
+
+	{{- if eq $property.Type "object" -}}
+		{{template "Type" $property.ExtraType}}
+	{{- else if eq $property.Type "array" -}}
+		[{{template "Type" $property.ExtraType}}]
+	{{- else if eq $property.Type "map" -}}
+		[String:{{template "Type" $property.ExtraType}}]
+    {{- else if eq $property.Type "binary" -}}
+        {{- if not $inBody -}}
+            URL
+        {{- else -}}
+            {{template "Type" $property.Type}}
+        {{- end -}}
+	{{- else -}}
+		{{template "Type" $property.Type}}
+	{{- end -}}
+
+    {{- if eq $property.Default "" -}}
+        {{- if eq $checkOptionalType 2 -}}
+            {{- if not $property.IsRequired -}}
+                ?
+            {{- end -}}
+        {{- else if eq $checkOptionalType 3 -}}
+            {{- if $property.IsRequired -}}
+                !
+            {{- else -}}
+                ?
+            {{- end -}}
+        {{- else if eq $checkOptionalType 4 -}}
+            ?
+        {{- end -}}
+    {{- end -}}
+
+    {{- if ne $property.Default "" -}}
+        {{- " = " -}}
+        {{- if eq $property.Type "string" -}}
+            "{{- $property.Default -}}"
+        {{- else -}}
+            {{- $property.Default -}}
+        {{- end -}}
+    {{- else if and $needNilDefault (not $property.IsRequired) -}}
+        {{- " = nil" -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "HTTPMethod" -}}
+    {{- $operation := . -}}
+    .{{- $operation.Request.Method | lower -}}
+{{- end -}}
+
+
+{{- define "ReplaceKeywordProperty" -}}
+    {{- $original := . -}}
+
+    {{- if eq $original "protocol" -}}
+        `protocol`
+    {{- else if eq $original "operator"}}
+        `operator`
+    {{- else -}}
+        {{- $original -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "FormatPropertyID" -}}
+    {{- $property := . -}}
+
+    {{- template "ReplaceKeywordProperty" ($property.ID | camelCase | lowerFirstWord) -}}
+{{- end -}}
+
+
+{{- define "RenderInitializationDeclaration" -}}
+    {{- $customizedType := index . 0 -}}
+    {{- $checkOptionalType := index . 1 -}}
+    {{- $needNilDefault := index . 2 -}}
+    {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
+
+    {{- range $_, $property := $customizedType.Properties -}}
+        {{- if ne $property.ID $firstPropertyID -}}{{- ", " -}}{{- end -}}
+        {{- template "FormatPropertyID" $property -}}
+        {{- ": " -}}
+        {{- template "PropertyType" passThrough $property $checkOptionalType $needNilDefault false -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderPropertyParameters" -}}
+    {{- $customizedType := index . 0 -}}
+    {{- $selfDefault := index . 1 -}}
+    {{- $prefix := index . 2 -}}
+    {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
+
+    {{- if gt ($customizedType.Properties | len) 0 -}}
+        {{- $prefix -}}
+    {{- end -}}
+
+    {{- range $_, $property := $customizedType.Properties -}}
+        {{- if ne $property.ID $firstPropertyID -}}{{- ", " -}}{{- end -}}
+        {{- template "FormatPropertyID" $property -}}
+        {{- ": " -}}
+        {{- template "FormatPropertyID" $property -}}
+
+        {{- if or (not $property.IsRequired) $selfDefault -}}
+            {{- " ?? self." -}}{{- template "FormatPropertyID" $property -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderLocationProperties" -}}
+    {{- $customizedType := . -}}
+    {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
+
+    {{- range $_, $property := $customizedType.Properties -}}
+        {{- if ne $property.ID $firstPropertyID -}}{{- ", " -}}{{- end -}}
+        "{{- $property.ID -}}"
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderInitializationDeclarationRequest" -}}
+    {{- $operation := . -}}
+
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Params 2 true -}}
+    {{- if and (gt ($operation.Request.Params.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
+        {{- ", " -}}
+    {{- end -}}
+
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Headers 2 true -}}
+    {{- if and (gt ($operation.Request.Headers.Properties | len) 0) (or (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
+        {{- ", " -}}
+    {{- end -}}
+
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Elements 2 true -}}
+    {{- if and (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary") -}}
+        {{- ", " -}}
+    {{- end -}}
+
+    {{- if eq $operation.Request.Body.Type "binary" -}}
+        bodyInputStream: InputStream? = nil
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderProperties" -}}
+    {{- $customizedType := index . 0 -}}
+    {{- $needExcluded := index . 1 -}}
+
+    {{- range $_, $property := $customizedType.Properties -}}
+        {{- if or (not $needExcluded) (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code") -}}
+            {{- if $property.Description}}
+    // {{$property.Description -}}
+            {{- end -}}
+            {{- if $property.Enum}}
+    // {{ template "FormatPropertyID" $property -}}'s available values: {{$property.Enum | commaConnected -}}
+            {{- end}}
+    public var {{template "FormatPropertyID" $property}}: {{template "PropertyType" passThrough $property 3 true false}}
+            {{- if $property.IsRequired}} // Required {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderInitialization" -}}
+    {{- $customizedType := index . }}
+
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    public init({{- template "RenderInitializationDeclaration" passThrough $customizedType 2 true -}}) {
+        super.init()
+        {{template "RenderInitializationAssignment" $customizedType}}
+    }
+{{- end -}}
+
+
+{{- define "RenderInitializationAssignment" -}}
+    {{- $customizedType := index . -}}
+
+    {{- range $_, $property := $customizedType.Properties}}
+        self.{{template "FormatPropertyID" $property}} = {{template "FormatPropertyID" $property}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderMapping" -}}
+    {{- $customizedType := index . 0 -}}
+    {{- $needExcluded := index . 1}}
+
+    {{- range $_, $property := $customizedType.Properties -}}
+        {{- if or (not $needExcluded) (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code") -}}
+            {{- if eq $property.Format "ISO 8601"}}
+        {{template "FormatPropertyID" $property}} <- (map["{{$property.ID}}"], ISO8601DateTransform())
+            {{- else if eq $property.Format "RFC 822"}}
+        {{template "FormatPropertyID" $property}} <- (map["{{$property.ID}}"], RFC822DateTransform())
+            {{- else if eq $property.Type "binary"}}
+        {{template "FormatPropertyID" $property}} <- (map["{{$property.ID}}"], URLTransform(shouldEncodeURLString: true))
+            {{- else }}
+        {{template "FormatPropertyID" $property}} <- map["{{$property.ID}}"]
+            {{- end -}}
+        {{- end -}}
+    {{- end}}
+{{- end -}}
+
+
+{{- define "RenderToParameters" -}}
+    {{- $customizedType := index . -}}
+
+    {{- range $_, $property := $customizedType.Properties -}}
+        {{- if eq $property.Type "binary"}}
+            parameters["{{$property.ID}}"] = self.{{template "FormatPropertyID" $property}}
+        {{end -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderValidate" -}}
+    {{- $customizedType := index . -}}
+
+    {{- range $_, $property := $customizedType.Properties -}}
+        {{- if and $property.IsRequired (eq $property.Default "")}}
+        if self.{{template "FormatPropertyID" $property}} == nil {
+            return APIError.parameterRequiredError(name: "{{template "FormatPropertyID" $property}}", parentName: "{{$customizedType.ID | camelCase}}")
+        }
+        {{end -}}
+
+        {{- $isNormalType := or (eq $property.Type "string") (eq $property.Type "integer") -}}
+        {{- $isContentLength := eq $property.ID "Content-Length" -}}
+        {{- if and $isNormalType (not $isContentLength) -}}
+            {{- if gt ($property.Enum | len) 0 -}}
+                {{- if eq $property.Default ""}}
+        if let {{template "FormatPropertyID" $property}} = self.{{template "FormatPropertyID" $property}} {
+            let {{$property.ID | camelCase | lowerFirstWord}}ValidValues: [String] = [{{$property.Enum | commaConnectedWithQuote}}]
+            let {{$property.ID | camelCase | lowerFirstWord}}ParameterValue = "\({{template "FormatPropertyID" $property}})"
+            var {{$property.ID | camelCase | lowerFirstWord}}IsValid = false
+            for value in {{$property.ID | camelCase | lowerFirstWord -}}ValidValues {
+                if value == {{$property.ID | camelCase | lowerFirstWord -}}ParameterValue {
+                    {{$property.ID | camelCase | lowerFirstWord -}}IsValid = true
+                    break
+                }
+            }
+            if !{{$property.ID | camelCase | lowerFirstWord -}}IsValid {
+                return APIError.parameterValueNotAllowedError(name: "{{template "FormatPropertyID" $property}}", value: {{$property.ID | camelCase | lowerFirstWord}}ParameterValue, allowedValues: {{$property.ID | camelCase | lowerFirstWord}}ValidValues)
+            }
+        }
+                {{else}}
+        let {{$property.ID | camelCase | lowerFirstWord}}ValidValues: [String] = [{{$property.Enum | commaConnectedWithQuote}}]
+        let {{$property.ID | camelCase | lowerFirstWord}}ParameterValue = "\({{template "FormatPropertyID" $property}})"
+        var {{$property.ID | camelCase | lowerFirstWord}}IsValid = false
+        for value in {{$property.ID | camelCase | lowerFirstWord -}}ValidValues {
+            if value == {{$property.ID | camelCase | lowerFirstWord -}}ParameterValue {
+                {{$property.ID | camelCase | lowerFirstWord -}}IsValid = true
+                break
+            }
+        }
+        if !{{$property.ID | camelCase | lowerFirstWord -}}IsValid {
+            return APIError.parameterValueNotAllowedError(name: "{{template "FormatPropertyID" $property}}", value: {{$property.ID | camelCase | lowerFirstWord}}ParameterValue, allowedValues: {{$property.ID | camelCase | lowerFirstWord}}ValidValues)
+        }
+                {{end -}}
+            {{- end -}}
+        {{- end -}}
+
+        {{- if eq $property.Type "object"}}
+        if let {{template "FormatPropertyID" $property}} = self.{{template "FormatPropertyID" $property}} {
+            if let error = {{template "FormatPropertyID" $property}}.validate() {
+                return error
+            }
+        }
+        {{end -}}
+
+        {{- if eq $property.Type "array" -}}
+
+            {{- if $property.IsRequired}}
+        if self.{{template "FormatPropertyID" $property}}.count == 0 {
+            return APIError.parameterRequiredError(name: "{{template "FormatPropertyID" $property}}", parentName: "{{$customizedType.ID | camelCase}}")
+        }
+            {{end -}}
+
+            {{- $isNotString := ne $property.ExtraType "string" -}}
+            {{- $isNotInteger := ne $property.ExtraType "integer" -}}
+            {{- $isNotTimestamp := ne $property.ExtraType "timestamp" -}}
+            {{- if and $isNotString $isNotInteger $isNotTimestamp}}
+        if let {{template "FormatPropertyID" $property}} = self.{{template "FormatPropertyID" $property}} {
+            if {{template "FormatPropertyID" $property}}.count > 0 {
+                for property in {{template "FormatPropertyID" $property}} {
+                    if let error = property.validate() {
+                        return error
+                    }
+                }
+            }
+        }
+            {{end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderModel" -}}
+    {{- $customizedType := index . }}
+
+public class {{$customizedType.ID | camelCase}}Model: BaseModel {
+    {{- if gt ($customizedType.Properties | len) 0 -}}
+        {{- template "RenderProperties" passThrough $customizedType false -}}
+        {{- template "RenderInitialization" $customizedType}}
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        {{template "RenderMapping" passThrough $customizedType false}}
+    }
+
+    public override func validate() -> Error? {
+        {{- template "RenderValidate" $customizedType}}
+        return nil
+    }
+    {{- end}}
+}
+{{- end -}}
+
+
+{{- define "RenderInput" -}}
+    {{- $operation := index . }}
+
+    {{- $hasParams := gt (len $operation.Request.Params.Properties) 0 -}}
+    {{- $hasHeaders := gt (len $operation.Request.Headers.Properties) 0 -}}
+    {{- $hasElements := gt (len $operation.Request.Elements.Properties) 0 -}}
+    {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
+    {{- $hasInput := or $hasParams $hasHeaders $hasElements $hasBody -}}
+
+    {{- if not $hasInput}}
+public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input { }
+    {{- else}}
+public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input {
+    {{- template "RenderProperties" passThrough $operation.Request.Params false -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Headers false -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Elements false -}}
+
+    {{- if eq $operation.Request.Body.Type "binary"}}
+        {{- if $operation.Request.Body.Description}}
+    // {{$operation.Request.Body.Description -}}
+        {{- end}}
+    public var bodyInputStream: {{template "PropertyType" passThrough $operation.Request.Body 3 false true}}
+    {{- end -}}
+
+    {{- if gt ($operation.Request.Params.Properties | len) 0}}{{"\n"}}
+    override var queryProperties: [String] {
+        return [{{template "RenderLocationProperties" $operation.Request.Params}}]
+    }
+    {{- end}}
+
+    {{- if gt ($operation.Request.Headers.Properties | len) 0}}{{"\n"}}
+    override var headerProperties: [String] {
+        return [{{template "RenderLocationProperties" $operation.Request.Headers}}]
+    }
+    {{- end}}
+
+    {{- if or (eq $operation.Request.Body.Type "binary") (gt ($operation.Request.Elements.Properties | len) 0)}}{{"\n"}}
+    override var bodyProperties: [String] {
+        return [
+            {{- template "RenderLocationProperties" $operation.Request.Elements -}}
+            {{- if eq $operation.Request.Body.Type "binary" -}}
+                {{- if gt ($operation.Request.Elements.Properties | len) 0 -}}
+                    {{- ", " -}}
+                {{- end -}}
+                "body"
+            {{- end -}}
+        ]
+    }
+    {{- end}}
+
+    {{if or (gt ($operation.Request.Params.Properties | len) 0) (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) -}}
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    public init({{- template "RenderInitializationDeclarationRequest" $operation -}}) {
+        super.init()
+        {{- "\n" -}}
+        {{- template "RenderInitializationAssignment" $operation.Request.Params -}}
+        {{- template "RenderInitializationAssignment" $operation.Request.Headers -}}
+        {{- template "RenderInitializationAssignment" $operation.Request.Elements -}}
+
+        {{- if eq $operation.Request.Body.Type "binary"}}
+        self.bodyInputStream = bodyInputStream
+        {{- end}}
+    }
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        {{- "\n" -}}
+        {{- template "RenderMapping" passThrough $operation.Request.Params false -}}
+        {{- template "RenderMapping" passThrough $operation.Request.Headers false -}}
+        {{- template "RenderMapping" passThrough $operation.Request.Elements false}}
+    }
+        {{if eq $operation.Request.Body.Type "binary"}}
+    public override func toParameters() -> [String: Any] {
+        var parameters = super.toParameters()
+
+                {{- template "RenderToParameters" $operation.Request.Params -}}
+                {{- template "RenderToParameters" $operation.Request.Headers -}}
+                {{- template "RenderToParameters" $operation.Request.Elements -}}
+
+                {{- if eq $operation.Request.Body.Type "binary"}}
+        parameters["body"] = self.bodyInputStream
+                {{- end}}
+
+        return parameters
+    }
+        {{end}}
+    public override func validate() -> Error? {
+        {{- template "RenderValidate" $operation.Request.Params -}}
+        {{- template "RenderValidate" $operation.Request.Headers -}}
+        {{- template "RenderValidate" $operation.Request.Elements}}
+        return nil
+    }
+    {{- end}}
+}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderOutput" -}}
+    {{- $operation := index . -}}
+
+    {{- $hasHeaders := gt (len $operation.Response.Headers.Properties) 0 -}}
+    {{- $hasElements := gt (len $operation.Response.Elements.Properties) 0 -}}
+    {{- $hasBody := eq $operation.Response.Body.Type "binary" -}}
+    {{- $hasOutput := or $hasHeaders $hasElements $hasBody -}}
+
+    {{- if not $hasOutput}}
+public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Output { }
+    {{- else}}
+public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Output {
+    {{- template "RenderProperties" passThrough $operation.Response.Headers true -}}
+    {{- template "RenderProperties" passThrough $operation.Response.Elements true -}}
+
+    {{- if or (gt ($operation.Response.Headers.Properties | len) 0) (gt ($operation.Response.Elements.Properties | len) 0)}}
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        {{- "\n" -}}
+        {{- template "RenderMapping" passThrough $operation.Response.Headers true -}}
+        {{- template "RenderMapping" passThrough $operation.Response.Elements true}}
+    }
+    {{- end}}
+}
+    {{- end -}}
+{{- end -}}
