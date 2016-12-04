@@ -7,6 +7,7 @@ env:
   - WORKSPACE=QingStorSDK.xcworkspace
   - FRAMEWORK_SCHEME="QingStorSDK"
   - FRAMEWORK_TEST_SCHEME="QingStorSDKTests"
+  - DESTINATION="platform=iOS Simulator,name=iPhone 7"
   matrix:
     - SCHEME="$FRAMEWORK_SCHEME"  RUN_TESTS="NO"  POD_LINT="YES"
     - SCHEME="$FRAMEWORK_TEST_SCHEME"  RUN_TESTS="YES"  POD_LINT="NO"
@@ -20,16 +21,16 @@ script:
   
   # Build Framework in Debug and Run Tests if specified
   - if [ $RUN_TESTS == "YES" ]; then
-      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty;
+      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty;
     else
-      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug ONLY_ACTIVE_ARCH=NO clean build | xcpretty;
+      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO clean build | xcpretty;
     fi
 
   # Build Framework in Release and Run Tests if specified
   - if [ $RUN_TESTS == "YES" ]; then
-      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty;
+      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" -configuration Release ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty;
     else
-      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release ONLY_ACTIVE_ARCH=NO clean build | xcpretty;
+      xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" -configuration Release ONLY_ACTIVE_ARCH=NO clean build | xcpretty;
     fi
 
   # Run `pod lib lint` if specified
