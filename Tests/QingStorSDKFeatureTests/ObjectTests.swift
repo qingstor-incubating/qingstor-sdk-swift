@@ -24,7 +24,7 @@ import QingStorSDK
 
 class ObjectTests: QingStorTests {
     var bucket: Bucket!
-    
+
     var objectKey: String!
     var copyObjectKey: String!
     var moveObjectKey: String!
@@ -239,17 +239,17 @@ class ObjectTests: QingStorTests {
 
         let input = GetObjectInput()
         input.signatureType = .query(timeoutSeconds: 60)
-        
+
         let (sender, _) = bucket.getObjectSender(objectKey: self.objectKey, input: input)
         sender?.buildRequest {request, error in
             print("remote url: \(request?.request?.url)")
             URLSession.shared.downloadTask(with: self.saveURL) { url, response, error in
                 print("save url: \(url)")
-                
+
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
                     expectation.fulfill()
                 }
-                
+
                 XCTAssertNil(error, "error: \(error)")
             }.resume()
         }

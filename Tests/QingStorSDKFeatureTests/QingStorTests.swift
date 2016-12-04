@@ -94,7 +94,7 @@ class QingStorTests: NSObject {
         testCase.waitForExpectations(timeout: timeout)
     }
 
-    func assertEqual<T : Equatable>(value: T, shouldBe: T) {
+    func assertEqual<T: Equatable>(value: T, shouldBe: T) {
         XCTAssertEqual(value, shouldBe, "Value \"\(value)\" should be \"\(shouldBe)\"")
     }
 

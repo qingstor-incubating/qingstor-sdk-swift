@@ -40,9 +40,7 @@ class ObjectMultipartTests: QingStorTests {
     override func setup() {
         super.setup()
 
-        let bundle = Bundle(for: ObjectMultipartTests.self)
-        objectFileURL = URL(fileURLWithPath: bundle.path(forResource: "a_large_file", ofType: nil)!)
-
+        objectFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("a_large_file")
         bucket = qsService.bucket(bucketName: bucketName)
     }
 
