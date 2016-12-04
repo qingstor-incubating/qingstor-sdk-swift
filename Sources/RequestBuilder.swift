@@ -45,13 +45,13 @@ public protocol RequestBuilderFactory {
     func getBuilder() -> RequestBuilder.Type
 }
 
-public class DefaultRequestBuilderFactory: RequestBuilderFactory {
+open class DefaultRequestBuilderFactory: RequestBuilderFactory {
     public func getBuilder() -> RequestBuilder.Type {
         return DefaultRequestBuilder.self
     }
 }
 
-public class Response<T: BaseMappable> {
+open class Response<T: BaseMappable> {
     public let response: HTTPURLResponse
     public let output: T
 
@@ -61,7 +61,7 @@ public class Response<T: BaseMappable> {
     }
 }
 
-public class RequestBuilder {
+open class RequestBuilder {
     public var context: APIContext
     public var method: HTTPMethod
     public var parameters: [String:Any]
@@ -171,7 +171,7 @@ public class RequestBuilder {
     }
 }
 
-public class DefaultRequestBuilder: RequestBuilder {
+open class DefaultRequestBuilder: RequestBuilder {
 
     var request: Request?
 

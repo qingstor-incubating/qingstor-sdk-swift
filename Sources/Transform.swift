@@ -21,7 +21,7 @@
 import Foundation
 import ObjectMapper
 
-open class ISO8601DateTransform: DateFormatterTransform {
+public class ISO8601DateTransform: DateFormatterTransform {
 
     public init() {
         let formatter = DateFormatter()
@@ -33,7 +33,7 @@ open class ISO8601DateTransform: DateFormatterTransform {
     }
 }
 
-open class RFC822DateTransform: DateFormatterTransform {
+public class RFC822DateTransform: DateFormatterTransform {
 
     public init() {
         let formatter = DateFormatter()
