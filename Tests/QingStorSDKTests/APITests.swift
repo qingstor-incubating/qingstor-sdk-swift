@@ -37,4 +37,17 @@ class APITests: XCTestCase {
         let targetURL = "https://test-zone.qingstor.com:443/test-bucket/test-object?test"
         XCTAssertEqual(targetURL, api.context.url.absoluteString)
     }
+
+    func testGetURLInQuerySignature() {
+        let bucket = QingStor().bucket(bucketName: "bucket-name")
+        let input = GetObjectInput()
+        input.signatureType = .query(timeoutSeconds: 60)
+        let (sender, _) = bucket.getObjectSender(objectKey: "object-key", input: input)
+        sender?.buildRequest { request, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(request?.url)
+
+            print("url: \(request?.url)")
+        }
+    }
 }

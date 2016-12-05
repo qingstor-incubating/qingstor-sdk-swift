@@ -241,10 +241,10 @@ class ObjectTests: QingStorTests {
         input.signatureType = .query(timeoutSeconds: 60)
 
         let (sender, _) = bucket.getObjectSender(objectKey: self.objectKey, input: input)
-        sender?.buildRequest {request, error in
-            print("remote url: \(request?.request?.url)")
-            URLSession.shared.downloadTask(with: self.saveURL) { url, response, error in
-                print("save url: \(url)")
+        sender?.buildRequest { request, error in
+            print("remote url: \(request?.url)")
+            URLSession.shared.downloadTask(with: request!) { url, response, error in
+                print("url: \(url)")
 
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
                     expectation.fulfill()

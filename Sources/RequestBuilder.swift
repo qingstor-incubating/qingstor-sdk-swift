@@ -23,7 +23,9 @@ import Alamofire
 import ObjectMapper
 
 public typealias RequestCompletion<T: BaseMappable> = (_ response: Response<T>?, _ error: Error?) -> Void
-public typealias BuildCompletion = (_ request: Request?, _ error: Error?) -> Void
+public typealias BuildCompletion = (_ request: URLRequest?, _ error: Error?) -> Void
+
+fileprivate typealias _BuildCompletion = (_ request: Request?, _ error: Error?) -> Void
 
 public enum HTTPMethod: String {
     case options = "OPTIONS"
@@ -175,7 +177,44 @@ open class DefaultRequestBuilder: RequestBuilder {
 
     var request: Request?
 
-    func buildRequest(isFake: Bool, completion: @escaping BuildCompletion) {
+    public override func buildRequest(completion: @escaping BuildCompletion) {
+        self._buildRequest { request, error in
+            completion(request?.request, error)
+        }
+    }
+
+    fileprivate func _buildRequest(completion: @escaping _BuildCompletion) {
+        if let request = request {
+            completion(request, nil)
+        } else {
+            self._buildRequest(isFake: true) { request, error in
+                if let request = request {
+                    if let headers = request.request?.allHTTPHeaderFields {
+                        self.addHeaders(headers)
+                    }
+
+                    do {
+                        try self.signer.writeSignature(to: self)
+                    } catch {
+                        completion(nil, APIError.buildingRequestError(info: "write signature error"))
+                        return
+                    }
+
+                    self._buildRequest(isFake: false) { request, error in
+                        if let request = request {
+                            completion(request, nil)
+                        } else {
+                            completion(nil, error)
+                        }
+                    }
+                } else {
+                    completion(nil, error)
+                }
+            }
+        }
+    }
+
+    fileprivate func _buildRequest(isFake: Bool, completion: @escaping _BuildCompletion) {
         let sessionManager = Alamofire.SessionManager.default
         let httpMethod = Alamofire.HTTPMethod(rawValue: method.rawValue)
         var encoding: Alamofire.ParameterEncoding
@@ -248,39 +287,8 @@ open class DefaultRequestBuilder: RequestBuilder {
         }
     }
 
-    public override func buildRequest(completion: @escaping BuildCompletion) {
-        if let request = request {
-            completion(request, nil)
-        } else {
-            self.buildRequest(isFake: true) { request, error in
-                if let request = request {
-                    if let headers = request.request?.allHTTPHeaderFields {
-                        self.addHeaders(headers)
-                    }
-
-                    do {
-                        try self.signer.writeSignature(to: self)
-                    } catch {
-                        completion(nil, APIError.buildingRequestError(info: "write signature error"))
-                        return
-                    }
-
-                    self.buildRequest(isFake: false) { request, error in
-                        if let request = request {
-                            completion(request, nil)
-                        } else {
-                            completion(nil, error)
-                        }
-                    }
-                } else {
-                    completion(nil, error)
-                }
-            }
-        }
-    }
-
     public override func send<T: BaseMappable>(completion: @escaping RequestCompletion<T>) {
-        self.buildRequest { request, error in
+        self._buildRequest { request, error in
             if let request = request {
                 self.processRequest(request: request, completion: completion)
             } else {
@@ -289,7 +297,7 @@ open class DefaultRequestBuilder: RequestBuilder {
         }
     }
 
-    private func processRequest<T: BaseMappable>(request: Request, completion: @escaping RequestCompletion<T>) {
+    fileprivate func processRequest<T: BaseMappable>(request: Request, completion: @escaping RequestCompletion<T>) {
         if let credential = self.credential {
             request.authenticate(usingCredential: credential)
         }

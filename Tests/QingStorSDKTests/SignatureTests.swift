@@ -51,7 +51,7 @@ class SignatureTests: XCTestCase {
             print("request: \(request)")
 
             let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=OLztrez%2Bk9aYQqWM5lUKUE3ojzZk9UW1RbrGkSkNnsE%3D"
-            XCTAssertEqual(targetURL, (request?.request?.url?.absoluteString)!)
+            XCTAssertEqual(targetURL, (request?.url?.absoluteString)!)
         }
     }
 }
