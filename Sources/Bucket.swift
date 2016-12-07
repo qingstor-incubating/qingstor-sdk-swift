@@ -1491,6 +1491,8 @@ public class PutObjectInput: QingStorInput {
     public var xQSEncryptionCustomerKey: String? = nil
     // MD5sum of encryption key
     public var xQSEncryptionCustomerKeyMD5: String? = nil
+    // Check whether fetch target object has not been modified
+    public var xQSFetchIfUnmodifiedSince: Date? = nil
     // Fetch source, should be a valid url
     public var xQSFetchSource: String? = nil
     // Move source, format (/<bucket-name>/<object-key>)
@@ -1499,7 +1501,7 @@ public class PutObjectInput: QingStorInput {
     public var bodyInputStream: InputStream?
 
     override var headerProperties: [String] {
-        return ["Content-Length", "Content-MD5", "Content-Type", "Expect", "X-QS-Copy-Source", "X-QS-Copy-Source-Encryption-Customer-Algorithm", "X-QS-Copy-Source-Encryption-Customer-Key", "X-QS-Copy-Source-Encryption-Customer-Key-MD5", "X-QS-Copy-Source-If-Match", "X-QS-Copy-Source-If-Modified-Since", "X-QS-Copy-Source-If-None-Match", "X-QS-Copy-Source-If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5", "X-QS-Fetch-Source", "X-QS-Move-Source"]
+        return ["Content-Length", "Content-MD5", "Content-Type", "Expect", "X-QS-Copy-Source", "X-QS-Copy-Source-Encryption-Customer-Algorithm", "X-QS-Copy-Source-Encryption-Customer-Key", "X-QS-Copy-Source-Encryption-Customer-Key-MD5", "X-QS-Copy-Source-If-Match", "X-QS-Copy-Source-If-Modified-Since", "X-QS-Copy-Source-If-None-Match", "X-QS-Copy-Source-If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5", "X-QS-Fetch-If-Unmodified-Since", "X-QS-Fetch-Source", "X-QS-Move-Source"]
     }
 
     override var bodyProperties: [String] {
@@ -1510,7 +1512,7 @@ public class PutObjectInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(contentLength: Int, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, bodyInputStream: InputStream? = nil) {
+    public init(contentLength: Int, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchIfUnmodifiedSince: Date? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, bodyInputStream: InputStream? = nil) {
         super.init()
 
         self.contentLength = contentLength
@@ -1528,6 +1530,7 @@ public class PutObjectInput: QingStorInput {
         self.xQSEncryptionCustomerAlgorithm = xQSEncryptionCustomerAlgorithm
         self.xQSEncryptionCustomerKey = xQSEncryptionCustomerKey
         self.xQSEncryptionCustomerKeyMD5 = xQSEncryptionCustomerKeyMD5
+        self.xQSFetchIfUnmodifiedSince = xQSFetchIfUnmodifiedSince
         self.xQSFetchSource = xQSFetchSource
         self.xQSMoveSource = xQSMoveSource
         self.bodyInputStream = bodyInputStream
@@ -1551,6 +1554,7 @@ public class PutObjectInput: QingStorInput {
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
         xQSEncryptionCustomerKey <- map["X-QS-Encryption-Customer-Key"]
         xQSEncryptionCustomerKeyMD5 <- map["X-QS-Encryption-Customer-Key-MD5"]
+        xQSFetchIfUnmodifiedSince <- (map["X-QS-Fetch-If-Unmodified-Since"], RFC822DateTransform())
         xQSFetchSource <- map["X-QS-Fetch-Source"]
         xQSMoveSource <- map["X-QS-Move-Source"]
     }
