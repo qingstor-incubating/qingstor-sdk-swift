@@ -43,7 +43,7 @@ class BucketPolicyTests: QingStorTests {
         }
 
         Then("^put bucket policy status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putPolicyResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putPolicyResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^get bucket policy$") { (args, userInfo) -> Void in
@@ -51,7 +51,7 @@ class BucketPolicyTests: QingStorTests {
         }
 
         Then("^get bucket policy status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.getPolicyResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.getPolicyResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^get bucket policy should have Referer \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -76,7 +76,7 @@ class BucketPolicyTests: QingStorTests {
         }
 
         Then("^delete bucket policy status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.deletePolicyResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.deletePolicyResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
 
@@ -99,7 +99,7 @@ class BucketPolicyTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -122,7 +122,7 @@ class BucketPolicyTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -145,7 +145,7 @@ class BucketPolicyTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)

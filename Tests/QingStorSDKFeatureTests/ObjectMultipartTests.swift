@@ -51,7 +51,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^initiate multipart upload status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.initiateMultipartUploadResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.initiateMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^upload the first part$") { (args, userInfo) -> Void in
@@ -59,7 +59,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^upload the first part status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.uploadMultipartResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^upload the second part$") { (args, userInfo) -> Void in
@@ -67,7 +67,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^upload the second part status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.uploadMultipartResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^upload the third part$") { (args, userInfo) -> Void in
@@ -75,7 +75,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^upload the third part status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.uploadMultipartResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^list multipart$") { (args, userInfo) -> Void in
@@ -83,7 +83,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^list multipart status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.listMultipartResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.listMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^list multipart object parts count is (\\d+)$") { (args, userInfo) -> Void in
@@ -95,7 +95,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^complete multipart upload status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.completeMultipartUploadResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.completeMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^abort multipart upload$") { (args, userInfo) -> Void in
@@ -103,7 +103,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^abort multipart upload status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.abortMultipartUploadResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.abortMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^delete the multipart object$") { (args, userInfo) -> Void in
@@ -111,7 +111,7 @@ class ObjectMultipartTests: QingStorTests {
         }
 
         Then("^delete the multipart object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.deleteTheMultipartObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.deleteTheMultipartObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
 
@@ -133,7 +133,7 @@ class ObjectMultipartTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -184,7 +184,7 @@ class ObjectMultipartTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         fileHandle.closeFile()
@@ -209,7 +209,7 @@ class ObjectMultipartTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -234,7 +234,7 @@ class ObjectMultipartTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -259,7 +259,7 @@ class ObjectMultipartTests: QingStorTests {
 
             if !isFalse {
                 XCTAssertNotNil(response, "error: \(error!)")
-                XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+                XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
             }
         }
 
@@ -283,7 +283,7 @@ class ObjectMultipartTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)

@@ -54,11 +54,13 @@ open class DefaultRequestBuilderFactory: RequestBuilderFactory {
 }
 
 open class Response<T: BaseMappable> {
-    public let response: HTTPURLResponse
     public let output: T
+    public let rawResponse: HTTPURLResponse
 
-    public init(response: HTTPURLResponse, output: T) {
-        self.response = response
+    open var statusCode: Int { return rawResponse.statusCode }
+
+    public init(rawResponse: HTTPURLResponse, output: T) {
+        self.rawResponse = rawResponse
         self.output = output
     }
 }
@@ -315,7 +317,7 @@ open class DefaultRequestBuilder: RequestBuilder {
                 }
 
                 if let output = response.result.value {
-                    completion(Response(response: response.response!, output: output), nil)
+                    completion(Response(rawResponse: response.response!, output: output), nil)
                 } else {
                     completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
                 }
@@ -328,7 +330,7 @@ open class DefaultRequestBuilder: RequestBuilder {
                 }
 
                 if let output = response.result.value {
-                    completion(Response(response: response.response!, output: output), nil)
+                    completion(Response(rawResponse: response.response!, output: output), nil)
                 } else {
                     completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
                 }

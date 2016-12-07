@@ -43,7 +43,7 @@ class BucketExternalMirrorTests: QingStorTests {
         }
 
         Then("^put bucket external mirror status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putExternalMirrorResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putExternalMirrorResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^get bucket external mirror$") { (args, userInfo) -> Void in
@@ -51,7 +51,7 @@ class BucketExternalMirrorTests: QingStorTests {
         }
 
         Then("^get bucket external mirror status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.getExternalMirrorResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.getExternalMirrorResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^get bucket external mirror should have source_site \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -63,7 +63,7 @@ class BucketExternalMirrorTests: QingStorTests {
         }
 
         Then("^delete bucket external mirror status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.deleteExternalMirrorResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.deleteExternalMirrorResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
 
@@ -85,7 +85,7 @@ class BucketExternalMirrorTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -108,7 +108,7 @@ class BucketExternalMirrorTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -131,7 +131,7 @@ class BucketExternalMirrorTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)

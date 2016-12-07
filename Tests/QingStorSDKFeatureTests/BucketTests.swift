@@ -61,7 +61,7 @@ class BucketTests: QingStorTests {
         }
 
         Then("^put same bucket again status code is (\\d+)$$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         Then("^initialize the bucket without zone$") { (args, userInfo) -> Void in
@@ -73,7 +73,7 @@ class BucketTests: QingStorTests {
         }
 
         Then("^list objects status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.listObjectsResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.listObjectsResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^list objects keys count is (\\d+)$") { (args, userInfo) -> Void in
@@ -85,7 +85,7 @@ class BucketTests: QingStorTests {
         }
 
         Then("^head bucket status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.headResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.headResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^delete bucket$") { (args, userInfo) -> Void in
@@ -102,7 +102,7 @@ class BucketTests: QingStorTests {
         }
 
         Then("^delete multiple objects code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.deleteMultipleObjectsResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.deleteMultipleObjectsResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^get bucket statistics$") { (args, userInfo) -> Void in
@@ -110,7 +110,7 @@ class BucketTests: QingStorTests {
         }
 
         Then("^get bucket statistics status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.getStatisticsResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.getStatisticsResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^get bucket statistics status is \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -136,7 +136,7 @@ class BucketTests: QingStorTests {
 
             if !isSameObject {
                 XCTAssertNotNil(response, "error: \(error!)")
-                XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+                XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
             }
         }
 
@@ -161,7 +161,7 @@ class BucketTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -184,7 +184,7 @@ class BucketTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -212,7 +212,7 @@ class BucketTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -235,7 +235,7 @@ class BucketTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -258,7 +258,7 @@ class BucketTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)

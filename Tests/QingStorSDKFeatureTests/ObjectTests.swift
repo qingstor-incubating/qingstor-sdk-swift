@@ -61,7 +61,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^put object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^copy object with key \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -70,7 +70,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^copy object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putTheCopyObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putTheCopyObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^move object with key \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -79,7 +79,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^move object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putTheMoveObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putTheMoveObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^get object$") { (args, userInfo) -> Void in
@@ -87,7 +87,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^get object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.getObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.getObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^get object content length is (\\d+)$") { (args, userInfo) -> Void in
@@ -107,7 +107,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^head object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.headObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.headObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^options object with method \"([^\"]*)\" and origin \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -115,7 +115,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^options object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.optionsObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.optionsObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^delete object$") { (args, userInfo) -> Void in
@@ -123,7 +123,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^delete object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.deleteObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.deleteObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^delete the move object$") { (args, userInfo) -> Void in
@@ -131,7 +131,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^delete the move object status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.deleteTheMoveObjectResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.deleteTheMoveObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
 
@@ -153,7 +153,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: self.uploadFileTimeout, handler: nil)
@@ -178,7 +178,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: self.timeout, handler: nil)
@@ -203,7 +203,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: self.timeout, handler: nil)
@@ -228,7 +228,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -275,7 +275,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -299,7 +299,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -322,7 +322,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -345,7 +345,7 @@ class ObjectTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)

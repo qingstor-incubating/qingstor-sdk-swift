@@ -42,7 +42,7 @@ class BucketACLTests: QingStorTests {
         }
 
         Then("^put bucket ACL status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putACLResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putACLResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^get bucket ACL$") { (args, userInfo) -> Void in
@@ -50,7 +50,7 @@ class BucketACLTests: QingStorTests {
         }
 
         Then("^get bucket ACL status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putACLResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putACLResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^get bucket ACL should have grantee name \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -83,7 +83,7 @@ class BucketACLTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout)
@@ -106,7 +106,7 @@ class BucketACLTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout)

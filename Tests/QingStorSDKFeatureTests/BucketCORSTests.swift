@@ -43,7 +43,7 @@ class BucketCORSTests: QingStorTests {
         }
 
         Then("^put bucket CORS status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.putCORSResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.putCORSResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         When("^get bucket CORS$") { (args, userInfo) -> Void in
@@ -51,7 +51,7 @@ class BucketCORSTests: QingStorTests {
         }
 
         Then("^get bucket CORS status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.getCORSResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.getCORSResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
         And("^get bucket CORS should have allowed origin \"([^\"]*)\"$") { (args, userInfo) -> Void in
@@ -70,7 +70,7 @@ class BucketCORSTests: QingStorTests {
         }
 
         Then("^delete bucket CORS status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.deleteCORSResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.deleteCORSResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
 
@@ -92,7 +92,7 @@ class BucketCORSTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -115,7 +115,7 @@ class BucketCORSTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)
@@ -138,7 +138,7 @@ class BucketCORSTests: QingStorTests {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)

@@ -66,7 +66,7 @@ class QingStorTests: NSObject {
         }
 
         Then("^list buckets status code is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.listBucketResponse.response.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.listBucketResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
 
@@ -88,7 +88,7 @@ class QingStorTests: NSObject {
             }
 
             XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.response.statusCode)    error: \(response!.output.errMessage!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout)
