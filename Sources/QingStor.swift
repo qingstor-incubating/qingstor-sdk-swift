@@ -1,5 +1,5 @@
 //
-// QingStorService.swift
+// QingStor.swift
 //
 // +-------------------------------------------------------------------------
 // | Copyright (C) 2016 Yunify, Inc.

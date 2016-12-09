@@ -74,12 +74,29 @@ public class QingStorAPI: BaseAPI {
         self.bucketName = bucketName
     }
 
-    func setupContext(uriFormat: String?, bucketName: String? = nil, objectKey: String? = nil, zone: String? = nil) {
+    func setupContext(uriFormat: String?, bucketName: String? = nil, objectKey: String? = nil, zone: String? = nil) throws {
         self.context = self.context.rawCopy()
 
         if let uriFormat = uriFormat {
-            var uri = uriFormat.replacingOccurrences(of: "<bucket-name>", with: bucketName ?? self.bucketName ?? "")
-            uri = uri.replacingOccurrences(of: "<object-key>", with: objectKey ?? "")
+            var uri = uriFormat
+
+            if uri.contains("<bucket-name>") {
+                let _bucketName = bucketName ?? self.bucketName ?? ""
+                if _bucketName.isEmpty {
+                    throw APIError.contextError(info: "bucketName can't be empty")
+                }
+
+                uri = uri.replacingOccurrences(of: "<bucket-name>", with: _bucketName)
+            }
+
+            if uri.contains("<object-key>") {
+                let _objectKey = objectKey ?? ""
+                if _objectKey.isEmpty {
+                    throw APIError.contextError(info: "objectKey can't be empty")
+                }
+
+                uri = uri.replacingOccurrences(of: "<object-key>", with: _objectKey)
+            }
 
             if let index = uri.range(of: "?", options: .backwards)?.lowerBound {
                 let query = uri.substring(from: uri.index(after: index))

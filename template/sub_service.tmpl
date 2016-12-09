@@ -117,10 +117,16 @@ public class Bucket: QingStorAPI {
         {{- end -}}
 
         ) -> (APISender?, Error?) {
-        self.setupContext(uriFormat: "{{$operation.Request.URI}}"
-            {{- if $isObject -}}
-            , objectKey: objectKey
-            {{- end -}})
+        do {
+            try self.setupContext(uriFormat: "{{$operation.Request.URI}}"
+                {{- if $isObject -}}
+                , objectKey: objectKey
+                {{- end -}}
+            )
+        } catch {
+            return (nil, error)
+        }
+        
         return APISender.qingStor(context: self.context, input: input, method: {{template "HTTPMethod" $operation}})
     }
     {{end -}}
