@@ -45,7 +45,7 @@ func main() {
     let qsService = QingStor()
     qsService.listBuckets(input: ListBucketsInput()) { response, error in
         // Print HTTP status code.
-        print("\(response?.response.statusCode)")
+        print("\(response?.statusCode)")
         
         // Print the count of buckets.
         print("\(response?.output.count)")

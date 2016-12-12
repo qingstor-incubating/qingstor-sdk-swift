@@ -24,7 +24,7 @@ List buckets
 let input = ListBucketsInput()
 qsService.listBuckets(input: input) { response, error in
     if let response = response {
-        print("StatusCode: \(response.response.statusCode)")
+        print("StatusCode: \(response.statusCode)")
     	if response.output.errMessage == nil {
             print("Bucket count: \(response.output.count)")
             print("First bucket name: \(response.output.buckets?[0].name)")
@@ -45,7 +45,7 @@ List objects in the bucket
 let input = ListObjectsInput()
 bucket.listObjects(input: input) { response, error in
     if let response = response {
-    	print("StatusCode: \(response.response.statusCode)")
+    	print("StatusCode: \(response.statusCode)")
     	if response.output.errMessage == nil {
     		print("Bucket object count: \(response.output.keys?.count)")
     	}
@@ -61,7 +61,7 @@ let acl = ACLModel(grantee: grantee, permission: "FULL_CONTROL")
 let input = PutBucketACLInput(acl: [acl])
 bucket.putACL(input: input) { response, error in
     if let response = response {
-        print("StatusCode: \(response.response.statusCode)")
+        print("StatusCode: \(response.statusCode)")
     }
 }
 ```
@@ -76,7 +76,7 @@ let input = PutObjectInput(contentLength: objectFileURL.contentLength,
 						   bodyInputStream: InputStream(url: objectFileURL))
 bucket.putObject(objectKey:"image.jpeg", input: input) { response, error in
     if let response = response {
-        print("StatusCode: \(response.response.statusCode)")
+        print("StatusCode: \(response.statusCode)")
     }
 }
 ```
@@ -86,7 +86,7 @@ Delete object
 ``` swift
 bucket.deleteObject(objectKey:"image.jpeg") { response, error in
     if let response = response {
-        print("StatusCode: \(response.response.statusCode)")
+        print("StatusCode: \(response.statusCode)")
     }
 }
 ```
@@ -98,7 +98,7 @@ let input = InitiateMultipartUploadInput(contentType: "video/quicktime")
 bucket.initiateMultipartUpload(objectKey: "video.mov", input: input) { 
 	response, error in
     if let response = response {
-    	print("StatusCode: \(response.response.statusCode)")
+    	print("StatusCode: \(response.statusCode)")
         if response.output.errMessage == nil {
         	print("UploadID: \(response.output.uploadID)")
         }
@@ -134,7 +134,7 @@ for partNumber in 0 ..< partCount {
     							     bodyInputStream: inputStream)
     bucket.uploadMultipart(objectKey: "video.mov", input: input) { response, error in
         if let response = response {
-        	print("StatusCode: \(response.response.statusCode)")
+        	print("StatusCode: \(response.statusCode)")
         }
     }
 }
@@ -150,7 +150,7 @@ let objectParts = [ObjectPartModel(partNumber: 0),
 let input = CompleteMultipartUploadInput(uploadID: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", 											 objectParts: objectParts)
 bucket.completeMultipartUpload(objectKey: "video.mov", input: input) { response, error in
     if let response = response {
-        print("StatusCode: \(response.response.statusCode)")
+        print("StatusCode: \(response.statusCode)")
     }
 }
 ```
@@ -161,7 +161,8 @@ Abort Multipart Upload
 let input = AbortMultipartUploadInput(uploadID: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 bucket.abortMultipartUpload(objectKey: "video.mov", input: input) { response, error in
     if let response = response {
-        print("StatusCode: \(response.response.statusCode)")
+        print("StatusCode: \(response.statusCode)")
     }
 }
 ```
+
