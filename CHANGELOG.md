@@ -3,7 +3,7 @@ All notable changes to QingStor SDK for Swift will be documented in this file.
 
 ## [v2.0.1] - 2016-12-15
 ### Changed
-- Improve: Computing Content-MD5 at DeleteMultipleObjectInput.
+- Improve the implementation of deleting multiple objects.
 
 ## [v2.0.0] - 2016-12-14
 ### Added
