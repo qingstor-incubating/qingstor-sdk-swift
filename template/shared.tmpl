@@ -106,13 +106,16 @@
     {{- $customizedType := index . 0 -}}
     {{- $checkOptionalType := index . 1 -}}
     {{- $needNilDefault := index . 2 -}}
+    {{- $operationName := index . 3 -}}
     {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
-        {{- if ne $property.ID $firstPropertyID -}}{{- ", " -}}{{- end -}}
-        {{- template "FormatPropertyID" $property -}}
-        {{- ": " -}}
-        {{- template "PropertyType" passThrough $property $checkOptionalType $needNilDefault false -}}
+        {{- if or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5") -}}
+            {{- if ne $property.ID $firstPropertyID -}}{{- ", " -}}{{- end -}}
+            {{- template "FormatPropertyID" $property -}}
+            {{- ": " -}}
+            {{- template "PropertyType" passThrough $property $checkOptionalType $needNilDefault false -}}
+        {{- end -}}
     {{- end -}}
 {{- end -}}
 
@@ -141,7 +144,7 @@
 
 
 {{- define "RenderLocationProperties" -}}
-    {{- $customizedType := . -}}
+    {{- $customizedType := index . -}}
     {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
@@ -154,19 +157,25 @@
 {{- define "RenderInitializationDeclarationRequest" -}}
     {{- $operation := . -}}
 
-    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Params 2 true -}}
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Params 2 true $operation.Name -}}
     {{- if and (gt ($operation.Request.Params.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
-        {{- ", " -}}
+        {{- if or (ne ($operation.Request.Params.Properties | len) 1) (ne ($operation.Request.Params | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+            {{- ", " -}}
+        {{- end -}}
     {{- end -}}
 
-    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Headers 2 true -}}
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Headers 2 true $operation.Name -}}
     {{- if and (gt ($operation.Request.Headers.Properties | len) 0) (or (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
-        {{- ", " -}}
+        {{- if or (ne ($operation.Request.Headers.Properties | len) 1) (ne ($operation.Request.Headers | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+            {{- ", " -}}
+        {{- end -}}
     {{- end -}}
 
-    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Elements 2 true -}}
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Elements 2 true $operation.Name -}}
     {{- if and (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary") -}}
-        {{- ", " -}}
+        {{- if or (ne ($operation.Request.Elements.Properties | len) 1) (ne ($operation.Request.Elements | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+            {{- ", " -}}
+        {{- end -}}
     {{- end -}}
 
     {{- if eq $operation.Request.Body.Type "binary" -}}
@@ -178,9 +187,10 @@
 {{- define "RenderProperties" -}}
     {{- $customizedType := index . 0 -}}
     {{- $needExcluded := index . 1 -}}
+    {{- $operationName := index . 2 -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
-        {{- if or (not $needExcluded) (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code") -}}
+        {{- if and (or (not $needExcluded) (and (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
             {{- if $property.Description}}
     // {{$property.Description -}}
             {{- end -}}
@@ -201,18 +211,21 @@
         super.init(map: map)
     }
 
-    public init({{- template "RenderInitializationDeclaration" passThrough $customizedType 2 true -}}) {
+    public init({{- template "RenderInitializationDeclaration" passThrough $customizedType 2 true "" -}}) {
         super.init()
-        {{template "RenderInitializationAssignment" $customizedType}}
+        {{template "RenderInitializationAssignment" passThrough $customizedType "" }}
     }
 {{- end -}}
 
 
 {{- define "RenderInitializationAssignment" -}}
-    {{- $customizedType := index . -}}
+    {{- $customizedType := index . 0 -}}
+    {{- $operationName := index . 1 -}}
 
     {{- range $_, $property := $customizedType.Properties}}
+        {{- if or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")}}
         self.{{template "FormatPropertyID" $property}} = {{template "FormatPropertyID" $property}}
+        {{- end -}}
     {{- end -}}
 {{- end -}}
 
@@ -220,9 +233,10 @@
 {{- define "RenderMapping" -}}
     {{- $customizedType := index . 0 -}}
     {{- $needExcluded := index . 1}}
+    {{- $operationName := index . 2}}
 
     {{- range $_, $property := $customizedType.Properties -}}
-        {{- if or (not $needExcluded) (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code") -}}
+        {{- if and (or (not $needExcluded) (and (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
             {{- if eq $property.Format "ISO 8601"}}
         {{template "FormatPropertyID" $property}} <- (map["{{$property.ID}}"], ISO8601DateTransform())
             {{- else if eq $property.Format "RFC 822"}}
@@ -249,9 +263,11 @@
 
 
 {{- define "RenderValidate" -}}
-    {{- $customizedType := index . -}}
+    {{- $customizedType := index . 0 -}}
+    {{- $operationName := index . 1 -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
+        {{- if or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5") -}}
         {{- if and $property.IsRequired (eq $property.Default "")}}
         if self.{{template "FormatPropertyID" $property}} == nil {
             return APIError.parameterRequiredError(name: "{{template "FormatPropertyID" $property}}", parentName: "{{$customizedType.ID | camelCase}}")
@@ -325,6 +341,7 @@
         }
             {{end -}}
         {{- end -}}
+        {{- end -}}
     {{- end -}}
 {{- end -}}
 
@@ -334,16 +351,16 @@
 
 public class {{$customizedType.ID | camelCase}}Model: BaseModel {
     {{- if gt ($customizedType.Properties | len) 0 -}}
-        {{- template "RenderProperties" passThrough $customizedType false -}}
+        {{- template "RenderProperties" passThrough $customizedType false "" -}}
         {{- template "RenderInitialization" $customizedType}}
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
-        {{template "RenderMapping" passThrough $customizedType false}}
+        {{template "RenderMapping" passThrough $customizedType false ""}}
     }
 
     public override func validate() -> Error? {
-        {{- template "RenderValidate" $customizedType}}
+        {{- template "RenderValidate" passThrough $customizedType ""}}
         return nil
     }
     {{- end}}
@@ -364,9 +381,9 @@ public class {{$customizedType.ID | camelCase}}Model: BaseModel {
 public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input { }
     {{- else}}
 public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input {
-    {{- template "RenderProperties" passThrough $operation.Request.Params false -}}
-    {{- template "RenderProperties" passThrough $operation.Request.Headers false -}}
-    {{- template "RenderProperties" passThrough $operation.Request.Elements false -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Params true $operation.Name -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Headers true $operation.Name -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Elements true $operation.Name -}}
 
     {{- if eq $operation.Request.Body.Type "binary"}}
         {{- if $operation.Request.Body.Description}}
@@ -409,9 +426,9 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     public init({{- template "RenderInitializationDeclarationRequest" $operation -}}) {
         super.init()
         {{- "\n" -}}
-        {{- template "RenderInitializationAssignment" $operation.Request.Params -}}
-        {{- template "RenderInitializationAssignment" $operation.Request.Headers -}}
-        {{- template "RenderInitializationAssignment" $operation.Request.Elements -}}
+        {{- template "RenderInitializationAssignment" passThrough $operation.Request.Params $operation.Name -}}
+        {{- template "RenderInitializationAssignment" passThrough $operation.Request.Headers $operation.Name -}}
+        {{- template "RenderInitializationAssignment" passThrough $operation.Request.Elements $operation.Name -}}
 
         {{- if eq $operation.Request.Body.Type "binary"}}
         self.bodyInputStream = bodyInputStream
@@ -421,29 +438,33 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     public override func mapping(map: Map) {
         super.mapping(map: map)
         {{- "\n" -}}
-        {{- template "RenderMapping" passThrough $operation.Request.Params false -}}
-        {{- template "RenderMapping" passThrough $operation.Request.Headers false -}}
-        {{- template "RenderMapping" passThrough $operation.Request.Elements false}}
+        {{- template "RenderMapping" passThrough $operation.Request.Params false $operation.Name -}}
+        {{- template "RenderMapping" passThrough $operation.Request.Headers false $operation.Name -}}
+        {{- template "RenderMapping" passThrough $operation.Request.Elements false $operation.Name}}
     }
-        {{if eq $operation.Request.Body.Type "binary"}}
+        {{if or (eq $operation.Request.Body.Type "binary") (eq $operation.Name "Delete Multiple Objects")}}
     public override func toParameters() -> [String: Any] {
         var parameters = super.toParameters()
 
-                {{- template "RenderToParameters" $operation.Request.Params -}}
-                {{- template "RenderToParameters" $operation.Request.Headers -}}
-                {{- template "RenderToParameters" $operation.Request.Elements -}}
+            {{- template "RenderToParameters" $operation.Request.Params -}}
+            {{- template "RenderToParameters" $operation.Request.Headers -}}
+            {{- template "RenderToParameters" $operation.Request.Elements -}}
 
-                {{- if eq $operation.Request.Body.Type "binary"}}
+            {{- if eq $operation.Name "Delete Multiple Objects"}}
+        parameters["Content-MD5"] = (try! JSONSerialization.data(withJSONObject: parameters)).md5().base64EncodedString()
+            {{- end}}
+
+            {{- if eq $operation.Request.Body.Type "binary"}}
         parameters["body"] = self.bodyInputStream
-                {{- end}}
+            {{- end}}
 
         return parameters
     }
         {{end}}
     public override func validate() -> Error? {
-        {{- template "RenderValidate" $operation.Request.Params -}}
-        {{- template "RenderValidate" $operation.Request.Headers -}}
-        {{- template "RenderValidate" $operation.Request.Elements}}
+        {{- template "RenderValidate" passThrough $operation.Request.Params $operation.Name -}}
+        {{- template "RenderValidate" passThrough $operation.Request.Headers $operation.Name -}}
+        {{- template "RenderValidate" passThrough $operation.Request.Elements $operation.Name}}
         return nil
     }
     {{- end}}
@@ -464,16 +485,16 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
 public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Output { }
     {{- else}}
 public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Output {
-    {{- template "RenderProperties" passThrough $operation.Response.Headers true -}}
-    {{- template "RenderProperties" passThrough $operation.Response.Elements true -}}
+    {{- template "RenderProperties" passThrough $operation.Response.Headers true "" -}}
+    {{- template "RenderProperties" passThrough $operation.Response.Elements true "" -}}
 
     {{- if or (gt ($operation.Response.Headers.Properties | len) 0) (gt ($operation.Response.Elements.Properties | len) 0)}}
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
         {{- "\n" -}}
-        {{- template "RenderMapping" passThrough $operation.Response.Headers true -}}
-        {{- template "RenderMapping" passThrough $operation.Response.Elements true}}
+        {{- template "RenderMapping" passThrough $operation.Response.Headers true "" -}}
+        {{- template "RenderMapping" passThrough $operation.Response.Elements true ""}}
     }
     {{- end}}
 }
