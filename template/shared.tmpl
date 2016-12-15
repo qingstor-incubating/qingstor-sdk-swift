@@ -144,7 +144,7 @@
 
 
 {{- define "RenderLocationProperties" -}}
-    {{- $customizedType := index . -}}
+    {{- $customizedType := . -}}
     {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
