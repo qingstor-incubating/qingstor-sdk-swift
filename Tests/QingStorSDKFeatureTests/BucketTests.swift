@@ -194,10 +194,6 @@ class BucketTests: QingStorTests {
         let expectation = testCase.expectation(description: "")
 
         let input = Mapper<DeleteMultipleObjectsInput>().map(JSONString: json)!
-        let contentObject = input.toParameters()
-        let md5Data = (try! JSONSerialization.data(withJSONObject: contentObject)).md5()
-        input.contentMD5 = md5Data.base64EncodedString()
-
         bucket.deleteMultipleObjects(input: input) { response, error in
             if let response = response {
                 self.deleteMultipleObjectsResponse = response

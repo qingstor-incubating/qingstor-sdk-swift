@@ -700,8 +700,6 @@ public class DeleteBucketPolicyOutput: QingStorOutput { }
 
 
 public class DeleteMultipleObjectsInput: QingStorInput {
-    // Object MD5sum
-    public var contentMD5: String! // Required
     // A list of keys to delete
     public var objects: [KeyModel]! // Required
     // Whether to return the list of deleted objects
@@ -719,10 +717,9 @@ public class DeleteMultipleObjectsInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(contentMD5: String, objects: [KeyModel], quiet: Bool? = nil) {
+    public init(objects: [KeyModel], quiet: Bool? = nil) {
         super.init()
 
-        self.contentMD5 = contentMD5
         self.objects = objects
         self.quiet = quiet
     }
@@ -730,16 +727,18 @@ public class DeleteMultipleObjectsInput: QingStorInput {
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
-        contentMD5 <- map["Content-MD5"]
         objects <- map["objects"]
         quiet <- map["quiet"]
     }
 
-    public override func validate() -> Error? {
-        if self.contentMD5 == nil {
-            return APIError.parameterRequiredError(name: "contentMD5", parentName: "DeleteMultipleObjectsInput")
-        }
+    public override func toParameters() -> [String: Any] {
+        var parameters = super.toParameters()
+        parameters["Content-MD5"] = (try! JSONSerialization.data(withJSONObject: parameters)).md5().base64EncodedString()
 
+        return parameters
+    }
+
+    public override func validate() -> Error? {
         if self.objects == nil {
             return APIError.parameterRequiredError(name: "objects", parentName: "DeleteMultipleObjectsInput")
         }
