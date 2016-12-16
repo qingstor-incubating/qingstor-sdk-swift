@@ -190,7 +190,7 @@
     {{- $operationName := index . 2 -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
-        {{- if and (or (not $needExcluded) (and (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
+        {{- if and (or (not $needExcluded) (and (ne $property.ID "message") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
             {{- if $property.Description}}
     // {{$property.Description -}}
             {{- end -}}
@@ -236,7 +236,7 @@
     {{- $operationName := index . 2}}
 
     {{- range $_, $property := $customizedType.Properties -}}
-        {{- if and (or (not $needExcluded) (and (ne $property.ID "ret_code") (ne $property.ID "message") (ne $property.ID "action") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
+        {{- if and (or (not $needExcluded) (and (ne $property.ID "message") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
             {{- if eq $property.Format "ISO 8601"}}
         {{template "FormatPropertyID" $property}} <- (map["{{$property.ID}}"], ISO8601DateTransform())
             {{- else if eq $property.Format "RFC 822"}}
@@ -381,9 +381,9 @@ public class {{$customizedType.ID | camelCase}}Model: BaseModel {
 public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input { }
     {{- else}}
 public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input {
-    {{- template "RenderProperties" passThrough $operation.Request.Params true $operation.Name -}}
-    {{- template "RenderProperties" passThrough $operation.Request.Headers true $operation.Name -}}
-    {{- template "RenderProperties" passThrough $operation.Request.Elements true $operation.Name -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Params false $operation.Name -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Headers false $operation.Name -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Elements false $operation.Name -}}
 
     {{- if eq $operation.Request.Body.Type "binary"}}
         {{- if $operation.Request.Body.Description}}
