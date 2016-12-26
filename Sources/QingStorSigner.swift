@@ -81,7 +81,22 @@ public class QingStorSigner: Signer {
     }
 
     func buildCanonicalizedResource(_ requestBuild: RequestBuilder) -> String {
-        let parametersToSign = ["acl", "cors", "delete", "mirror", "part_number", "policy", "stats", "upload_id", "uploads"]
+        let parametersToSign = ["acl",
+                                "cors",
+                                "delete",
+                                "mirror",
+                                "part_number",
+                                "policy",
+                                "stats",
+                                "upload_id",
+                                "uploads",
+                                "response-expires",
+                                "response-cache-control",
+                                "response-content-type",
+                                "response-content-language",
+                                "response-content-encoding",
+                                "response-content-disposition"]
+
         let urlString = requestBuild.context.url.absoluteString
 
         var query = ""
