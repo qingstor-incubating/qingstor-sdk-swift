@@ -81,7 +81,22 @@ public class QingStorSigner: Signer {
     }
 
     func buildCanonicalizedResource(_ requestBuild: RequestBuilder) -> String {
-        let parametersToSign = ["acl", "cors", "delete", "mirror", "part_number", "policy", "stats", "upload_id", "uploads"]
+        let parametersToSign = ["acl",
+                                "cors",
+                                "delete",
+                                "mirror",
+                                "part_number",
+                                "policy",
+                                "stats",
+                                "upload_id",
+                                "uploads",
+                                "response-expires",
+                                "response-cache-control",
+                                "response-content-type",
+                                "response-content-language",
+                                "response-content-encoding",
+                                "response-content-disposition"]
+
         let urlString = requestBuild.context.url.absoluteString
 
         var query = ""
@@ -90,7 +105,7 @@ public class QingStorSigner: Signer {
         }
 
         if requestBuild.encoding == .query {
-            let parametersQuery = APIHelper.buildQueryString(parameters: &requestBuild.parameters)
+            let parametersQuery = APIHelper.buildQueryString(parameters: &requestBuild.parameters, escaped: false)
 
             if !parametersQuery.isEmpty {
                 if !query.isEmpty {
@@ -103,6 +118,7 @@ public class QingStorSigner: Signer {
         query = query.components(separatedBy: "&")
             .filter { parametersToSign.contains($0.components(separatedBy: "=")[0]) }
             .joined(separator: "&")
+            .unescape()
 
         let uri = requestBuild.context.uri
         if !query.isEmpty {

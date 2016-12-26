@@ -1257,6 +1257,18 @@ public class DeleteObjectOutput: QingStorOutput { }
 
 
 public class GetObjectInput: QingStorDownloadInput {
+    // Specified the Cache-Control response header
+    public var responseCacheControl: String? = nil
+    // Specified the Content-Disposition response header
+    public var responseContentDisposition: String? = nil
+    // Specified the Content-Encoding response header
+    public var responseContentEncoding: String? = nil
+    // Specified the Content-Language response header
+    public var responseContentLanguage: String? = nil
+    // Specified the Content-Type response header
+    public var responseContentType: String? = nil
+    // Specified the Expires response header
+    public var responseExpires: String? = nil
     // Check whether the ETag matches
     public var ifMatch: String? = nil
     // Check whether the object has been modified
@@ -1274,6 +1286,10 @@ public class GetObjectInput: QingStorDownloadInput {
     // MD5sum of encryption key
     public var xQSEncryptionCustomerKeyMD5: String? = nil
 
+    override var queryProperties: [String] {
+        return ["response-cache-control", "response-content-disposition", "response-content-encoding", "response-content-language", "response-content-type", "response-expires"]
+    }
+
     override var headerProperties: [String] {
         return ["If-Match", "If-Modified-Since", "If-None-Match", "If-Unmodified-Since", "Range", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
     }
@@ -1282,9 +1298,15 @@ public class GetObjectInput: QingStorDownloadInput {
         super.init(map: map)
     }
 
-    public init(ifMatch: String? = nil, ifModifiedSince: Date? = nil, ifNoneMatch: String? = nil, ifUnmodifiedSince: Date? = nil, range: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
+    public init(responseCacheControl: String? = nil, responseContentDisposition: String? = nil, responseContentEncoding: String? = nil, responseContentLanguage: String? = nil, responseContentType: String? = nil, responseExpires: String? = nil, ifMatch: String? = nil, ifModifiedSince: Date? = nil, ifNoneMatch: String? = nil, ifUnmodifiedSince: Date? = nil, range: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
         super.init()
 
+        self.responseCacheControl = responseCacheControl
+        self.responseContentDisposition = responseContentDisposition
+        self.responseContentEncoding = responseContentEncoding
+        self.responseContentLanguage = responseContentLanguage
+        self.responseContentType = responseContentType
+        self.responseExpires = responseExpires
         self.ifMatch = ifMatch
         self.ifModifiedSince = ifModifiedSince
         self.ifNoneMatch = ifNoneMatch
@@ -1298,6 +1320,12 @@ public class GetObjectInput: QingStorDownloadInput {
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
+        responseCacheControl <- map["response-cache-control"]
+        responseContentDisposition <- map["response-content-disposition"]
+        responseContentEncoding <- map["response-content-encoding"]
+        responseContentLanguage <- map["response-content-language"]
+        responseContentType <- map["response-content-type"]
+        responseExpires <- map["response-expires"]
         ifMatch <- map["If-Match"]
         ifModifiedSince <- (map["If-Modified-Since"], RFC822DateTransform())
         ifNoneMatch <- map["If-None-Match"]

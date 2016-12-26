@@ -119,7 +119,9 @@ public class BucketModel: BaseModel {
 
 
 public class ConditionModel: BaseModel {
+    public var ipAddress: IPAddressModel? = nil
     public var isNull: IsNullModel? = nil
+    public var notIPAddress: NotIPAddressModel? = nil
     public var stringLike: StringLikeModel? = nil
     public var stringNotLike: StringNotLikeModel? = nil
 
@@ -127,10 +129,12 @@ public class ConditionModel: BaseModel {
         super.init(map: map)
     }
 
-    public init(isNull: IsNullModel? = nil, stringLike: StringLikeModel? = nil, stringNotLike: StringNotLikeModel? = nil) {
+    public init(ipAddress: IPAddressModel? = nil, isNull: IsNullModel? = nil, notIPAddress: NotIPAddressModel? = nil, stringLike: StringLikeModel? = nil, stringNotLike: StringNotLikeModel? = nil) {
         super.init()
 
+        self.ipAddress = ipAddress
         self.isNull = isNull
+        self.notIPAddress = notIPAddress
         self.stringLike = stringLike
         self.stringNotLike = stringNotLike
     }
@@ -138,14 +142,28 @@ public class ConditionModel: BaseModel {
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
+        ipAddress <- map["ip_address"]
         isNull <- map["is_null"]
+        notIPAddress <- map["not_ip_address"]
         stringLike <- map["string_like"]
         stringNotLike <- map["string_not_like"]
     }
 
     public override func validate() -> Error? {
+        if let ipAddress = self.ipAddress {
+            if let error = ipAddress.validate() {
+                return error
+            }
+        }
+
         if let isNull = self.isNull {
             if let error = isNull.validate() {
+                return error
+            }
+        }
+
+        if let notIPAddress = self.notIPAddress {
+            if let error = notIPAddress.validate() {
                 return error
             }
         }
@@ -275,6 +293,32 @@ public class GranteeModel: BaseModel {
 }
 
 
+public class IPAddressModel: BaseModel {
+    // Source IP
+    public var sourceIP: [String]? = nil
+
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    public init(sourceIP: [String]? = nil) {
+        super.init()
+
+        self.sourceIP = sourceIP
+    }
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        sourceIP <- map["source_ip"]
+    }
+
+    public override func validate() -> Error? {
+        return nil
+    }
+}
+
+
 public class IsNullModel: BaseModel {
     // Refer url
     public var referer: Bool? = nil
@@ -373,6 +417,32 @@ public class KeyDeleteErrorModel: BaseModel {
         code <- map["code"]
         key <- map["key"]
         message <- map["message"]
+    }
+
+    public override func validate() -> Error? {
+        return nil
+    }
+}
+
+
+public class NotIPAddressModel: BaseModel {
+    // Source IP
+    public var sourceIP: [String]? = nil
+
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    public init(sourceIP: [String]? = nil) {
+        super.init()
+
+        self.sourceIP = sourceIP
+    }
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        sourceIP <- map["source_ip"]
     }
 
     public override func validate() -> Error? {
