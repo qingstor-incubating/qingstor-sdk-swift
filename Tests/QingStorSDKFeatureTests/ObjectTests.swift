@@ -33,6 +33,7 @@ class ObjectTests: QingStorTests {
     var putTheCopyObjectResponse: Response<PutObjectOutput>!
     var putTheMoveObjectResponse: Response<PutObjectOutput>!
     var getObjectResponse: Response<GetObjectOutput>!
+    var getObjectWithContentTypeResponse: Response<GetObjectOutput>!
     var headObjectResponse: Response<HeadObjectOutput>!
     var optionsObjectResponse: Response<OptionsObjectOutput>!
     var deleteObjectResponse: Response<DeleteObjectOutput>!
@@ -40,6 +41,7 @@ class ObjectTests: QingStorTests {
 
     var objectFileURL: URL!
     var saveURL: URL!
+    var downloadedURL: URL!
 
     let partContentLength = 4 * 1024 * 1024
     var uploadFileTimeout = 999999.9
@@ -91,7 +93,15 @@ class ObjectTests: QingStorTests {
         }
 
         And("^get object content length is (\\d+)$") { (args, userInfo) -> Void in
+            self.assertEqual(value: "\(self.objectFileURL.contentLength)", shouldBe: "\(self.saveURL.contentLength)")
+        }
 
+        When("^get object with content type \"([^\"]*)\"$") { (args, userInfo) -> Void in
+            self.testGetObjectWithContentType(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, contentType: args![0])
+        }
+
+        Then("^get object content type is \"([^\"]*)\"$") { (args, userInfo) -> Void in
+            self.assertEqual(value: "\(self.getObjectWithContentTypeResponse.rawResponse.allHeaderFields["Content-Type"]!)", shouldBe: "\(args![0])")
         }
 
         When("^get object with query signature$") { (args, userInfo) -> Void in
@@ -99,7 +109,7 @@ class ObjectTests: QingStorTests {
         }
 
         Then("^get object with query signature content length is (\\d+)$") { (args, userInfo) -> Void in
-
+            self.assertEqual(value: "\(self.objectFileURL.contentLength)", shouldBe: "\(self.downloadedURL.contentLength)")
         }
 
         When("^head object$") { (args, userInfo) -> Void in
@@ -242,9 +252,8 @@ class ObjectTests: QingStorTests {
 
         let (sender, _) = bucket.getObjectSender(objectKey: self.objectKey, input: input)
         sender?.buildRequest { request, error in
-            print("remote url: \(request?.url)")
             URLSession.shared.downloadTask(with: request!) { url, response, error in
-                print("url: \(url)")
+                self.downloadedURL = url
 
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
                     expectation.fulfill()
@@ -252,6 +261,32 @@ class ObjectTests: QingStorTests {
 
                 XCTAssertNil(error, "error: \(error)")
             }.resume()
+        }
+
+        testCase.waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testGetObjectWithContentType(testCase: XCTestCase, contentType: String) {
+        let expectation = testCase.expectation(description: "")
+
+        let input = GetObjectInput()
+        input.responseContentType = contentType
+
+        bucket.getObject(objectKey: self.objectKey, input: input) { response, error in
+            if let response = response {
+                self.getObjectWithContentTypeResponse = response
+
+                if response.output.errMessage == nil {
+                    print("success: \(response.output.toJSON())")
+                }
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
+                expectation.fulfill()
+            }
+
+            XCTAssertNotNil(response, "error: \(error!)")
+            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
         }
 
         testCase.waitForExpectations(timeout: timeout, handler: nil)

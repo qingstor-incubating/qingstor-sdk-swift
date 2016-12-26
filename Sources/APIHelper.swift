@@ -120,14 +120,22 @@ extension String {
         }
     }
 
-    func escape() -> String {
+    func allowedCharacterSet() -> CharacterSet {
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="
 
         var allowedCharacterSet = CharacterSet.urlQueryAllowed
         allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
 
-        return self.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? self
+        return allowedCharacterSet
+    }
+
+    func escape() -> String {
+        return self.addingPercentEncoding(withAllowedCharacters: self.allowedCharacterSet()) ?? self
+    }
+
+    func unescape() -> String {
+        return self.removingPercentEncoding ?? self
     }
 
     func toDate(format: String) -> Date? {

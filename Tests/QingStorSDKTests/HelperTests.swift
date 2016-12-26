@@ -19,6 +19,18 @@ class HelperTests: XCTestCase {
         super.tearDown()
     }
 
+    func testEscape() {
+        let result = ";=%".escape()
+        let targetResult = "%3B%3D%25"
+        XCTAssertEqual(targetResult, result)
+    }
+
+    func testUnescape() {
+        let result = "%3B%3D%25".unescape()
+        let targetResult = ";=%"
+        XCTAssertEqual(targetResult, result)
+    }
+
     func testBuildQuery() {
         var parameters: [String:Any] = ["test-1":"1", "test-2":["value1", "value2"]]
         let result = APIHelper.buildQueryString(parameters: &parameters, escaped: false)
