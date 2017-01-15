@@ -118,7 +118,12 @@ public class Bucket: QingStorAPI {
 
         ) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "{{$operation.Request.URI}}"
+            {{$uri := $operation.Request.URI -}}
+            {{- $uri := replace $uri "{" "<" -1 -}}
+            {{- $uri := replace $uri "}" ">" -1 -}}
+            {{- $uri := dashConnected $uri -}}
+
+            try self.setupContext(uriFormat: "{{$uri}}"
                 {{- if $isObject -}}
                 , objectKey: objectKey
                 {{- end -}}
