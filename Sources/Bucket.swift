@@ -292,6 +292,30 @@ public class Bucket: QingStorAPI {
         return APISender.qingStor(context: self.context, input: input, method: .head)
     }
 
+    // listMultipartUploads: List multipart uploads in the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/list_multipart_uploads.html
+    public func listMultipartUploads(input: ListMultipartUploadsInput, completion: @escaping RequestCompletion<ListMultipartUploadsOutput>) {
+        let (sender, error) = self.listMultipartUploadsSender(input: input)
+
+        if let error = error {
+            completion(nil, error)
+            return
+        }
+
+        sender!.sendAPI(completion: completion)
+    }
+
+    // listMultipartUploadsSender create sender of listMultipartUploads.
+    public func listMultipartUploadsSender(input: ListMultipartUploadsInput) -> (APISender?, Error?) {
+        do {
+            try self.setupContext(uriFormat: "/<bucket-name>?uploads")
+        } catch {
+            return (nil, error)
+        }
+
+        return APISender.qingStor(context: self.context, input: input, method: .get)
+    }
+
     // listObjects: Retrieve the object list in a bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get.html
     public func listObjects(input: ListObjectsInput, completion: @escaping RequestCompletion<ListObjectsOutput>) {
@@ -871,6 +895,80 @@ public class GetBucketStatisticsOutput: QingStorOutput {
 public class HeadBucketInput: QingStorInput { }
 
 public class HeadBucketOutput: QingStorOutput { }
+
+
+public class ListMultipartUploadsInput: QingStorInput {
+    // Put all keys that share a common prefix into a list
+    public var delimiter: String? = nil
+    // Results count limit
+    public var limit: Int? = nil
+    // Limit results to keys that start at this marker
+    public var marker: String? = nil
+    // Limits results to keys that begin with the prefix
+    public var prefix: String? = nil
+
+    override var queryProperties: [String] {
+        return ["delimiter", "limit", "marker", "prefix"]
+    }
+
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    public init(delimiter: String? = nil, limit: Int? = nil, marker: String? = nil, prefix: String? = nil) {
+        super.init()
+
+        self.delimiter = delimiter
+        self.limit = limit
+        self.marker = marker
+        self.prefix = prefix
+    }
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        delimiter <- map["delimiter"]
+        limit <- map["limit"]
+        marker <- map["marker"]
+        prefix <- map["prefix"]
+    }
+
+    public override func validate() -> Error? {
+        return nil
+    }
+}
+
+public class ListMultipartUploadsOutput: QingStorOutput {
+    // Other object keys that share common prefixes
+    public var commonPrefixes: [String]? = nil
+    // Delimiter that specified in request parameters
+    public var delimiter: String? = nil
+    // Limit that specified in request parameters
+    public var limit: Int? = nil
+    // Marker that specified in request parameters
+    public var marker: String? = nil
+    // Bucket name
+    public var name: String? = nil
+    // The last key in keys list
+    public var nextMarker: String? = nil
+    // Prefix that specified in request parameters
+    public var prefix: String? = nil
+    // Multipart uploads
+    public var uploads: [UploadsModel]? = nil
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        commonPrefixes <- map["common_prefixes"]
+        delimiter <- map["delimiter"]
+        limit <- map["limit"]
+        marker <- map["marker"]
+        name <- map["name"]
+        nextMarker <- map["next_marker"]
+        prefix <- map["prefix"]
+        uploads <- map["uploads"]
+    }
+}
 
 
 public class ListObjectsInput: QingStorInput {

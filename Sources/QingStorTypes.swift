@@ -348,6 +348,8 @@ public class IsNullModel: BaseModel {
 public class KeyModel: BaseModel {
     // Object created time
     public var created: Date? = nil
+    // Whether this key is encrypted
+    public var encrypted: Bool? = nil
     // MD5sum of the object
     public var etag: String? = nil
     // Object key
@@ -363,10 +365,11 @@ public class KeyModel: BaseModel {
         super.init(map: map)
     }
 
-    public init(created: Date? = nil, etag: String? = nil, key: String? = nil, mimeType: String? = nil, modified: Int? = nil, size: Int? = nil) {
+    public init(created: Date? = nil, encrypted: Bool? = nil, etag: String? = nil, key: String? = nil, mimeType: String? = nil, modified: Int? = nil, size: Int? = nil) {
         super.init()
 
         self.created = created
+        self.encrypted = encrypted
         self.etag = etag
         self.key = key
         self.mimeType = mimeType
@@ -378,6 +381,7 @@ public class KeyModel: BaseModel {
         super.mapping(map: map)
 
         created <- (map["created"], ISO8601DateTransform())
+        encrypted <- map["encrypted"]
         etag <- map["etag"]
         key <- map["key"]
         mimeType <- map["mime_type"]
@@ -529,7 +533,7 @@ public class StatementModel: BaseModel {
     // Bucket policy id, must be unique
     public var id: String! // Required
     // The resources to apply bucket policy
-    public var resource: [String]! // Required
+    public var resource: [String]? = nil
     // The user to apply bucket policy
     public var user: [String]! // Required
 
@@ -537,7 +541,7 @@ public class StatementModel: BaseModel {
         super.init(map: map)
     }
 
-    public init(action: [String], condition: ConditionModel? = nil, effect: String, id: String, resource: [String], user: [String]) {
+    public init(action: [String], condition: ConditionModel? = nil, effect: String, id: String, resource: [String]? = nil, user: [String]) {
         super.init()
 
         self.action = action
@@ -597,14 +601,6 @@ public class StatementModel: BaseModel {
             return APIError.parameterRequiredError(name: "id", parentName: "Statement")
         }
 
-        if self.resource == nil {
-            return APIError.parameterRequiredError(name: "resource", parentName: "Statement")
-        }
-
-        if self.resource.count == 0 {
-            return APIError.parameterRequiredError(name: "resource", parentName: "Statement")
-        }
-
         if self.user == nil {
             return APIError.parameterRequiredError(name: "user", parentName: "Statement")
         }
@@ -662,6 +658,40 @@ public class StringNotLikeModel: BaseModel {
         super.mapping(map: map)
 
         referer <- map["Referer"]
+    }
+
+    public override func validate() -> Error? {
+        return nil
+    }
+}
+
+
+public class UploadsModel: BaseModel {
+    // Object part created time
+    public var created: Date? = nil
+    // Object key
+    public var key: String? = nil
+    // Object upload id
+    public var uploadID: String? = nil
+
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    public init(created: Date? = nil, key: String? = nil, uploadID: String? = nil) {
+        super.init()
+
+        self.created = created
+        self.key = key
+        self.uploadID = uploadID
+    }
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        created <- (map["created"], ISO8601DateTransform())
+        key <- map["key"]
+        uploadID <- map["upload_id"]
     }
 
     public override func validate() -> Error? {
