@@ -75,73 +75,34 @@ class BucketCORSTests: QingStorTests {
     }
 
     func testPutCORS(testCase: XCTestCase, json: String) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = Mapper<PutBucketCORSInput>().map(JSONString: json)!
-        bucket.putCORS(input: input) { response, error in
-            if let response = response {
-                self.putCORSResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<PutBucketCORSOutput>) -> Void = { completion in
+            let input = Mapper<PutBucketCORSInput>().map(JSONString: json)!
+            self.bucket.putCORS(input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.putCORSResponse = response!
+        }
     }
 
     func testGetCORS(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.getCORS { response, error in
-            if let response = response {
-                self.getCORSResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<GetBucketCORSOutput>) -> Void = { completion in
+            self.bucket.getCORS(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.getCORSResponse = response!
+        }
     }
 
     func testDeleteCORS(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.deleteCORS { response, error in
-            if let response = response {
-                self.deleteCORSResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteBucketCORSOutput>) -> Void = { completion in
+            self.bucket.deleteCORS(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deleteCORSResponse = response!
+        }
     }
 
     override class func setup() {

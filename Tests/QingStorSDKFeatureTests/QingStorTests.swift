@@ -25,7 +25,7 @@ import QingStorSDK
 typealias Complete = () -> Void
 
 class QingStorTests: NSObject {
-    let timeout = 30.0
+    var timeout = 30.0
     var context: APIContext!
     var currentZone: String!
     var bucketName: String!
@@ -57,7 +57,7 @@ class QingStorTests: NSObject {
 
         }
 
-        Then("^the QingStor service is initialized") { (args, userInfo) -> Void in
+        Then("^the QingStor service is initialized$") { (args, userInfo) -> Void in
             XCTAssertNotNil(self.qsService, "QingStor service is not initialized")
         }
 
@@ -71,31 +71,45 @@ class QingStorTests: NSObject {
     }
 
     func testListBuckets(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = ListBucketsInput()
-        qsService.listBuckets(input: input) { response, error in
-            if let response = response {
-                self.listBucketResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<ListBucketsOutput>) -> Void = { completion in
+            let input = ListBucketsInput()
+            self.qsService.listBuckets(input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.listBucketResponse = response!
+        }
     }
 
     func assertEqual<T: Equatable>(value: T, shouldBe: T) {
         XCTAssertEqual(value, shouldBe, "Value \"\(value)\" should be \"\(shouldBe)\"")
+    }
+
+    func assertReqeust<T: QingStorOutput>(testCase: XCTestCase, request: @escaping (@escaping RequestCompletion<T>) -> Void) {
+        self.assertReqeust(testCase: testCase, request: request) { _, _ in }
+    }
+
+    func assertReqeust<T: QingStorOutput>(testCase: XCTestCase, request: @escaping (@escaping RequestCompletion<T>) -> Void, completion: @escaping RequestCompletion<T>) {
+        let expectation = testCase.expectation(description: "")
+
+        request { response, error in
+            if let response = response {
+                if response.output.errMessage == nil {
+                    print("success: \(response.output.toJSON())")
+                }
+
+                print("request-id: \(response.output.requestId)")
+            }
+
+            XCTAssertNotNil(response, "error: \(error!)")
+            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    errorCore: \(response!.output.code!)")
+
+            completion(response, error)
+
+            expectation.fulfill()
+        }
+
+        testCase.waitForExpectations(timeout: timeout, handler: nil)
     }
 
     class func setup() {

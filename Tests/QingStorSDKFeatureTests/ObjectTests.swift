@@ -39,25 +39,22 @@ class ObjectTests: QingStorTests {
     var deleteObjectResponse: Response<DeleteObjectOutput>!
     var deleteTheMoveObjectResponse: Response<DeleteObjectOutput>!
 
-    var objectFileURL: URL!
     var saveURL: URL!
     var downloadedURL: URL!
 
-    let partContentLength = 4 * 1024 * 1024
-    var uploadFileTimeout = 999999.9
+    let contentLength = 200
 
     override func setup() {
         super.setup()
 
-        let bundle = Bundle(for: QingStorTests.self)
-        objectFileURL = URL(fileURLWithPath: bundle.path(forResource: "config", ofType: "plist")!)
+        timeout = 999999.9
         saveURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("save-object")
 
         bucket = qsService.bucket(bucketName: bucketName)
     }
 
     override func setupFeature() {
-        When("^put object with key \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        When("^put object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.objectKey = args![0]
             self.testPutObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
@@ -66,8 +63,8 @@ class ObjectTests: QingStorTests {
             self.assertEqual(value: "\(self.putObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^copy object with key \"([^\"]*)\"$") { (args, userInfo) -> Void in
-            self.copyObjectKey = args![0]
+        When("^copy object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+            self.copyObjectKey = "\(args![0])_copy"
             self.testCopyObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -75,8 +72,8 @@ class ObjectTests: QingStorTests {
             self.assertEqual(value: "\(self.putTheCopyObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^move object with key \"([^\"]*)\"$") { (args, userInfo) -> Void in
-            self.moveObjectKey = args![0]
+        When("^move object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+            self.moveObjectKey = "\(args![0])_move"
             self.testMoveObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -84,7 +81,8 @@ class ObjectTests: QingStorTests {
             self.assertEqual(value: "\(self.putTheMoveObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^get object$") { (args, userInfo) -> Void in
+        When("^get object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+            self.objectKey = args![0]
             self.testGetObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -93,26 +91,29 @@ class ObjectTests: QingStorTests {
         }
 
         And("^get object content length is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.objectFileURL.contentLength)", shouldBe: "\(self.saveURL.contentLength)")
+            self.assertEqual(value: "\(self.contentLength)", shouldBe: "\(self.saveURL.contentLength)")
         }
 
-        When("^get object with content type \"([^\"]*)\"$") { (args, userInfo) -> Void in
-            self.testGetObjectWithContentType(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, contentType: args![0])
+        When("^get object \"(.{1,})\" with content type \"(.{1,})\"$") { (args, userInfo) -> Void in
+            self.objectKey = args![0]
+            self.testGetObjectWithContentType(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, contentType: args![1])
         }
 
-        Then("^get object content type is \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        Then("^get object content type is \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.assertEqual(value: "\(self.getObjectWithContentTypeResponse.rawResponse.allHeaderFields["Content-Type"]!)", shouldBe: "\(args![0])")
         }
 
-        When("^get object with query signature$") { (args, userInfo) -> Void in
+        When("^get object \"(.{1,})\" with query signature$") { (args, userInfo) -> Void in
+            self.objectKey = args![0]
             self.testGetObjectWithQuerySignature(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
         Then("^get object with query signature content length is (\\d+)$") { (args, userInfo) -> Void in
-            self.assertEqual(value: "\(self.objectFileURL.contentLength)", shouldBe: "\(self.downloadedURL.contentLength)")
+            self.assertEqual(value: "\(self.contentLength)", shouldBe: "\(self.downloadedURL.contentLength)")
         }
 
-        When("^head object$") { (args, userInfo) -> Void in
+        When("^head object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+            self.objectKey = args![0]
             self.testHeadObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -120,7 +121,8 @@ class ObjectTests: QingStorTests {
             self.assertEqual(value: "\(self.headObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^options object with method \"([^\"]*)\" and origin \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        When("^options object \"(.{1,})\" with method \"([^\"]*)\" and origin \"([^\"]*)\"") { (args, userInfo) -> Void in
+            self.objectKey = args![0]
             self.testOptionsObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, method: args![0], origin: args![1])
         }
 
@@ -128,7 +130,8 @@ class ObjectTests: QingStorTests {
             self.assertEqual(value: "\(self.optionsObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^delete object$") { (args, userInfo) -> Void in
+        When("^delete object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+            self.objectKey = args![0]
             self.testDeleteObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -136,7 +139,8 @@ class ObjectTests: QingStorTests {
             self.assertEqual(value: "\(self.deleteObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^delete the move object$") { (args, userInfo) -> Void in
+        When("^delete the move object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+            self.moveObjectKey = "\(args![0])_move"
             self.testDeleteMoveObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -146,102 +150,51 @@ class ObjectTests: QingStorTests {
     }
 
     func testPutObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = PutObjectInput(contentLength: self.objectFileURL.contentLength, bodyInputStream: InputStream(url: self.objectFileURL))
-        bucket.putObject(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.putObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<PutObjectOutput>) -> Void = { completion in
+            let input = PutObjectInput(contentLength: self.contentLength, bodyInputStream: self.generateObjectContent())
+            self.bucket.putObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: self.uploadFileTimeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.putObjectResponse = response!
+        }
     }
 
     func testCopyObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let copySource = "/\(self.bucket.bucketName!)/\(self.objectKey!)"
-        let input = PutObjectInput(contentLength: 0, xQSCopySource: copySource)
-        bucket.putObject(objectKey: self.copyObjectKey, input: input) { response, error in
-            if let response = response {
-                self.putTheCopyObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<PutObjectOutput>) -> Void = { completion in
+            let copySource = "/\(self.bucket.bucketName!)/\(self.objectKey!)"
+            let input = PutObjectInput(contentLength: self.contentLength, xQSCopySource: copySource)
+            print("copy input: \(input.toJSON())")
+            self.bucket.putObject(objectKey: self.copyObjectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: self.timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.putTheCopyObjectResponse = response!
+        }
     }
 
     func testMoveObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let moveSource = "/\(self.bucket.bucketName!)/\(self.copyObjectKey!)"
-        let input = PutObjectInput(contentLength: 0, xQSMoveSource: moveSource)
-        bucket.putObject(objectKey: self.moveObjectKey, input: input) { response, error in
-            if let response = response {
-                self.putTheMoveObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<PutObjectOutput>) -> Void = { completion in
+            let moveSource = "/\(self.bucket.bucketName!)/\(self.copyObjectKey!)"
+            let input = PutObjectInput(contentLength: self.contentLength, xQSMoveSource: moveSource)
+            self.bucket.putObject(objectKey: self.moveObjectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: self.timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.putTheMoveObjectResponse = response!
+        }
     }
 
     func testGetObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = GetObjectInput()
-        input.destinationURL = self.saveURL
-        bucket.getObject(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.getObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<GetObjectOutput>) -> Void = { completion in
+            let input = GetObjectInput()
+            input.destinationURL = self.saveURL
+            self.bucket.getObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.getObjectResponse = response!
+        }
     }
 
     func testGetObjectWithQuerySignature(testCase: XCTestCase) {
@@ -267,123 +220,74 @@ class ObjectTests: QingStorTests {
     }
 
     func testGetObjectWithContentType(testCase: XCTestCase, contentType: String) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = GetObjectInput()
-        input.responseContentType = contentType
-
-        bucket.getObject(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.getObjectWithContentTypeResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<GetObjectOutput>) -> Void = { completion in
+            let input = GetObjectInput()
+            input.responseContentType = contentType
+            self.bucket.getObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.getObjectWithContentTypeResponse = response!
+        }
     }
 
     func testHeadObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = HeadObjectInput()
-        bucket.headObject(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.headObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<HeadObjectOutput>) -> Void = { completion in
+            let input = HeadObjectInput()
+            self.bucket.headObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.headObjectResponse = response!
+            print("object content length: \(self.headObjectResponse.output.contentLength)")
+        }
     }
 
     func testOptionsObject(testCase: XCTestCase, method: String, origin: String) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = OptionsObjectInput(accessControlRequestMethod: method, origin: origin)
-        bucket.optionsObject(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.optionsObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<OptionsObjectOutput>) -> Void = { completion in
+            let input = OptionsObjectInput(accessControlRequestMethod: method, origin: origin)
+            self.bucket.optionsObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.optionsObjectResponse = response!
+        }
     }
 
     func testDeleteObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.deleteObject(objectKey: self.objectKey) { response, error in
-            if let response = response {
-                self.deleteObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteObjectOutput>) -> Void = { completion in
+            self.bucket.deleteObject(objectKey: self.objectKey, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deleteObjectResponse = response!
+        }
     }
 
     func testDeleteMoveObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.deleteObject(objectKey: self.moveObjectKey) { response, error in
-            if let response = response {
-                self.deleteTheMoveObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteObjectOutput>) -> Void = { completion in
+            self.bucket.deleteObject(objectKey: self.moveObjectKey, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deleteTheMoveObjectResponse = response!
+        }
+    }
+
+    func generateRandomString(length: Int) -> String {
+        var content = ""
+        for _ in 0..<length {
+            let randomNumber = arc4random() % 26 + 97
+            let randomChar = Character(UnicodeScalar(randomNumber)!)
+            content.append(randomChar)
+        }
+
+        return content
+    }
+
+    func generateObjectContent() -> InputStream {
+        let contentData = self.generateRandomString(length: contentLength).data(using: String.Encoding.utf8)
+        return InputStream(data: contentData!)
     }
 
     override class func setup() {

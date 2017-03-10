@@ -32,6 +32,10 @@ class BucketTests: QingStorTests {
     var deleteResponse: Response<DeleteBucketOutput>!
     var deleteMultipleObjectsResponse: Response<DeleteMultipleObjectsOutput>!
     var getStatisticsResponse: Response<GetBucketStatisticsOutput>!
+    var initiateMultipartUploadResponse: Response<InitiateMultipartUploadOutput>!
+    var listMultipartUploadsResponse: Response<ListMultipartUploadsOutput>!
+
+    let listMultipartUploadsOutputObjectKey = "list_multipart_uploads_object_key"
 
     override func setup() {
         super.setup()
@@ -62,10 +66,6 @@ class BucketTests: QingStorTests {
 
         Then("^put same bucket again status code is (\\d+)$$") { (args, userInfo) -> Void in
             self.assertEqual(value: "\(self.putResponse.statusCode)", shouldBe: "\(args![0])")
-        }
-
-        Then("^initialize the bucket without zone$") { (args, userInfo) -> Void in
-
         }
 
         When("^list objects$") { (args, userInfo) -> Void in
@@ -116,6 +116,18 @@ class BucketTests: QingStorTests {
         And("^get bucket statistics status is \"([^\"]*)\"$") { (args, userInfo) -> Void in
             self.assertEqual(value: "\(self.getStatisticsResponse.output.status!)", shouldBe: "\(args![0])")
         }
+
+        Given("^an object created by initiate multipart upload$") { (args, userInfo) -> Void in
+            self.testAnObjectCreatedByInitiateMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
+        }
+
+        When("^list multipart uploads$") { (args, userInfo) -> Void in
+            self.testListMultipartUploads(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
+        }
+
+        Then("^list multipart uploads count is (\\d+)$") { (args, userInfo) -> Void in
+            self.testListMultipartUploadsCountIs(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, count: Int(args![0])!)
+        }
     }
 
     func testPut(testCase: XCTestCase, isSameObject: Bool = false) {
@@ -144,120 +156,88 @@ class BucketTests: QingStorTests {
     }
 
     func testListObjects(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = ListObjectsInput()
-        bucket.listObjects(input: input) { response, error in
-            if let response = response {
-                self.listObjectsResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<ListObjectsOutput>) -> Void = { completion in
+            let input = ListObjectsInput()
+            self.bucket.listObjects(input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.listObjectsResponse = response!
+        }
     }
 
     func testHead(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.head { response, error in
-            if let response = response {
-                self.headResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<HeadBucketOutput>) -> Void = { completion in
+            self.bucket.head(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.headResponse = response!
+        }
     }
 
     func testDeleteMultipleObjects(testCase: XCTestCase, json: String) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = Mapper<DeleteMultipleObjectsInput>().map(JSONString: json)!
-        bucket.deleteMultipleObjects(input: input) { response, error in
-            if let response = response {
-                self.deleteMultipleObjectsResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteMultipleObjectsOutput>) -> Void = { completion in
+            let input = Mapper<DeleteMultipleObjectsInput>().map(JSONString: json)!
+            self.bucket.deleteMultipleObjects(input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deleteMultipleObjectsResponse = response!
+        }
     }
 
     func testGetStatistics(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.getStatistics { response, error in
-            if let response = response {
-                self.getStatisticsResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<GetBucketStatisticsOutput>) -> Void = { completion in
+            self.bucket.getStatistics(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.getStatisticsResponse = response!
+        }
     }
 
     func testDelete(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.delete { response, error in
-            if let response = response {
-                self.deleteResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteBucketOutput>) -> Void = { completion in
+            self.bucket.delete(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deleteResponse = response!
+        }
+    }
+
+    func testAnObjectCreatedByInitiateMultipartUpload(testCase: XCTestCase) {
+        let request: (@escaping RequestCompletion<InitiateMultipartUploadOutput>) -> Void = { completion in
+            let input = InitiateMultipartUploadInput()
+            self.bucket.initiateMultipartUpload(objectKey: self.listMultipartUploadsOutputObjectKey, input: input, completion: completion)
+        }
+
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.initiateMultipartUploadResponse = response!
+        }
+    }
+
+    func testListMultipartUploads(testCase: XCTestCase) {
+        let request: (@escaping RequestCompletion<ListMultipartUploadsOutput>) -> Void = { completion in
+            let input = ListMultipartUploadsInput()
+            self.bucket.listMultipartUploads(input: input, completion: completion)
+        }
+
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.listMultipartUploadsResponse = response!
+        }
+    }
+
+    func testListMultipartUploadsCountIs(testCase: XCTestCase, count: Int) {
+        let request: (@escaping RequestCompletion<AbortMultipartUploadOutput>) -> Void = { completion in
+            let input = AbortMultipartUploadInput(uploadID: self.initiateMultipartUploadResponse.output.uploadID!)
+            self.bucket.abortMultipartUpload(objectKey: self.listMultipartUploadsOutputObjectKey, input: input, completion: completion)
+        }
+
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.assertEqual(value: (self.listMultipartUploadsResponse.output.uploads?.count)!, shouldBe: count)
+        }
     }
 
     override class func setup() {

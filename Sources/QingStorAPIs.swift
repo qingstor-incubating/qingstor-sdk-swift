@@ -80,6 +80,13 @@ public class QingStorAPI: BaseAPI {
         if let uriFormat = uriFormat {
             var uri = uriFormat
 
+            if let index = uri.range(of: "?", options: .backwards)?.lowerBound {
+                let query = uri.substring(from: uri.index(after: index))
+                self.context.query = query
+
+                uri = uri.substring(to: index)
+            }
+
             if uri.contains("<bucket-name>") {
                 let _bucketName = bucketName ?? self.bucketName ?? ""
                 if _bucketName.isEmpty {
@@ -96,13 +103,6 @@ public class QingStorAPI: BaseAPI {
                 }
 
                 uri = uri.replacingOccurrences(of: "<object-key>", with: _objectKey)
-            }
-
-            if let index = uri.range(of: "?", options: .backwards)?.lowerBound {
-                let query = uri.substring(from: uri.index(after: index))
-                self.context.query = query
-
-                uri = uri.substring(to: index)
             }
 
             self.context.uri = uri

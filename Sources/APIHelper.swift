@@ -138,6 +138,14 @@ extension String {
         return self.removingPercentEncoding ?? self
     }
 
+    func escapeNonASCIIOnly() -> String {
+        return self.addingPercentEncoding(withAllowedCharacters: CharacterSet().inverted) ?? self
+    }
+
+    func urlPathEscape() -> String {
+        return self.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? self
+    }
+
     func toDate(format: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format

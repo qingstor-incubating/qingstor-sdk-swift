@@ -29,6 +29,8 @@ public func setupDefaultZone(zone: String) {
 public class Registry {
     public static var accessKeyID: String!
     public static var secretAccessKey: String!
+    
+    static var config: [String:String]!
 
     public static func register(accessKeyID: String, secretAccessKey: String) {
         self.accessKeyID = accessKeyID
@@ -49,6 +51,7 @@ public class Registry {
         }
 
         register(accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
+        self.config = config
     }
 }
 
@@ -70,7 +73,8 @@ public enum APIError: Error {
 }
 
 public protocol Signer {
-    func writeSignature(to requestBuild: RequestBuilder) throws
+    func signatureString(from requestBuilder: RequestBuilder) throws -> String
+    func writeSignature(to requestBuilder: RequestBuilder) throws
 }
 
 public struct APIContext {
@@ -136,6 +140,10 @@ public struct APIContext {
         self.urlComponents = URLComponents(string: urlString)!
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
+        
+        if let config = Registry.config {
+            self.readFrom(config: config)
+        }
     }
 
     public init(plist: URL) throws {
@@ -172,6 +180,22 @@ public struct APIContext {
 
         self.urlString = urlString
         self.urlComponents = URLComponents(string: urlString)!
+    }
+    
+    public mutating func readFrom(config: [String:String]) {
+        if let `protocol` = config["protocol"] {
+            self.`protocol` = `protocol`
+        }
+        
+        if let host = config["host"] {
+            self.host = host
+        }
+        
+        if let port = config["port"] {
+            self.port = Int(port)
+        } else {
+            self.port = nil
+        }
     }
 
     func rawCopy() -> APIContext {
@@ -298,21 +322,15 @@ public class APISender {
 
             // Handle body properties, encoding
             if input.bodyProperties.count > 0 {
-                let inputStreamCount = parameters.filter { $1 is InputStream }.count
-                if inputStreamCount > 0 {
+                if (parameters.filter { $1 is InputStream }.count) > 0 {
                     encoding = .binary
-                } else {
-                    let urlCount = parameters.filter { $1 is URL }.count
-                    if method == .post && urlCount > 0 {
-                        encoding = .multipart
-                    } else {
-                        encoding = .json
-                    }
+                } else if (input.bodyProperties.filter { $0 != "body"}.count) > 0 {
+                    encoding = .json
                 }
             }
 
             // Handle query properties
-            if input.queryProperties.count > 0 && encoding != .query {
+            if input.queryProperties.count > 0 {
                 var queryParameters: [String:Any] = [:]
                 for key in input.queryProperties {
                     if let value = parameters[key] {

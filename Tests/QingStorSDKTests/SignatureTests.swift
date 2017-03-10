@@ -21,7 +21,7 @@ class SignatureTests: XCTestCase {
         super.tearDown()
     }
 
-    func testWriteHeaderSignature() {
+    func testWriteHeaderSignature() throws {
         var context = APIContext.qingStor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc"
 
@@ -35,9 +35,13 @@ class SignatureTests: XCTestCase {
             let signatureHeader = "QS ACCESS_KEY_ID_EXAMPLE:w62wOSlVbX1haMWiNBpfMM9J8pqn7XCPoUAgTVmgVsc="
             XCTAssertEqual(signatureHeader, requestBuild.headers["Authorization"])
         }
+
+        let signer = QingStorSigner()
+        let signatureString = try signer.signatureString(from: requestBuild)
+        XCTAssertEqual(signatureString, "w62wOSlVbX1haMWiNBpfMM9J8pqn7XCPoUAgTVmgVsc=")
     }
 
-    func testWriteQuerySignature() {
+    func testWriteQuerySignature() throws {
         var context = APIContext.qingStor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc"
 
@@ -53,5 +57,49 @@ class SignatureTests: XCTestCase {
             let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=OLztrez%2Bk9aYQqWM5lUKUE3ojzZk9UW1RbrGkSkNnsE%3D"
             XCTAssertEqual(targetURL, (request?.url?.absoluteString)!)
         }
+
+        let signatureString = try signer.signatureString(from: requestBuild)
+        XCTAssertEqual(signatureString, "OLztrez+k9aYQqWM5lUKUE3ojzZk9UW1RbrGkSkNnsE=")
+    }
+
+    func testWriteNonASCIIHeaderSignature() throws {
+        var context = APIContext.qingStor()
+        context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=测试中文"
+
+        let requestBuild = DefaultRequestBuilder(context: context, signer: QingStorSigner())
+        requestBuild.addHeaders(["Date": String.RFC822(date: Date(timeIntervalSince1970: 0))])
+        requestBuild.addHeaders(["X-QS-Test-1": "Test1", "X-QS-Test-2": "Test2", "X-QS-Test-Chinese": "中文测试"])
+        requestBuild.buildRequest { request, error in
+            XCTAssertNil(error)
+            print("request: \(request)")
+
+            let signatureHeader = "QS ACCESS_KEY_ID_EXAMPLE:yIcBDU7d0ybYLoaD63jd/SBubZj+FouRXxp1h98A7gM="
+            XCTAssertEqual(signatureHeader, requestBuild.headers["Authorization"])
+        }
+
+        let signer = QingStorSigner()
+        let signatureString = try signer.signatureString(from: requestBuild)
+        XCTAssertEqual(signatureString, "yIcBDU7d0ybYLoaD63jd/SBubZj+FouRXxp1h98A7gM=")
+    }
+
+    func testWriteNonASCIIQuerySignature() throws {
+        var context = APIContext.qingStor()
+        context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=测试中文"
+
+        let signer = QingStorSigner()
+        signer.signatureType = .query(timeoutSeconds: 500)
+        let requestBuild = DefaultRequestBuilder(context: context, signer: signer)
+        requestBuild.addHeaders(["Date": String.RFC822(date: Date(timeIntervalSince1970: 0))])
+        requestBuild.addHeaders(["X-QS-Test-1": "Test1", "X-QS-Test-2": "Test2", "X-QS-Test-Chinese": "中文测试"])
+        requestBuild.buildRequest { request, error in
+            XCTAssertNil(error)
+            print("request: \(request)")
+
+            let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=%E6%B5%8B%E8%AF%95%E4%B8%AD%E6%96%87&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=q8dPUJaXMgQiKX0ZxJf6SaqFEZO9x0QhXBGCTkXM9/0%3D"
+            XCTAssertEqual(targetURL, (request?.url?.absoluteString)!)
+        }
+
+        let signatureString = try signer.signatureString(from: requestBuild)
+        XCTAssertEqual(signatureString, "q8dPUJaXMgQiKX0ZxJf6SaqFEZO9x0QhXBGCTkXM9/0=")
     }
 }
