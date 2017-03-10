@@ -35,17 +35,17 @@ class ObjectMultipartTests: QingStorTests {
 
     var objectFileURL: URL!
     let partContentLength = 4 * 1024 * 1024
-    let uploadFileTimeout = 999999.9
 
     override func setup() {
         super.setup()
 
+        timeout = 999999.9
         objectFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("a_large_file")
         bucket = qsService.bucket(bucketName: bucketName)
     }
 
     override func setupFeature() {
-        When("initiate multipart upload with key \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        When("initiate multipart upload with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.objectKey = args![0]
             self.testInitiateMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
@@ -54,7 +54,7 @@ class ObjectMultipartTests: QingStorTests {
             self.assertEqual(value: "\(self.initiateMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^upload the first part$") { (args, userInfo) -> Void in
+        When("^upload the first part with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.testUploadMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, partNumber: 0, isLastPart: false)
         }
 
@@ -62,7 +62,7 @@ class ObjectMultipartTests: QingStorTests {
             self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^upload the second part$") { (args, userInfo) -> Void in
+        When("^upload the second part with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.testUploadMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, partNumber: 1, isLastPart: false)
         }
 
@@ -70,7 +70,7 @@ class ObjectMultipartTests: QingStorTests {
             self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^upload the third part$") { (args, userInfo) -> Void in
+        When("^upload the third part with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.testUploadMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, partNumber: 2, isLastPart: true)
         }
 
@@ -78,7 +78,7 @@ class ObjectMultipartTests: QingStorTests {
             self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^list multipart$") { (args, userInfo) -> Void in
+        When("^list multipart with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.testListMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -90,7 +90,7 @@ class ObjectMultipartTests: QingStorTests {
             self.assertEqual(value: "\(self.listMultipartResponse.output.objectParts!.count)", shouldBe: "\(args![0])")
         }
 
-        When("^complete multipart upload$") { (args, userInfo) -> Void in
+        When("^complete multipart upload with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.testCompleteMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -98,7 +98,7 @@ class ObjectMultipartTests: QingStorTests {
             self.assertEqual(value: "\(self.completeMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^abort multipart upload$") { (args, userInfo) -> Void in
+        When("^abort multipart upload with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.testAbortMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, isFalse: true)
         }
 
@@ -106,7 +106,7 @@ class ObjectMultipartTests: QingStorTests {
             self.assertEqual(value: "\(self.abortMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^delete the multipart object$") { (args, userInfo) -> Void in
+        When("^delete the multipart object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
             self.testDeleteMultipartObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -116,128 +116,77 @@ class ObjectMultipartTests: QingStorTests {
     }
 
     func testInitiateMultipartUpload(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = InitiateMultipartUploadInput()
-        bucket.initiateMultipartUpload(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.initiateMultipartUploadResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<InitiateMultipartUploadOutput>) -> Void = { completion in
+            let input = InitiateMultipartUploadInput()
+            self.bucket.initiateMultipartUpload(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.initiateMultipartUploadResponse = response!
+        }
     }
 
     func testUploadMultipart(testCase: XCTestCase, partNumber: Int, isLastPart: Bool) {
-        let expectation = testCase.expectation(description: "")
-
-        let contentLength = self.objectFileURL.contentLength
-        var seekOffset = partNumber * self.partContentLength
-        if seekOffset > contentLength {
-            seekOffset = contentLength - self.partContentLength
-            if seekOffset < 0 {
-                seekOffset = 0
-            }
-        }
-
-        let fileHandle = try! FileHandle(forReadingFrom: self.objectFileURL)
-        fileHandle.seek(toFileOffset: UInt64(seekOffset))
-
-        var readContentLength = self.partContentLength
-        if isLastPart {
-            readContentLength = contentLength - seekOffset
-        }
-
-        if readContentLength > contentLength {
-            readContentLength = contentLength
-        }
-
-        let data = fileHandle.readData(ofLength: readContentLength)
-        let inputStream = InputStream(data: data)
-
-        let input = UploadMultipartInput(partNumber: partNumber,
-                                         uploadID: self.initiateMultipartUploadResponse.output.uploadID!,
-                                         contentLength: readContentLength,
-                                         bodyInputStream: inputStream)
-        bucket.uploadMultipart(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.uploadMultipartResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
+        let request: (@escaping RequestCompletion<UploadMultipartOutput>) -> Void = { completion in
+            let contentLength = self.objectFileURL.contentLength
+            var seekOffset = partNumber * self.partContentLength
+            if seekOffset > contentLength {
+                seekOffset = contentLength - self.partContentLength
+                if seekOffset < 0 {
+                    seekOffset = 0
                 }
             }
 
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
+            let fileHandle = try! FileHandle(forReadingFrom: self.objectFileURL)
+            fileHandle.seek(toFileOffset: UInt64(seekOffset))
+
+            var readContentLength = self.partContentLength
+            if isLastPart {
+                readContentLength = contentLength - seekOffset
             }
 
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+            if readContentLength > contentLength {
+                readContentLength = contentLength
+            }
+
+            let data = fileHandle.readData(ofLength: readContentLength)
+            let inputStream = InputStream(data: data)
+
+            let input = UploadMultipartInput(partNumber: partNumber,
+                                             uploadID: self.initiateMultipartUploadResponse.output.uploadID!,
+                                             contentLength: readContentLength,
+                                             bodyInputStream: inputStream)
+            self.bucket.uploadMultipart(objectKey: self.objectKey, input: input, completion: completion)
+
+            fileHandle.closeFile()
         }
 
-        fileHandle.closeFile()
-        testCase.waitForExpectations(timeout: self.uploadFileTimeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.uploadMultipartResponse = response!
+        }
     }
 
     func testListMultipart(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = ListMultipartInput(uploadID: self.initiateMultipartUploadResponse.output.uploadID!)
-        bucket.listMultipart(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.listMultipartResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<ListMultipartOutput>) -> Void = { completion in
+            let input = ListMultipartInput(uploadID: self.initiateMultipartUploadResponse.output.uploadID!)
+            self.bucket.listMultipart(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.listMultipartResponse = response!
+        }
     }
 
     func testCompleteMultipartUpload(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = CompleteMultipartUploadInput(uploadID: self.initiateMultipartUploadResponse.output.uploadID!,
-                                                 objectParts: self.listMultipartResponse.output.objectParts)
-        bucket.completeMultipartUpload(objectKey: self.objectKey, input: input) { response, error in
-            if let response = response {
-                self.completeMultipartUploadResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<CompleteMultipartUploadOutput>) -> Void = { completion in
+            let input = CompleteMultipartUploadInput(uploadID: self.initiateMultipartUploadResponse.output.uploadID!,
+                                                     objectParts: self.listMultipartResponse.output.objectParts)
+            self.bucket.completeMultipartUpload(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.completeMultipartUploadResponse = response!
+        }
     }
 
     func testAbortMultipartUpload(testCase: XCTestCase, isFalse: Bool) {
@@ -267,26 +216,13 @@ class ObjectMultipartTests: QingStorTests {
     }
 
     func testDeleteMultipartObject(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.deleteObject(objectKey: self.objectKey) { response, error in
-            if let response = response {
-                self.deleteTheMultipartObjectResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertEqual(response?.output.errMessage, nil, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteObjectOutput>) -> Void = { completion in
+            self.bucket.deleteObject(objectKey: self.objectKey, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deleteTheMultipartObjectResponse = response!
+        }
     }
 
     override class func setup() {

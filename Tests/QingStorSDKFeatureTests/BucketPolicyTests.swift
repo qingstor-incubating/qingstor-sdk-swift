@@ -81,74 +81,35 @@ class BucketPolicyTests: QingStorTests {
     }
 
     func testPutPolicy(testCase: XCTestCase, json: String) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = Mapper<PutBucketPolicyInput>().map(JSONString: json)!
-        input.statement[0].resource = ["\(self.bucket.bucketName!)/*"]
-        bucket.putPolicy(input: input) { response, error in
-            if let response = response {
-                self.putPolicyResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<PutBucketPolicyOutput>) -> Void = { completion in
+            let input = Mapper<PutBucketPolicyInput>().map(JSONString: json)!
+            input.statement[0].resource = ["\(self.bucket.bucketName!)/*"]
+            self.bucket.putPolicy(input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.putPolicyResponse = response!
+        }
     }
 
     func testGetPolicy(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.getPolicy { response, error in
-            if let response = response {
-                self.getPolicyResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<GetBucketPolicyOutput>) -> Void = { completion in
+            self.bucket.getPolicy(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.getPolicyResponse = response!
+        }
     }
 
     func testDeletePolicy(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.deletePolicy { response, error in
-            if let response = response {
-                self.deletePolicyResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteBucketPolicyOutput>) -> Void = { completion in
+            self.bucket.deletePolicy(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deletePolicyResponse = response!
+        }
     }
 
     override class func setup() {

@@ -40,7 +40,7 @@ public enum HTTPMethod: String {
 }
 
 public enum ParameterEncodingType {
-    case query, multipart, json, binary
+    case query, json, binary
 }
 
 public protocol RequestBuilderFactory {
@@ -156,14 +156,14 @@ open class RequestBuilder {
                 }()
 
                 return {
-                    var result = "\(QingStorSDKVersion) \(osNameVersion) "
+                    var result = "\(QingStorSDKVersion) (\(osNameVersion))"
 
                     if let executable = executable, let appVersion = appVersion {
-                        result += "\(executable)/\(appVersion) "
+                        result += " \(executable)/\(appVersion)"
                     }
 
                     if let bundle = bundle, let appBuild = appBuild {
-                        result += "(\(bundle); build:\(appBuild);) "
+                        result += " (\(bundle); build:\(appBuild);)"
                     }
 
                     return result.trimmingCharacters(in: CharacterSet.whitespaces)
@@ -175,9 +175,35 @@ open class RequestBuilder {
     }
 }
 
-open class DefaultRequestBuilder: RequestBuilder {
+open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
 
-    var request: Request?
+    static let sessionManager: Alamofire.SessionManager = {
+        let configuration = URLSessionConfiguration.default
+        configuration.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
+
+        let sessionManager = Alamofire.SessionManager(configuration: configuration)
+        sessionManager.startRequestsImmediately = false
+
+        return sessionManager
+    }()
+
+    public func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
+        var request = urlRequest
+
+        if let headers = urlRequest.allHTTPHeaderFields {
+            self.addHeaders(headers)
+        }
+
+        do {
+            try self.signer.writeSignature(to: self)
+        } catch {
+            return request
+        }
+
+        request.url = self.context.url
+        request.allHTTPHeaderFields = self.headers
+        return request
+    }
 
     public override func buildRequest(completion: @escaping BuildCompletion) {
         self._buildRequest { request, error in
@@ -186,54 +212,15 @@ open class DefaultRequestBuilder: RequestBuilder {
     }
 
     fileprivate func _buildRequest(completion: @escaping _BuildCompletion) {
-        if let request = request {
-            completion(request, nil)
-        } else {
-            self._buildRequest(isFake: true) { request, error in
-                if let request = request {
-                    if let headers = request.request?.allHTTPHeaderFields {
-                        self.addHeaders(headers)
-                    }
+        let sessionManager = DefaultRequestBuilder.sessionManager
+        sessionManager.adapter = self
 
-                    do {
-                        try self.signer.writeSignature(to: self)
-                    } catch {
-                        completion(nil, APIError.buildingRequestError(info: "write signature error"))
-                        return
-                    }
-
-                    self._buildRequest(isFake: false) { request, error in
-                        if let request = request {
-                            completion(request, nil)
-                        } else {
-                            completion(nil, error)
-                        }
-                    }
-                } else {
-                    completion(nil, error)
-                }
-            }
-        }
-    }
-
-    fileprivate func _buildRequest(isFake: Bool, completion: @escaping _BuildCompletion) {
-        let sessionManager = Alamofire.SessionManager.default
         let httpMethod = Alamofire.HTTPMethod(rawValue: method.rawValue)
         var encoding: Alamofire.ParameterEncoding
-        var parameters = self.parameters
-
-        if isFake {
-            let inputStreamKeys = parameters.filter { $1 is InputStream }.map { $0.0 }
-            for key in inputStreamKeys {
-                parameters.removeValue(forKey: key)
-            }
-        }
 
         switch self.encoding {
         case .json:
             encoding = Alamofire.JSONEncoding.default
-        case .binary:
-            encoding = BinaryEncoding.default
         default:
             encoding = Alamofire.URLEncoding.default
         }
@@ -247,37 +234,12 @@ open class DefaultRequestBuilder: RequestBuilder {
             let request = sessionManager.download(self.context.url, method: httpMethod!, parameters: parameters, encoding: encoding, headers: self.headers, to: destination)
             completion(request, nil)
         } else {
-            if self.encoding == .multipart {
-                sessionManager.upload(
-                    multipartFormData: { formData in
-                        for (k, v) in parameters {
-                            switch v {
-                            case let data as Data:
-                                formData.append(data, withName: k)
-                            case let fileURL as URL:
-                                formData.append(fileURL, withName: k)
-                            case let string as String:
-                                formData.append(string.data(using: String.Encoding.utf8)!, withName: k)
-                            case let number as NSNumber:
-                                formData.append(number.stringValue.data(using: String.Encoding.utf8)!, withName: k)
-                            default:
-                                fatalError("Unprocessable value \(v) with key \(k)")
-                            }
-                        }
-                    },
-                    usingThreshold: SessionManager.multipartFormDataEncodingMemoryThreshold,
-                    to: self.context.url,
-                    method: httpMethod!,
-                    headers: self.headers,
-                    encodingCompletion: { encodingResult in
-                        switch encodingResult {
-                        case .success(let uploadRequest, _, _):
-                            completion(uploadRequest, nil)
-                        case .failure(_):
-                            completion(nil, APIError.encodingError(info: "parameters encoding error"))
-                        }
-                    }
-                )
+            if self.encoding == .binary, let inputStream = self.parameters["body"] as? InputStream {
+                let request = sessionManager.upload(inputStream,
+                                      to: self.context.url,
+                                      method: httpMethod!,
+                                      headers: self.headers)
+                completion(request, nil)
             } else {
                 let request = sessionManager.request(self.context.url,
                                                      method: httpMethod!,
@@ -321,7 +283,7 @@ open class DefaultRequestBuilder: RequestBuilder {
                 } else {
                     completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
                 }
-            }
+            }.resume()
         } else if let downloadRequest = request as? DownloadRequest {
             downloadRequest.validate(statusCode: statusCode).responseOutput(writeHeaders: self.writeHeadersToOutput) { (response: DownloadResponse<T>) in
                 if response.result.isFailure {
@@ -334,7 +296,7 @@ open class DefaultRequestBuilder: RequestBuilder {
                 } else {
                     completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
                 }
-            }
+            }.resume()
         }
     }
 }

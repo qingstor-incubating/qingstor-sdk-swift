@@ -68,73 +68,34 @@ class BucketExternalMirrorTests: QingStorTests {
     }
 
     func testPutExternalMirror(testCase: XCTestCase, json: String) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = Mapper<PutBucketExternalMirrorInput>().map(JSONString: json)!
-        bucket.putExternalMirror(input: input) { response, error in
-            if let response = response {
-                self.putExternalMirrorResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<PutBucketExternalMirrorOutput>) -> Void = { completion in
+            let input = Mapper<PutBucketExternalMirrorInput>().map(JSONString: json)!
+            self.bucket.putExternalMirror(input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.putExternalMirrorResponse = response!
+        }
     }
 
     func testGetExternalMirror(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.getExternalMirror { response, error in
-            if let response = response {
-                self.getExternalMirrorResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<GetBucketExternalMirrorOutput>) -> Void = { completion in
+            self.bucket.getExternalMirror(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.getExternalMirrorResponse = response!
+        }
     }
 
     func testDeleteExternalMirror(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.deleteExternalMirror { response, error in
-            if let response = response {
-                self.deleteExternalMirrorResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<DeleteBucketExternalMirrorOutput>) -> Void = { completion in
+            self.bucket.deleteExternalMirror(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout, handler: nil)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.deleteExternalMirrorResponse = response!
+        }
     }
 
     override class func setup() {

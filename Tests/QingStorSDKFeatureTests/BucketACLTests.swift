@@ -66,50 +66,24 @@ class BucketACLTests: QingStorTests {
     }
 
     func testputACL(testCase: XCTestCase, json: String) {
-        let expectation = testCase.expectation(description: "")
-
-        let input = Mapper<PutBucketACLInput>().map(JSONString: json)!
-        bucket.putACL(input: input) { response, error in
-            if let response = response {
-                self.putACLResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<PutBucketACLOutput>) -> Void = { completion in
+            let input = Mapper<PutBucketACLInput>().map(JSONString: json)!
+            self.bucket.putACL(input: input, completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.putACLResponse = response!
+        }
     }
 
     func testGetACL(testCase: XCTestCase) {
-        let expectation = testCase.expectation(description: "")
-
-        bucket.getACL { response, error in
-            if let response = response {
-                self.getACLResponse = response
-
-                if response.output.errMessage == nil {
-                    print("success: \(response.output.toJSON())")
-                }
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-                expectation.fulfill()
-            }
-
-            XCTAssertNotNil(response, "error: \(error!)")
-            XCTAssertNil(response?.output.errMessage, "statusCode: \(response!.statusCode)    error: \(response!.output.errMessage!)")
+        let request: (@escaping RequestCompletion<GetBucketACLOutput>) -> Void = { completion in
+            self.bucket.getACL(completion: completion)
         }
 
-        testCase.waitForExpectations(timeout: timeout)
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.getACLResponse = response!
+        }
     }
 
     override class func setup() {

@@ -28,59 +28,81 @@ public enum QingStorSignatureType: Error {
 public class QingStorSigner: Signer {
     public var signatureType: QingStorSignatureType = .header
 
-    public func writeSignature(to requestBuild: RequestBuilder) throws {
+    public func signatureString(from requestBuilder: RequestBuilder) throws -> String {
         switch signatureType {
         case .query(let timeoutSeconds):
-            try writeQuerySignature(to: requestBuild, timeoutSeconds: timeoutSeconds)
+            let (signatureString, _) = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
+            return signatureString
         case .header:
-            try writeHeaderSignature(to: requestBuild)
+            return try headerSignatureString(from: requestBuilder)
         }
     }
 
-    func writeQuerySignature(to requestBuild: RequestBuilder, timeoutSeconds: Int) throws {
-        let headers = requestBuild.headers
+    public func writeSignature(to requestBuilder: RequestBuilder) throws {
+        switch signatureType {
+        case .query(let timeoutSeconds):
+            try writeQuerySignature(to: requestBuilder, timeoutSeconds: timeoutSeconds)
+        case .header:
+            try writeHeaderSignature(to: requestBuilder)
+        }
+    }
+
+    func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> (String, Int) {
+        let headers = requestBuilder.headers
         let date = ((headers["Date"] ?? String.RFC822()).toRFC822Date())!
         let expires = Int(date.timeIntervalSince1970) + timeoutSeconds
 
-        var signatureString = "\(requestBuild.method.rawValue)\n"
+        var signatureString = "\(requestBuilder.method.rawValue)\n"
         signatureString += "\(headers["Content-MD5"] ?? "")\n"
         signatureString += "\(headers["Content-Type"] ?? "")\n"
         signatureString += "\(expires)\n"
-        signatureString += buildCanonicalizedHeaders(requestBuild)
-        signatureString += buildCanonicalizedResource(requestBuild)
-        signatureString = try signatureString.hmacSHA256Data(key: requestBuild.context.secretAccessKey).base64EncodedString()
+        signatureString += buildCanonicalizedHeaders(requestBuilder)
+        signatureString += buildCanonicalizedResource(requestBuilder)
+        signatureString = try signatureString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
 
-        let query: [String] = ["access_key_id=\(requestBuild.context.accessKeyID)", "expires=\(expires)", "signature=\(signatureString.escape())"]
-        let percentEncodedQuery = (requestBuild.context.urlComponents.percentEncodedQuery.map { $0 + "&" } ?? "") + query.joined(separator: "&")
-        requestBuild.context.urlComponents.percentEncodedQuery = percentEncodedQuery
+        return (signatureString, expires)
     }
 
-    func writeHeaderSignature(to requestBuild: RequestBuilder) throws {
-        let headers = requestBuild.headers
-        var signatureString = "\(requestBuild.method.rawValue)\n"
+    func headerSignatureString(from requestBuilder: RequestBuilder) throws -> String {
+        let headers = requestBuilder.headers
+        var signatureString = "\(requestBuilder.method.rawValue)\n"
         signatureString += "\(headers["Content-MD5"] ?? "")\n"
         signatureString += "\(headers["Content-Type"] ?? "")\n"
         signatureString += "\(headers["Date"] ?? String.RFC822())\n"
-        signatureString += buildCanonicalizedHeaders(requestBuild)
-        signatureString += buildCanonicalizedResource(requestBuild)
-        signatureString = try signatureString.hmacSHA256Data(key: requestBuild.context.secretAccessKey).base64EncodedString()
+        signatureString += buildCanonicalizedHeaders(requestBuilder)
+        signatureString += buildCanonicalizedResource(requestBuilder)
+        signatureString = try signatureString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
 
-        requestBuild.headers["Authorization"] = "QS \(requestBuild.context.accessKeyID):\(signatureString)"
+        return signatureString
     }
 
-    func buildCanonicalizedHeaders(_ requestBuild: RequestBuilder) -> String {
-        let headers = requestBuild.headers
+    func writeQuerySignature(to requestBuilder: RequestBuilder, timeoutSeconds: Int) throws {
+        let (signatureString, expires) = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
+        let query: [String] = ["access_key_id=\(requestBuilder.context.accessKeyID)", "expires=\(expires)", "signature=\(signatureString.escape())"]
+        let percentEncodedQuery = (requestBuilder.context.urlComponents.percentEncodedQuery.map { $0 + "&" } ?? "") + query.joined(separator: "&")
+        requestBuilder.context.urlComponents.percentEncodedQuery = percentEncodedQuery
+    }
+
+    func writeHeaderSignature(to requestBuilder: RequestBuilder) throws {
+        let signatureString = try headerSignatureString(from: requestBuilder)
+        requestBuilder.headers["Authorization"] = "QS \(requestBuilder.context.accessKeyID):\(signatureString)"
+    }
+
+    func buildCanonicalizedHeaders(_ requestBuilder: RequestBuilder) -> String {
         var canonicalizedHeaders = ""
-        for key in headers.keys.sorted(by: <) {
+        for key in requestBuilder.headers.keys.sorted(by: <) {
+            let encodeValue = requestBuilder.headers[key]?.escapeNonASCIIOnly()
+            requestBuilder.headers[key] = encodeValue
+
             let lowercasedKey = key.lowercased()
             if lowercasedKey.hasPrefix("x-qs-") {
-                canonicalizedHeaders += "\(lowercasedKey):\(headers[key]!.trimmingCharacters(in: CharacterSet.whitespaces))\n"
+                canonicalizedHeaders += "\(lowercasedKey):\(encodeValue!.trimmingCharacters(in: CharacterSet.whitespaces))\n"
             }
         }
         return canonicalizedHeaders
     }
 
-    func buildCanonicalizedResource(_ requestBuild: RequestBuilder) -> String {
+    func buildCanonicalizedResource(_ requestBuilder: RequestBuilder) -> String {
         let parametersToSign = ["acl",
                                 "cors",
                                 "delete",
@@ -97,15 +119,15 @@ public class QingStorSigner: Signer {
                                 "response-content-encoding",
                                 "response-content-disposition"]
 
-        let urlString = requestBuild.context.url.absoluteString
+        let urlString = requestBuilder.context.url.absoluteString
 
         var query = ""
         if let index = urlString.range(of: "?", options: .backwards)?.lowerBound {
             query = urlString.substring(from: urlString.index(after: index))
         }
 
-        if requestBuild.encoding == .query {
-            let parametersQuery = APIHelper.buildQueryString(parameters: &requestBuild.parameters, escaped: false)
+        if requestBuilder.encoding == .query {
+            let parametersQuery = APIHelper.buildQueryString(parameters: &requestBuilder.parameters, escaped: false)
 
             if !parametersQuery.isEmpty {
                 if !query.isEmpty {
@@ -120,7 +142,7 @@ public class QingStorSigner: Signer {
             .joined(separator: "&")
             .unescape()
 
-        let uri = requestBuild.context.uri
+        let uri = requestBuilder.context.uri.urlPathEscape()
         if !query.isEmpty {
             return "\(uri)?\(query)"
         }

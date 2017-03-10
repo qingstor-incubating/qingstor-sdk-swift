@@ -11,7 +11,6 @@
 		63DD4EC2FB1B83052CE16E25 /* Pods_QingStorSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAFE69E084F73FBB8C8883D /* Pods_QingStorSDKTests.framework */; };
 		8361340B1DF3470500FC5859 /* APIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134001DF3470500FC5859 /* APIHelper.swift */; };
 		8361340C1DF3470500FC5859 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134011DF3470500FC5859 /* Base.swift */; };
-		8361340D1DF3470500FC5859 /* BinaryEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134021DF3470500FC5859 /* BinaryEncoding.swift */; };
 		836134101DF3470500FC5859 /* QingStorAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134051DF3470500FC5859 /* QingStorAPIs.swift */; };
 		836134111DF3470500FC5859 /* QingStorSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134061DF3470500FC5859 /* QingStorSigner.swift */; };
 		836134131DF3470500FC5859 /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134081DF3470500FC5859 /* RequestBuilder.swift */; };
@@ -69,7 +68,6 @@
 		7CD12E372913893DBB87A9AB /* Pods-QingStorSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QingStorSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QingStorSDK/Pods-QingStorSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		836134001DF3470500FC5859 /* APIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIHelper.swift; sourceTree = "<group>"; };
 		836134011DF3470500FC5859 /* Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
-		836134021DF3470500FC5859 /* BinaryEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryEncoding.swift; sourceTree = "<group>"; };
 		836134051DF3470500FC5859 /* QingStorAPIs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QingStorAPIs.swift; sourceTree = "<group>"; };
 		836134061DF3470500FC5859 /* QingStorSigner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QingStorSigner.swift; sourceTree = "<group>"; };
 		836134081DF3470500FC5859 /* RequestBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 				836134001DF3470500FC5859 /* APIHelper.swift */,
 				836134011DF3470500FC5859 /* Base.swift */,
 				836134081DF3470500FC5859 /* RequestBuilder.swift */,
-				836134021DF3470500FC5859 /* BinaryEncoding.swift */,
 				836134091DF3470500FC5859 /* ResponseSerialization.swift */,
 				8361340A1DF3470500FC5859 /* Transform.swift */,
 				836134051DF3470500FC5859 /* QingStorAPIs.swift */,
@@ -355,7 +352,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Yunify;
 				TargetAttributes = {
 					83E618061DE381F300CCFFDB = {
@@ -571,7 +568,6 @@
 				8361341B1DF3471D00FC5859 /* QingStorTypes.swift in Sources */,
 				836134191DF3471D00FC5859 /* Bucket.swift in Sources */,
 				8361340B1DF3470500FC5859 /* APIHelper.swift in Sources */,
-				8361340D1DF3470500FC5859 /* BinaryEncoding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
