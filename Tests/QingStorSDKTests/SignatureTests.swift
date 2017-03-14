@@ -54,12 +54,12 @@ class SignatureTests: XCTestCase {
             XCTAssertNil(error)
             print("request: \(request)")
 
-            let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=OLztrez%2Bk9aYQqWM5lUKUE3ojzZk9UW1RbrGkSkNnsE%3D"
+            let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=GUiulUdgubQqvCaz/2olIJWIGVo2KC4fDfoARj0u6v4%3D"
             XCTAssertEqual(targetURL, (request?.url?.absoluteString)!)
         }
 
         let signatureString = try signer.signatureString(from: requestBuild)
-        XCTAssertEqual(signatureString, "OLztrez+k9aYQqWM5lUKUE3ojzZk9UW1RbrGkSkNnsE=")
+        XCTAssertEqual(signatureString, "GUiulUdgubQqvCaz/2olIJWIGVo2KC4fDfoARj0u6v4=")
     }
 
     func testWriteNonASCIIHeaderSignature() throws {
@@ -95,11 +95,11 @@ class SignatureTests: XCTestCase {
             XCTAssertNil(error)
             print("request: \(request)")
 
-            let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=%E6%B5%8B%E8%AF%95%E4%B8%AD%E6%96%87&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=q8dPUJaXMgQiKX0ZxJf6SaqFEZO9x0QhXBGCTkXM9/0%3D"
+            let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=%E6%B5%8B%E8%AF%95%E4%B8%AD%E6%96%87&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=E%2BI8HCqScZWWeNWwS%2BzEVRlTFZ8DO92OTN69dAdaFF4%3D"
             XCTAssertEqual(targetURL, (request?.url?.absoluteString)!)
         }
 
         let signatureString = try signer.signatureString(from: requestBuild)
-        XCTAssertEqual(signatureString, "q8dPUJaXMgQiKX0ZxJf6SaqFEZO9x0QhXBGCTkXM9/0=")
+        XCTAssertEqual(signatureString, "E+I8HCqScZWWeNWwS+zEVRlTFZ8DO92OTN69dAdaFF4=")
     }
 }

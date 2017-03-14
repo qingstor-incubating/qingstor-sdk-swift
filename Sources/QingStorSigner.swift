@@ -52,11 +52,8 @@ public class QingStorSigner: Signer {
         let date = ((headers["Date"] ?? String.RFC822()).toRFC822Date())!
         let expires = Int(date.timeIntervalSince1970) + timeoutSeconds
 
-        var signatureString = "\(requestBuilder.method.rawValue)\n"
-        signatureString += "\(headers["Content-MD5"] ?? "")\n"
-        signatureString += "\(headers["Content-Type"] ?? "")\n"
+        var signatureString = "\(requestBuilder.method.rawValue)\n\n\n"
         signatureString += "\(expires)\n"
-        signatureString += buildCanonicalizedHeaders(requestBuilder)
         signatureString += buildCanonicalizedResource(requestBuilder)
         signatureString = try signatureString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
 
