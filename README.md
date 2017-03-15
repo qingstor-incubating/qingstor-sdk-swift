@@ -1,11 +1,9 @@
 # QingStor SDK for Swift
 
-<span style="display: inline-block">
 [![Build Status](https://travis-ci.org/yunify/qingstor-sdk-swift.svg?branch=master)](https://travis-ci.org/yunify/qingstor-sdk-swift)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/QingStorSDK.svg)](https://github.com/yunify/qingstor-sdk-swift)
 [![API Reference](http://img.shields.io/badge/api-reference-green.svg)](http://docs.qingcloud.com/qingstor/)
 [![License](http://img.shields.io/badge/license-apache%20v2-blue.svg)](https://github.com/yunify/qingstor-sdk-swift/blob/master/LICENSE)
-</span>
 
 The official QingStor SDK for the Swift programming language.
 
