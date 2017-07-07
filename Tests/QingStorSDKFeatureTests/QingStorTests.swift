@@ -98,7 +98,7 @@ class QingStorTests: NSObject {
                     print("success: \(response.output.toJSON())")
                 }
 
-                print("request-id: \(response.output.requestId)")
+                print("request-id: \(String(describing: response.output.requestId))")
             }
 
             XCTAssertNotNil(response, "error: \(error!)")

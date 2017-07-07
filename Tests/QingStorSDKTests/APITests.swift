@@ -62,7 +62,7 @@ class APITests: XCTestCase {
             XCTAssertNil(error)
             XCTAssertNotNil(request?.url)
 
-            print("url: \(request?.url)")
+            print("url: \(String(describing: request?.url))")
         }
     }
 }

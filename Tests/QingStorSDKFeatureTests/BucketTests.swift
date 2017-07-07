@@ -34,6 +34,7 @@ class BucketTests: QingStorTests {
     var getStatisticsResponse: Response<GetBucketStatisticsOutput>!
     var initiateMultipartUploadResponse: Response<InitiateMultipartUploadOutput>!
     var listMultipartUploadsResponse: Response<ListMultipartUploadsOutput>!
+    var listMultipartUploadsPrefixResponse: Response<ListMultipartUploadsOutput>!
 
     let listMultipartUploadsOutputObjectKey = "list_multipart_uploads_object_key"
 
@@ -126,7 +127,15 @@ class BucketTests: QingStorTests {
         }
 
         Then("^list multipart uploads count is (\\d+)$") { (args, userInfo) -> Void in
-            self.testListMultipartUploadsCountIs(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, count: Int(args![0])!)
+            self.assertEqual(value: (self.listMultipartUploadsResponse.output.uploads?.count)!, shouldBe: Int(args![0])!)
+        }
+
+        When("^list multipart uploads with prefix$") { (args, userInfo) -> Void in
+            self.testListMultipartUploadsPrefix(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
+        }
+
+        Then("^list multipart uploads with prefix count is (\\d+)$") { (args, userInfo) -> Void in
+            self.testListMultipartUploadsPrefixCountIs(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, count: Int(args![0])!)
         }
     }
 
@@ -229,14 +238,25 @@ class BucketTests: QingStorTests {
         }
     }
 
-    func testListMultipartUploadsCountIs(testCase: XCTestCase, count: Int) {
+    func testListMultipartUploadsPrefix(testCase: XCTestCase) {
+        let request: (@escaping RequestCompletion<ListMultipartUploadsOutput>) -> Void = { completion in
+            let input = ListMultipartUploadsInput(prefix: self.listMultipartUploadsOutputObjectKey)
+            self.bucket.listMultipartUploads(input: input, completion: completion)
+        }
+
+        self.assertReqeust(testCase: testCase, request: request) { response, error in
+            self.listMultipartUploadsPrefixResponse = response!
+        }
+    }
+
+    func testListMultipartUploadsPrefixCountIs(testCase: XCTestCase, count: Int) {
         let request: (@escaping RequestCompletion<AbortMultipartUploadOutput>) -> Void = { completion in
-            let input = AbortMultipartUploadInput(uploadID: self.initiateMultipartUploadResponse.output.uploadID!)
+            let input = AbortMultipartUploadInput(uploadID: (self.listMultipartUploadsPrefixResponse.output.uploads?[0].uploadID)!)
             self.bucket.abortMultipartUpload(objectKey: self.listMultipartUploadsOutputObjectKey, input: input, completion: completion)
         }
 
         self.assertReqeust(testCase: testCase, request: request) { response, error in
-            self.assertEqual(value: (self.listMultipartUploadsResponse.output.uploads?.count)!, shouldBe: count)
+            self.assertEqual(value: (self.listMultipartUploadsPrefixResponse.output.uploads?.count)!, shouldBe: count)
         }
     }
 

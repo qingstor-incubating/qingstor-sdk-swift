@@ -30,7 +30,7 @@ class SignatureTests: XCTestCase {
         requestBuild.addHeaders(["X-QS-Test-1": "Test1", "X-QS-Test-2": "Test2"])
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
-            print("request: \(request)")
+            print("request: \(String(describing: request))")
 
             let signatureHeader = "QS ACCESS_KEY_ID_EXAMPLE:w62wOSlVbX1haMWiNBpfMM9J8pqn7XCPoUAgTVmgVsc="
             XCTAssertEqual(signatureHeader, requestBuild.headers["Authorization"])
@@ -52,7 +52,7 @@ class SignatureTests: XCTestCase {
         requestBuild.addHeaders(["X-QS-Test-1": "Test1", "X-QS-Test-2": "Test2"])
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
-            print("request: \(request)")
+            print("request: \(String(describing: request))")
 
             let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=GUiulUdgubQqvCaz/2olIJWIGVo2KC4fDfoARj0u6v4%3D"
             XCTAssertEqual(targetURL, (request?.url?.absoluteString)!)
@@ -71,7 +71,7 @@ class SignatureTests: XCTestCase {
         requestBuild.addHeaders(["X-QS-Test-1": "Test1", "X-QS-Test-2": "Test2", "X-QS-Test-Chinese": "中文测试"])
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
-            print("request: \(request)")
+            print("request: \(String(describing: request))")
 
             let signatureHeader = "QS ACCESS_KEY_ID_EXAMPLE:yIcBDU7d0ybYLoaD63jd/SBubZj+FouRXxp1h98A7gM="
             XCTAssertEqual(signatureHeader, requestBuild.headers["Authorization"])
@@ -93,7 +93,7 @@ class SignatureTests: XCTestCase {
         requestBuild.addHeaders(["X-QS-Test-1": "Test1", "X-QS-Test-2": "Test2", "X-QS-Test-Chinese": "中文测试"])
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
-            print("request: \(request)")
+            print("request: \(String(describing: request))")
 
             let targetURL = "https://qingstor.com:443/?acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=%E6%B5%8B%E8%AF%95%E4%B8%AD%E6%96%87&access_key_id=ACCESS_KEY_ID_EXAMPLE&expires=500&signature=E%2BI8HCqScZWWeNWwS%2BzEVRlTFZ8DO92OTN69dAdaFF4%3D"
             XCTAssertEqual(targetURL, (request?.url?.absoluteString)!)

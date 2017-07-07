@@ -212,7 +212,7 @@ class ObjectTests: QingStorTests {
                     expectation.fulfill()
                 }
 
-                XCTAssertNil(error, "error: \(error)")
+                XCTAssertNil(error, "error: \(error!)")
             }.resume()
         }
 
@@ -239,7 +239,7 @@ class ObjectTests: QingStorTests {
 
         self.assertReqeust(testCase: testCase, request: request) { response, error in
             self.headObjectResponse = response!
-            print("object content length: \(self.headObjectResponse.output.contentLength)")
+            print("object content length: \(String(describing: self.headObjectResponse.output.contentLength))")
         }
     }
 
