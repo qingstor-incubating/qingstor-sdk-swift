@@ -56,20 +56,16 @@ public extension APISender {
 }
 
 public class QingStorAPI: BaseAPI {
-    public var zone: String = defaultZone
+    public var zone: String
     public var bucketName: String?
 
-    public override init (context: APIContext = APIContext.qingStor()) {
+    public init(context: APIContext = APIContext.qingStor(), zone: String) {
+        self.zone = zone
+
         super.init(context: context)
     }
 
-    public convenience init(context: APIContext = APIContext.qingStor(), zone: String) {
-        self.init(context: context)
-
-        self.zone = zone
-    }
-
-    public convenience init(context: APIContext = APIContext.qingStor(), bucketName: String, zone: String = defaultZone) {
+    public convenience init(context: APIContext = APIContext.qingStor(), bucketName: String, zone: String) {
         self.init(context: context, zone: zone)
         self.bucketName = bucketName
     }
