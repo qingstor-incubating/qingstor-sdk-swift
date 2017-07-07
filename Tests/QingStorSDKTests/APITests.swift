@@ -30,17 +30,17 @@ class APITests: XCTestCase {
         XCTAssertEqual(context.accessKeyID, "ACCESS_KEY_ID_EXAMPLE")
         XCTAssertEqual(context.secretAccessKey, "SECRET_ACCESS_KEY_EXAMPLE")
     }
-    
+
     func testContextReadConfig() {
         var context = APIContext.qingStor()
         XCTAssertEqual(context.url.absoluteString, "https://qingstor.com:443/")
-        
+
         context.readFrom(config: ["port":"80", "protocol":"http", "host":"example.com"])
         XCTAssertEqual(context.url.absoluteString, "http://example.com:80/")
     }
 
     func testSetupContext() {
-        let api = QingStorAPI(context: APIContext.qingStor())
+        let api = QingStorAPI(zone: "pek3a")
         try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", bucketName: "test-bucket", objectKey: "test-object", zone: "test-zone")
         let targetURL = "https://test-zone.qingstor.com:443/test-bucket/test-object?test"
         XCTAssertEqual(targetURL, api.context.url.absoluteString)
@@ -54,7 +54,7 @@ class APITests: XCTestCase {
     }
 
     func testGetURLInQuerySignature() {
-        let bucket = QingStor().bucket(bucketName: "bucket-name")
+        let bucket = Bucket(bucketName: "bucket-name", zone: "pek3a")
         let input = GetObjectInput()
         input.signatureType = .query(timeoutSeconds: 60)
         let (sender, _) = bucket.getObjectSender(objectKey: "object-key", input: input)

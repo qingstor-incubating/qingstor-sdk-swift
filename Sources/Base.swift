@@ -21,15 +21,10 @@
 import Foundation
 import ObjectMapper
 
-var defaultZone = "pek3a"
-public func setupDefaultZone(zone: String) {
-    defaultZone = zone
-}
-
 public class Registry {
     public static var accessKeyID: String!
     public static var secretAccessKey: String!
-    
+
     static var config: [String:String]!
 
     public static func register(accessKeyID: String, secretAccessKey: String) {
@@ -140,7 +135,7 @@ public struct APIContext {
         self.urlComponents = URLComponents(string: urlString)!
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
-        
+
         if let config = Registry.config {
             self.readFrom(config: config)
         }
@@ -181,16 +176,16 @@ public struct APIContext {
         self.urlString = urlString
         self.urlComponents = URLComponents(string: urlString)!
     }
-    
+
     public mutating func readFrom(config: [String:String]) {
         if let `protocol` = config["protocol"] {
             self.`protocol` = `protocol`
         }
-        
+
         if let host = config["host"] {
             self.host = host
         }
-        
+
         if let port = config["port"] {
             self.port = Int(port)
         } else {
