@@ -1440,6 +1440,8 @@ public class GetObjectInput: QingStorDownloadInput {
 }
 
 public class GetObjectOutput: QingStorDownloadOutput {
+    // Object content length
+    public var contentLength: Int? = nil
     // Range of response data content
     public var contentRange: String? = nil
     // MD5sum of the object
@@ -1450,6 +1452,7 @@ public class GetObjectOutput: QingStorDownloadOutput {
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
+        contentLength <- map["Content-Length"]
         contentRange <- map["Content-Range"]
         etag <- map["ETag"]
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
@@ -1847,6 +1850,24 @@ public class UploadMultipartInput: QingStorInput {
     public var contentLength: Int? = nil
     // Object multipart content MD5sum
     public var contentMD5: String? = nil
+    // Specify range of the source object
+    public var xQSCopyRange: String? = nil
+    // Copy source, format (/<bucket-name>/<object-key>)
+    public var xQSCopySource: String? = nil
+    // Encryption algorithm of the object
+    public var xQSCopySourceEncryptionCustomerAlgorithm: String? = nil
+    // Encryption key of the object
+    public var xQSCopySourceEncryptionCustomerKey: String? = nil
+    // MD5sum of encryption key
+    public var xQSCopySourceEncryptionCustomerKeyMD5: String? = nil
+    // Check whether the Etag of copy source matches the specified value
+    public var xQSCopySourceIfMatch: String? = nil
+    // Check whether the copy source has been modified since the specified date
+    public var xQSCopySourceIfModifiedSince: Date? = nil
+    // Check whether the Etag of copy source does not matches the specified value
+    public var xQSCopySourceIfNoneMatch: String? = nil
+    // Check whether the copy source has not been unmodified since the specified date
+    public var xQSCopySourceIfUnmodifiedSince: Date? = nil
     // Encryption algorithm of the object
     public var xQSEncryptionCustomerAlgorithm: String? = nil
     // Encryption key of the object
@@ -1861,7 +1882,7 @@ public class UploadMultipartInput: QingStorInput {
     }
 
     override var headerProperties: [String] {
-        return ["Content-Length", "Content-MD5", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
+        return ["Content-Length", "Content-MD5", "X-QS-Copy-Range", "X-QS-Copy-Source", "X-QS-Copy-Source-Encryption-Customer-Algorithm", "X-QS-Copy-Source-Encryption-Customer-Key", "X-QS-Copy-Source-Encryption-Customer-Key-MD5", "X-QS-Copy-Source-If-Match", "X-QS-Copy-Source-If-Modified-Since", "X-QS-Copy-Source-If-None-Match", "X-QS-Copy-Source-If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
     }
 
     override var bodyProperties: [String] {
@@ -1872,13 +1893,22 @@ public class UploadMultipartInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(partNumber: Int = 0, uploadID: String, contentLength: Int? = nil, contentMD5: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, bodyInputStream: InputStream? = nil) {
+    public init(partNumber: Int = 0, uploadID: String, contentLength: Int? = nil, contentMD5: String? = nil, xQSCopyRange: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, bodyInputStream: InputStream? = nil) {
         super.init()
 
         self.partNumber = partNumber
         self.uploadID = uploadID
         self.contentLength = contentLength
         self.contentMD5 = contentMD5
+        self.xQSCopyRange = xQSCopyRange
+        self.xQSCopySource = xQSCopySource
+        self.xQSCopySourceEncryptionCustomerAlgorithm = xQSCopySourceEncryptionCustomerAlgorithm
+        self.xQSCopySourceEncryptionCustomerKey = xQSCopySourceEncryptionCustomerKey
+        self.xQSCopySourceEncryptionCustomerKeyMD5 = xQSCopySourceEncryptionCustomerKeyMD5
+        self.xQSCopySourceIfMatch = xQSCopySourceIfMatch
+        self.xQSCopySourceIfModifiedSince = xQSCopySourceIfModifiedSince
+        self.xQSCopySourceIfNoneMatch = xQSCopySourceIfNoneMatch
+        self.xQSCopySourceIfUnmodifiedSince = xQSCopySourceIfUnmodifiedSince
         self.xQSEncryptionCustomerAlgorithm = xQSEncryptionCustomerAlgorithm
         self.xQSEncryptionCustomerKey = xQSEncryptionCustomerKey
         self.xQSEncryptionCustomerKeyMD5 = xQSEncryptionCustomerKeyMD5
@@ -1892,6 +1922,15 @@ public class UploadMultipartInput: QingStorInput {
         uploadID <- map["upload_id"]
         contentLength <- map["Content-Length"]
         contentMD5 <- map["Content-MD5"]
+        xQSCopyRange <- map["X-QS-Copy-Range"]
+        xQSCopySource <- map["X-QS-Copy-Source"]
+        xQSCopySourceEncryptionCustomerAlgorithm <- map["X-QS-Copy-Source-Encryption-Customer-Algorithm"]
+        xQSCopySourceEncryptionCustomerKey <- map["X-QS-Copy-Source-Encryption-Customer-Key"]
+        xQSCopySourceEncryptionCustomerKeyMD5 <- map["X-QS-Copy-Source-Encryption-Customer-Key-MD5"]
+        xQSCopySourceIfMatch <- map["X-QS-Copy-Source-If-Match"]
+        xQSCopySourceIfModifiedSince <- (map["X-QS-Copy-Source-If-Modified-Since"], RFC822DateTransform())
+        xQSCopySourceIfNoneMatch <- map["X-QS-Copy-Source-If-None-Match"]
+        xQSCopySourceIfUnmodifiedSince <- (map["X-QS-Copy-Source-If-Unmodified-Since"], RFC822DateTransform())
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
         xQSEncryptionCustomerKey <- map["X-QS-Encryption-Customer-Key"]
         xQSEncryptionCustomerKeyMD5 <- map["X-QS-Encryption-Customer-Key-MD5"]
