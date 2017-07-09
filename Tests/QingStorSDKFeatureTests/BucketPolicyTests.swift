@@ -33,7 +33,7 @@ class BucketPolicyTests: QingStorTests {
     override func setup() {
         super.setup()
 
-        bucket = qsService.bucket(bucketName: bucketName)
+        bucket = qsService.bucket(bucketName: bucketName, zone: currentZone)
     }
 
     override func setupFeature() {
@@ -83,7 +83,7 @@ class BucketPolicyTests: QingStorTests {
     func testPutPolicy(testCase: XCTestCase, json: String) {
         let request: (@escaping RequestCompletion<PutBucketPolicyOutput>) -> Void = { completion in
             let input = Mapper<PutBucketPolicyInput>().map(JSONString: json)!
-            input.statement[0].resource = ["\(self.bucket.bucketName!)/*"]
+            input.statement[0].resource = ["\(self.bucket.bucketName)/*"]
             self.bucket.putPolicy(input: input, completion: completion)
         }
 

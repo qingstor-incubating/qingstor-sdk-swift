@@ -50,12 +50,8 @@ public class Registry {
     }
 }
 
-public class BaseAPI {
-    public var context: APIContext
-
-    public init (context: APIContext) {
-        self.context = context
-    }
+public protocol BaseAPI {
+    var context: APIContext { get set }
 }
 
 public enum APIError: Error {

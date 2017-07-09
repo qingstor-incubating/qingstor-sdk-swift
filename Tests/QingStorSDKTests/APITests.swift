@@ -40,10 +40,13 @@ class APITests: XCTestCase {
     }
 
     func testSetupContext() {
-        let api = QingStorAPI(zone: "pek3a")
-        try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", bucketName: "test-bucket", objectKey: "test-object", zone: "test-zone")
-        let targetURL = "https://test-zone.qingstor.com:443/test-bucket/test-object?test"
-        XCTAssertEqual(targetURL, api.context.url.absoluteString)
+        let api = Bucket(bucketName: "test-bucket", zone: "test-zone")
+
+        try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", objectKey: "test-object")
+        XCTAssertEqual(api.context.url.absoluteString, "https://test-zone.qingstor.com:443/test-bucket/test-object?test")
+
+        try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", bucketName: "test-bucket-other", objectKey: "test-object-other", zone: "test-zone-other")
+        XCTAssertEqual(api.context.url.absoluteString, "https://test-zone-other.qingstor.com:443/test-bucket-other/test-object-other?test")
 
         do {
             try api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test")

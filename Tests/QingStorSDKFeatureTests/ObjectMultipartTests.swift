@@ -41,7 +41,7 @@ class ObjectMultipartTests: QingStorTests {
 
         timeout = 999999.9
         objectFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("a_large_file")
-        bucket = qsService.bucket(bucketName: bucketName)
+        bucket = qsService.bucket(bucketName: bucketName, zone: currentZone)
     }
 
     override func setupFeature() {
