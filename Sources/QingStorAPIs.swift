@@ -56,55 +56,10 @@ public extension APISender {
 }
 
 public class QingStorAPI: BaseAPI {
-    public var zone: String
-    public var bucketName: String?
+    public var context: APIContext
 
-    public init(context: APIContext = APIContext.qingStor(), zone: String) {
-        self.zone = zone
-
-        super.init(context: context)
-    }
-
-    public convenience init(context: APIContext = APIContext.qingStor(), bucketName: String, zone: String) {
-        self.init(context: context, zone: zone)
-        self.bucketName = bucketName
-    }
-
-    func setupContext(uriFormat: String?, bucketName: String? = nil, objectKey: String? = nil, zone: String? = nil) throws {
-        self.context = self.context.rawCopy()
-
-        if let uriFormat = uriFormat {
-            var uri = uriFormat
-
-            if let index = uri.range(of: "?", options: .backwards)?.lowerBound {
-                let query = uri.substring(from: uri.index(after: index))
-                self.context.query = query
-
-                uri = uri.substring(to: index)
-            }
-
-            if uri.contains("<bucket-name>") {
-                let _bucketName = bucketName ?? self.bucketName ?? ""
-                if _bucketName.isEmpty {
-                    throw APIError.contextError(info: "bucketName can't be empty")
-                }
-
-                uri = uri.replacingOccurrences(of: "<bucket-name>", with: _bucketName)
-            }
-
-            if uri.contains("<object-key>") {
-                let _objectKey = objectKey ?? ""
-                if _objectKey.isEmpty {
-                    throw APIError.contextError(info: "objectKey can't be empty")
-                }
-
-                uri = uri.replacingOccurrences(of: "<object-key>", with: _objectKey)
-            }
-
-            self.context.uri = uri
-        }
-
-        self.context.host = "\(zone ?? self.zone)." + (self.context.host ?? "")
+    public init(context: APIContext = APIContext.qingStor()) {
+        self.context = context
     }
 }
 

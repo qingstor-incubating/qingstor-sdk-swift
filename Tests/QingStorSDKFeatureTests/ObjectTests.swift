@@ -50,7 +50,7 @@ class ObjectTests: QingStorTests {
         timeout = 999999.9
         saveURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("save-object")
 
-        bucket = qsService.bucket(bucketName: bucketName)
+        bucket = qsService.bucket(bucketName: bucketName, zone: currentZone)
     }
 
     override func setupFeature() {
@@ -162,7 +162,7 @@ class ObjectTests: QingStorTests {
 
     func testCopyObject(testCase: XCTestCase) {
         let request: (@escaping RequestCompletion<PutObjectOutput>) -> Void = { completion in
-            let copySource = "/\(self.bucket.bucketName!)/\(self.objectKey!)"
+            let copySource = "/\(self.bucket.bucketName)/\(self.objectKey!)"
             let input = PutObjectInput(contentLength: self.contentLength, xQSCopySource: copySource)
             print("copy input: \(input.toJSON())")
             self.bucket.putObject(objectKey: self.copyObjectKey, input: input, completion: completion)
@@ -175,7 +175,7 @@ class ObjectTests: QingStorTests {
 
     func testMoveObject(testCase: XCTestCase) {
         let request: (@escaping RequestCompletion<PutObjectOutput>) -> Void = { completion in
-            let moveSource = "/\(self.bucket.bucketName!)/\(self.copyObjectKey!)"
+            let moveSource = "/\(self.bucket.bucketName)/\(self.copyObjectKey!)"
             let input = PutObjectInput(contentLength: self.contentLength, xQSMoveSource: moveSource)
             self.bucket.putObject(objectKey: self.moveObjectKey, input: input, completion: completion)
         }

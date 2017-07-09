@@ -47,7 +47,7 @@ class QingStorTests: NSObject {
         currentZone = testConfig["zone"]
         bucketName = testConfig["bucket_name"]
 
-        qsService = QingStor(context: context, zone: currentZone)
+        qsService = QingStor(context: context)
 
         setupFeature()
     }

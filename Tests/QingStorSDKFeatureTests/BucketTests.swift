@@ -41,7 +41,7 @@ class BucketTests: QingStorTests {
     override func setup() {
         super.setup()
 
-        bucket = qsService.bucket(bucketName: bucketName)
+        bucket = qsService.bucket(bucketName: bucketName, zone: currentZone)
     }
 
     override func setupFeature() {
