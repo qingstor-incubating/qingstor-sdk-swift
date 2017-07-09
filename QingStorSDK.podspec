@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'QingStorSDK'
-  s.version = '2.2.0'
+  s.version = '2.3.0'
   s.summary = 'The official QingStor SDK for the swift programming language.'
   s.authors = 'Chris Yang <chrisyang@yunify.com>'
   s.license = 'Apache License, Version 2.0'
