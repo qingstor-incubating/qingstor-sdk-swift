@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to QingStor SDK for Swift will be documented in this file.
 
+## [v2.3.0] - 2017-07-09
+
+### Change
+- Add contentLength field in GetObjectOutput.
+- Add multipart copy and range support.
+
+### BREAKING CHANGE
+- Remove default zone setting
+- Initializing Bucket must provide the zone parameter
+
 ## [v2.2.0] - 2016-03-11
 
 ### Fixed
@@ -29,6 +39,7 @@ All notable changes to QingStor SDK for Swift will be documented in this file.
 ### Added
 - QingStor SDK for the Swift programming language.
 
+[v2.3.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.2.0...v2.3.0
 [v2.2.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.1.0...v2.2.0
 [v2.1.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.0.1...v2.1.0
 [v2.0.1]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.0.0...v2.0.1
