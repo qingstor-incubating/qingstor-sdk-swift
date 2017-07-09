@@ -15,7 +15,7 @@ Initialize the QingStor service with a configuration
 
 ``` swift
 let context = try! APIContext(plist: configURL)
-let qsService = QingStor(context: context, zone: "zone")
+let qsService = QingStor(context: context)
 ```
 
 List buckets
@@ -36,7 +36,7 @@ qsService.listBuckets(input: input) { response, error in
 Initialize a QingStor bucket
 
 ``` swift
-let bucket = qsService.bucket(bucketName: "bucketName")
+let bucket = qsService.bucket(bucketName: "bucketName", zone: "pek3a")
 ```
 
 List objects in the bucket

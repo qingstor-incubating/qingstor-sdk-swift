@@ -57,11 +57,3 @@ context.`protocol` = "https"
 context.host = "api.private.com"
 context.port = 4433
 ```
-
-#### Default zone
-
-You can set the global default zone:
-
-``` swift
-setupDefaultZone(zone: "zone")
-```
