@@ -109,6 +109,7 @@ public class QingStorSigner: Signer {
                                 "stats",
                                 "upload_id",
                                 "uploads",
+                                "image",
                                 "response-expires",
                                 "response-cache-control",
                                 "response-content-type",

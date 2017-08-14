@@ -627,6 +627,30 @@ public class Bucket: QingStorAPI {
         return APISender.qingStor(context: self.context, input: input, method: .head)
     }
 
+    // imageProcess: Image process with the action on the object
+    // Documentation URL: https://docs.qingcloud.com/qingstor/data_process/image_process/index.html
+    public func imageProcess(objectKey: String, input: ImageProcessInput, completion: @escaping RequestCompletion<ImageProcessOutput>) {
+        let (sender, error) = self.imageProcessSender(objectKey: objectKey, input: input)
+
+        if let error = error {
+            completion(nil, error)
+            return
+        }
+
+        sender!.sendAPI(completion: completion)
+    }
+
+    // imageProcessSender create sender of imageProcess.
+    public func imageProcessSender(objectKey: String, input: ImageProcessInput) -> (APISender?, Error?) {
+        do {
+            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>?image", objectKey: objectKey)
+        } catch {
+            return (nil, error)
+        }
+
+        return APISender.qingStor(context: self.context, input: input, method: .get)
+    }
+
     // initiateMultipartUpload: Initial multipart upload on the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/initiate_multipart_upload.html
     public func initiateMultipartUpload(objectKey: String, input: InitiateMultipartUploadInput, completion: @escaping RequestCompletion<InitiateMultipartUploadOutput>) {
@@ -947,37 +971,41 @@ public class HeadBucketOutput: QingStorOutput { }
 public class ListMultipartUploadsInput: QingStorInput {
     // Put all keys that share a common prefix into a list
     public var delimiter: String? = nil
+    // Limit results returned from the first key after key_marker sorted by alphabetical order
+    public var keyMarker: String? = nil
     // Results count limit
     public var limit: Int? = nil
-    // Limit results to keys that start at this marker
-    public var marker: String? = nil
     // Limits results to keys that begin with the prefix
     public var prefix: String? = nil
+    // Limit results returned from the first uploading segment after upload_id_marker sorted by the time of upload_id
+    public var uploadIDMarker: String? = nil
 
     override var queryProperties: [String] {
-        return ["delimiter", "limit", "marker", "prefix"]
+        return ["delimiter", "key_marker", "limit", "prefix", "upload_id_marker"]
     }
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(delimiter: String? = nil, limit: Int? = nil, marker: String? = nil, prefix: String? = nil) {
+    public init(delimiter: String? = nil, keyMarker: String? = nil, limit: Int? = nil, prefix: String? = nil, uploadIDMarker: String? = nil) {
         super.init()
 
         self.delimiter = delimiter
+        self.keyMarker = keyMarker
         self.limit = limit
-        self.marker = marker
         self.prefix = prefix
+        self.uploadIDMarker = uploadIDMarker
     }
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
         delimiter <- map["delimiter"]
+        keyMarker <- map["key_marker"]
         limit <- map["limit"]
-        marker <- map["marker"]
         prefix <- map["prefix"]
+        uploadIDMarker <- map["upload_id_marker"]
     }
 
     public override func validate() -> Error? {
@@ -996,8 +1024,10 @@ public class ListMultipartUploadsOutput: QingStorOutput {
     public var marker: String? = nil
     // Bucket name
     public var name: String? = nil
-    // The last key in keys list
-    public var nextMarker: String? = nil
+    // The last key in uploads list
+    public var nextKeyMarker: String? = nil
+    // The last upload_id in uploads list
+    public var nextUploadIDMarker: String? = nil
     // Prefix that specified in request parameters
     public var prefix: String? = nil
     // Multipart uploads
@@ -1011,7 +1041,8 @@ public class ListMultipartUploadsOutput: QingStorOutput {
         limit <- map["limit"]
         marker <- map["marker"]
         name <- map["name"]
-        nextMarker <- map["next_marker"]
+        nextKeyMarker <- map["next_key_marker"]
+        nextUploadIDMarker <- map["next_upload_id_marker"]
         prefix <- map["prefix"]
         uploads <- map["uploads"]
     }
@@ -1579,6 +1610,83 @@ public class HeadObjectOutput: QingStorOutput {
         etag <- map["ETag"]
         lastModified <- (map["Last-Modified"], RFC822DateTransform())
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
+    }
+}
+
+
+public class ImageProcessInput: QingStorDownloadInput {
+    // Image process action
+    public var action: String! // Required
+    // Specified the Cache-Control response header
+    public var responseCacheControl: String? = nil
+    // Specified the Content-Disposition response header
+    public var responseContentDisposition: String? = nil
+    // Specified the Content-Encoding response header
+    public var responseContentEncoding: String? = nil
+    // Specified the Content-Language response header
+    public var responseContentLanguage: String? = nil
+    // Specified the Content-Type response header
+    public var responseContentType: String? = nil
+    // Specified the Expires response header
+    public var responseExpires: String? = nil
+    // Check whether the object has been modified
+    public var ifModifiedSince: Date? = nil
+
+    override var queryProperties: [String] {
+        return ["action", "response-cache-control", "response-content-disposition", "response-content-encoding", "response-content-language", "response-content-type", "response-expires"]
+    }
+
+    override var headerProperties: [String] {
+        return ["If-Modified-Since"]
+    }
+
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    public init(action: String, responseCacheControl: String? = nil, responseContentDisposition: String? = nil, responseContentEncoding: String? = nil, responseContentLanguage: String? = nil, responseContentType: String? = nil, responseExpires: String? = nil, ifModifiedSince: Date? = nil) {
+        super.init()
+
+        self.action = action
+        self.responseCacheControl = responseCacheControl
+        self.responseContentDisposition = responseContentDisposition
+        self.responseContentEncoding = responseContentEncoding
+        self.responseContentLanguage = responseContentLanguage
+        self.responseContentType = responseContentType
+        self.responseExpires = responseExpires
+        self.ifModifiedSince = ifModifiedSince
+    }
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        action <- map["action"]
+        responseCacheControl <- map["response-cache-control"]
+        responseContentDisposition <- map["response-content-disposition"]
+        responseContentEncoding <- map["response-content-encoding"]
+        responseContentLanguage <- map["response-content-language"]
+        responseContentType <- map["response-content-type"]
+        responseExpires <- map["response-expires"]
+        ifModifiedSince <- (map["If-Modified-Since"], RFC822DateTransform())
+    }
+
+    public override func validate() -> Error? {
+        if self.action == nil {
+            return APIError.parameterRequiredError(name: "action", parentName: "ImageProcessInput")
+        }
+
+        return nil
+    }
+}
+
+public class ImageProcessOutput: QingStorDownloadOutput {
+    // Object content length
+    public var contentLength: Int? = nil
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        contentLength <- map["Content-Length"]
     }
 }
 
