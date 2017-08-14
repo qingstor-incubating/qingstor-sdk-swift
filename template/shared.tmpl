@@ -7,6 +7,8 @@
 		Bool
 	{{- else if eq $typeName "integer" -}}
 		Int
+    {{- else if eq $typeName "long" -}}
+        Int
 	{{- else if eq $typeName "timestamp" -}}
 		Date
 	{{- else if eq $typeName "binary" -}}

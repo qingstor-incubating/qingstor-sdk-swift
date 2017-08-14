@@ -33,6 +33,7 @@ class CucumberishInitializer: NSObject {
             BucketTests.setup()
             ObjectTests.setup()
             ObjectMultipartTests.setup()
+            ImageTests.setup()
         }
 
         let bundle = Bundle(for: CucumberishInitializer.self)
