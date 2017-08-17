@@ -39,6 +39,8 @@
 		8361349B1DF35C9B00FC5859 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8361349A1DF35C9B00FC5859 /* TransformTests.swift */; };
 		8361349D1DF3627600FC5859 /* HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8361349C1DF3627600FC5859 /* HelperTests.swift */; };
 		836134A31DF3666C00FC5859 /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134A21DF3666C00FC5859 /* APITests.swift */; };
+		837300881F425BB60042001D /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837300871F425BB60042001D /* ImageProcessor.swift */; };
+		8373008A1F425BC60042001D /* ImageProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837300891F425BC60042001D /* ImageProcessorTests.swift */; };
 		83E618111DE381F300CCFFDB /* QingStorSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83E618071DE381F300CCFFDB /* QingStorSDK.framework */; };
 		83E618181DE381F300CCFFDB /* QingStorSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 83E6180A1DE381F300CCFFDB /* QingStorSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC3D9DE928736DC0704F068D /* Pods_QingStorSDKFeatureTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB0A7C66BA70678F239E2D /* Pods_QingStorSDKFeatureTests.framework */; };
@@ -98,6 +100,8 @@
 		8361349A1DF35C9B00FC5859 /* TransformTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformTests.swift; sourceTree = "<group>"; };
 		8361349C1DF3627600FC5859 /* HelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperTests.swift; sourceTree = "<group>"; };
 		836134A21DF3666C00FC5859 /* APITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APITests.swift; sourceTree = "<group>"; };
+		837300871F425BB60042001D /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
+		837300891F425BC60042001D /* ImageProcessorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessorTests.swift; sourceTree = "<group>"; };
 		83E618071DE381F300CCFFDB /* QingStorSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QingStorSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83E6180A1DE381F300CCFFDB /* QingStorSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QingStorSDK.h; sourceTree = "<group>"; };
 		83E6180B1DE381F300CCFFDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -159,6 +163,7 @@
 				8361340A1DF3470500FC5859 /* Transform.swift */,
 				836134051DF3470500FC5859 /* QingStorAPIs.swift */,
 				836134061DF3470500FC5859 /* QingStorSigner.swift */,
+				837300871F425BB60042001D /* ImageProcessor.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -180,6 +185,7 @@
 				836134981DF3526700FC5859 /* SignatureTests.swift */,
 				8361349A1DF35C9B00FC5859 /* TransformTests.swift */,
 				8361349C1DF3627600FC5859 /* HelperTests.swift */,
+				837300891F425BC60042001D /* ImageProcessorTests.swift */,
 			);
 			name = QingStorSDKTests;
 			path = Tests/QingStorSDKTests;
@@ -563,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				836134151DF3470500FC5859 /* Transform.swift in Sources */,
+				837300881F425BB60042001D /* ImageProcessor.swift in Sources */,
 				8361340C1DF3470500FC5859 /* Base.swift in Sources */,
 				836134111DF3470500FC5859 /* QingStorSigner.swift in Sources */,
 				836134141DF3470500FC5859 /* ResponseSerialization.swift in Sources */,
@@ -583,6 +590,7 @@
 				8361349D1DF3627600FC5859 /* HelperTests.swift in Sources */,
 				836134991DF3526700FC5859 /* SignatureTests.swift in Sources */,
 				836134A31DF3666C00FC5859 /* APITests.swift in Sources */,
+				8373008A1F425BC60042001D /* ImageProcessorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
