@@ -45,92 +45,92 @@ class BucketTests: QingStorTests {
     }
 
     override func setupFeature() {
-        When("^initialize the bucket$") { (args, userInfo) -> Void in
+        When("^initialize the bucket$") { (_, _) -> Void in
 
         }
 
-        Then("^the bucket is initialized$") { (args, userInfo) -> Void in
+        Then("^the bucket is initialized$") { (_, _) -> Void in
             XCTAssertNotNil(self.bucket, "Bucket sub service is not initialized")
         }
 
-        When("^put bucket$") { (args, userInfo) -> Void in
+        When("^put bucket$") { (_, _) -> Void in
             // self.testPutBucket(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^put bucket status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^put bucket status code is (\\d+)$") { (_, _) -> Void in
             // self.assertEqual(value: "\(self.putBucketResponse.response.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^put same bucket again$") { (args, userInfo) -> Void in
+        When("^put same bucket again$") { (_, userInfo) -> Void in
             self.testPut(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, isSameObject: true)
         }
 
-        Then("^put same bucket again status code is (\\d+)$$") { (args, userInfo) -> Void in
+        Then("^put same bucket again status code is (\\d+)$$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^list objects$") { (args, userInfo) -> Void in
+        When("^list objects$") { (_, userInfo) -> Void in
             self.testListObjects(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^list objects status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^list objects status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.listObjectsResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^list objects keys count is (\\d+)$") { (args, userInfo) -> Void in
+        And("^list objects keys count is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.listObjectsResponse.output.keys!.count)", shouldBe: "\(args![0])")
         }
 
-        When("^head bucket$") { (args, userInfo) -> Void in
+        When("^head bucket$") { (_, userInfo) -> Void in
             self.testHead(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^head bucket status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^head bucket status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.headResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^delete bucket$") { (args, userInfo) -> Void in
+        When("^delete bucket$") { (_, _) -> Void in
             // self.testDeleteBucket(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^delete bucket status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete bucket status code is (\\d+)$") { (_, _) -> Void in
             // self.assertEqual(value: "\(self.deleteBucketResponse.response.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^delete multiple objects:$") { (args, userInfo) -> Void in
+        When("^delete multiple objects:$") { (_, userInfo) -> Void in
             self.testDeleteMultipleObjects(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase,
                                            json: userInfo?[kDocStringKey] as! String)
         }
 
-        Then("^delete multiple objects code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete multiple objects code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.deleteMultipleObjectsResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^get bucket statistics$") { (args, userInfo) -> Void in
+        When("^get bucket statistics$") { (_, userInfo) -> Void in
             self.testGetStatistics(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^get bucket statistics status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^get bucket statistics status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getStatisticsResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^get bucket statistics status is \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        And("^get bucket statistics status is \"([^\"]*)\"$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getStatisticsResponse.output.status!)", shouldBe: "\(args![0])")
         }
 
-        Given("^an object created by initiate multipart upload$") { (args, userInfo) -> Void in
+        Given("^an object created by initiate multipart upload$") { (_, userInfo) -> Void in
             self.testAnObjectCreatedByInitiateMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        When("^list multipart uploads$") { (args, userInfo) -> Void in
+        When("^list multipart uploads$") { (_, userInfo) -> Void in
             self.testListMultipartUploads(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^list multipart uploads count is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^list multipart uploads count is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: (self.listMultipartUploadsResponse.output.uploads?.count)!, shouldBe: Int(args![0])!)
         }
 
-        When("^list multipart uploads with prefix$") { (args, userInfo) -> Void in
+        When("^list multipart uploads with prefix$") { (_, userInfo) -> Void in
             self.testListMultipartUploadsPrefix(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
@@ -170,7 +170,7 @@ class BucketTests: QingStorTests {
             self.bucket.listObjects(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.listObjectsResponse = response!
         }
     }
@@ -180,7 +180,7 @@ class BucketTests: QingStorTests {
             self.bucket.head(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.headResponse = response!
         }
     }
@@ -191,7 +191,7 @@ class BucketTests: QingStorTests {
             self.bucket.deleteMultipleObjects(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deleteMultipleObjectsResponse = response!
         }
     }
@@ -201,7 +201,7 @@ class BucketTests: QingStorTests {
             self.bucket.getStatistics(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.getStatisticsResponse = response!
         }
     }
@@ -211,7 +211,7 @@ class BucketTests: QingStorTests {
             self.bucket.delete(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deleteResponse = response!
         }
     }
@@ -222,7 +222,7 @@ class BucketTests: QingStorTests {
             self.bucket.initiateMultipartUpload(objectKey: self.listMultipartUploadsOutputObjectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.initiateMultipartUploadResponse = response!
         }
     }
@@ -233,7 +233,7 @@ class BucketTests: QingStorTests {
             self.bucket.listMultipartUploads(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.listMultipartUploadsResponse = response!
         }
     }
@@ -244,7 +244,7 @@ class BucketTests: QingStorTests {
             self.bucket.listMultipartUploads(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.listMultipartUploadsPrefixResponse = response!
         }
     }
@@ -255,7 +255,7 @@ class BucketTests: QingStorTests {
             self.bucket.abortMultipartUpload(objectKey: self.listMultipartUploadsOutputObjectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { _, _ in
             self.assertEqual(value: (self.listMultipartUploadsPrefixResponse.output.uploads?.count)!, shouldBe: count)
         }
     }

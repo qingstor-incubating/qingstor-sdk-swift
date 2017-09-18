@@ -36,24 +36,24 @@ class BucketACLTests: QingStorTests {
     }
 
     override func setupFeature() {
-        When("^put bucket ACL:$") { (args, userInfo) -> Void in
+        When("^put bucket ACL:$") { (_, userInfo) -> Void in
             self.testputACL(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase,
                             json: userInfo?[kDocStringKey] as! String)
         }
 
-        Then("^put bucket ACL status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^put bucket ACL status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putACLResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^get bucket ACL$") { (args, userInfo) -> Void in
+        When("^get bucket ACL$") { (_, userInfo) -> Void in
             self.testGetACL(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^get bucket ACL status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^get bucket ACL status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putACLResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^get bucket ACL should have grantee name \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        And("^get bucket ACL should have grantee name \"([^\"]*)\"$") { (args, _) -> Void in
             let granteeName = args![0]
             for acl in self.getACLResponse.output.acl! {
                 if acl.grantee.name == granteeName {
@@ -71,7 +71,7 @@ class BucketACLTests: QingStorTests {
             self.bucket.putACL(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.putACLResponse = response!
         }
     }
@@ -81,7 +81,7 @@ class BucketACLTests: QingStorTests {
             self.bucket.getACL(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.getACLResponse = response!
         }
     }

@@ -32,7 +32,7 @@ class HelperTests: XCTestCase {
     }
 
     func testBuildQuery() {
-        var parameters: [String:Any] = ["test-1":"1", "test-2":["value1", "value2"]]
+        var parameters: [String:Any] = ["test-1": "1", "test-2": ["value1", "value2"]]
         let result = APIHelper.buildQueryString(parameters: &parameters, escaped: false)
 
         let targetResult = "test-1=1&test-2.1=value1&test-2.2=value2"
@@ -41,7 +41,7 @@ class HelperTests: XCTestCase {
     }
 
     func testBuildEscapedQuery() {
-        var parameters: [String:Any] = ["test-1":"1", "test-2":["value1", "value2"], "test-3":"+="]
+        var parameters: [String:Any] = ["test-1": "1", "test-2": ["value1", "value2"], "test-3": "+="]
         let result = APIHelper.buildQueryString(parameters: &parameters, escaped: true)
 
         let targetResult = "test-1=1&test-2.1=value1&test-2.2=value2&test-3=%2B%3D"

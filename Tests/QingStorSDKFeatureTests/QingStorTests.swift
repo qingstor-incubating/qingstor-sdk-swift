@@ -53,19 +53,19 @@ class QingStorTests: NSObject {
     }
 
     func setupFeature() {
-        When("^initialize QingStor service$") { (args, userInfo) -> Void in
+        When("^initialize QingStor service$") { (_, _) -> Void in
 
         }
 
-        Then("^the QingStor service is initialized$") { (args, userInfo) -> Void in
+        Then("^the QingStor service is initialized$") { (_, _) -> Void in
             XCTAssertNotNil(self.qsService, "QingStor service is not initialized")
         }
 
-        When("^list buckets$") { (args, userInfo) -> Void in
+        When("^list buckets$") { (_, userInfo) -> Void in
             self.testListBuckets(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^list buckets status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^list buckets status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.listBucketResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
@@ -76,7 +76,7 @@ class QingStorTests: NSObject {
             self.qsService.listBuckets(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.listBucketResponse = response!
         }
     }

@@ -22,66 +22,66 @@ import XCTest
 @testable import QingStorSDK
 
 class ImageProcessorTests: XCTestCase {
-    
+
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testCrop() {
         let result = "crop:w_100,h_200,g_6"
         let target = ImageProcessor()
             .crop(width: 100, height: 200, gravity: .northEast)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
-    
+
     func testRotate() {
         let result = "rotate:a_360"
         let target = ImageProcessor()
             .rotate(angle: 360)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
-    
+
     func testResize() {
         let result = "resize:w_200,h_400,m_2"
         let target = ImageProcessor()
             .resize(width: 200, height: 400, mode: .thumbnail)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
-    
+
     func testWatermark() {
         let result = "watermark:t_5rC05Y2w5rWL6K-V,c_I2ZmMDBmZg,p_0.1123,d_250"
         let target = ImageProcessor()
             .watermark(text: "水印测试", color: "#ff00ff", opacity: 0.1123, dpi: 250)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
-    
+
     func testWatermarkImage() {
         let result = "watermark_image:u_aHR0cHM6Ly9wZWszYS5xaW5nc3Rvci5jb20vaW1nLWRvYy1lZy9xaW5jbG91ZC5wbmc,l_50,t_100,p_1.0"
         let target = ImageProcessor()
             .watermarkImage(url: "https://pek3a.qingstor.com/img-doc-eg/qincloud.png", left: 50, top: 100, opacity: 1.000)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
-    
+
     func testFormat() {
         let result = "format:t_tiff"
         let target = ImageProcessor()
             .format(type: .tiff)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
 
@@ -97,17 +97,17 @@ class ImageProcessorTests: XCTestCase {
             .crop(width: nil, height: nil, gravity: nil) // invalid operate, will ignore
             .format(type: .png)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
-    
+
     func testResetProcessing() {
         let imageProcessor = ImageProcessor()
-        
+
         let result = "rotate:a_180"
         let target = imageProcessor.rotate(angle: 180).processingResult()
         XCTAssertEqual(target, result)
-        
+
         imageProcessor.resetProcessing()
         XCTAssertEqual("", imageProcessor.processingResult())
     }

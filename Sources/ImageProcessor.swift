@@ -24,11 +24,11 @@ public protocol ImageProcessCodeable {
     func processCode() -> String
 }
 
-fileprivate protocol Codeable {
+private protocol Codeable {
     func code() -> String
 }
 
-fileprivate protocol Formatable {
+private protocol Formatable {
     func format() -> String
 }
 
@@ -54,12 +54,12 @@ public enum ImageProcess: ImageProcessCodeable {
     case watermark(text: String, color: String?, opacity: Float?, dpi: Int?)
     case watermarkImage(url: String, left: Int?, top: Int?, opacity: Float?)
     case format(type: FormatType)
-    
+
     fileprivate struct Code<T: Formatable>: Codeable {
         let prefix: String
         let value: T?
         let base64: Bool
-        
+
         var description: String {
             if let value = value {
                 var format = value.format()
@@ -70,71 +70,71 @@ public enum ImageProcess: ImageProcessCodeable {
                     format = format.replacingOccurrences(of: "+", with: "-")
                     format = format.trimmingCharacters(in: CharacterSet(charactersIn: "="))
                 }
-                
+
                 return "\(prefix)_\(format)"
             }
-            
+
             return ""
         }
-        
+
         init(prefix: String, value: T? = nil, base64: Bool = false) {
             self.prefix = prefix
             self.value = value
             self.base64 = base64
         }
-        
+
         func code() -> String {
             return self.description
         }
     }
-    
+
     public func processCode() -> String {
         switch self {
-            
+
         case let .crop(width, height, gravity):
             if width == nil && height == nil {
                 return ""
             }
-            
+
             let code = formatCodes([Code(prefix: "w", value: width),
                                     Code(prefix: "h", value: height),
                                     Code(prefix: "g", value: gravity)])
             return "crop:\(code)"
-            
+
         case let .rotate(angle):
             let code = Code(prefix: "a", value: angle).description
             return "rotate:\(code)"
-            
+
         case let .resize(width, height, mode):
             if width == nil && height == nil {
                 return ""
             }
-            
+
             let code = formatCodes([Code(prefix: "w", value: width),
                                     Code(prefix: "h", value: height),
                                     Code(prefix: "m", value: mode)])
             return "resize:\(code)"
-            
+
         case let .watermark(text, color, opacity, dpi):
             let code = formatCodes([Code(prefix: "t", value: text, base64: true),
                                     Code(prefix: "c", value: color, base64: true),
                                     Code(prefix: "p", value: opacity),
                                     Code(prefix: "d", value: dpi)])
             return "watermark:\(code)"
-            
+
         case let .watermarkImage(url, left, top, opacity):
             let code = formatCodes([Code(prefix: "u", value: url, base64: true),
                                     Code(prefix: "l", value: left),
                                     Code(prefix: "t", value: top),
                                     Code(prefix: "p", value: opacity)])
             return "watermark_image:\(code)"
-            
+
         case let .format(type):
             let code = Code(prefix: "t", value: type).description
             return "format:\(code)"
         }
     }
-    
+
     fileprivate func formatCodes(_ codes: [Codeable]) -> String {
         return codes
             .map { $0.code() }
@@ -154,7 +154,7 @@ public enum CropGravity: Int, Formatable {
     case southWest = 7
     case southEast = 8
     case auto      = 9
-    
+
     fileprivate func format() -> String {
         return self.rawValue.format()
     }
@@ -164,7 +164,7 @@ public enum ResizeMode: Int, Formatable {
     case fixed     = 0
     case force     = 1
     case thumbnail = 2
-    
+
     fileprivate func format() -> String {
         return self.rawValue.format()
     }
@@ -175,7 +175,7 @@ public enum FormatType: String, Formatable {
     case png  = "png"
     case webp = "webp"
     case tiff = "tiff"
-    
+
     fileprivate func format() -> String {
         return self.rawValue
     }
@@ -183,44 +183,44 @@ public enum FormatType: String, Formatable {
 
 public class ImageProcessor {
     public var processList: [ImageProcessCodeable] = []
-    
+
     public init(processList: [ImageProcessCodeable] = []) {
         self.processList = processList
     }
-    
+
     public func process(_ process: ImageProcessCodeable) -> ImageProcessor {
         processList.append(process)
         return self
     }
-    
+
     public func crop(width: Int?, height: Int?, gravity: CropGravity?) -> ImageProcessor {
         return process(ImageProcess.crop(width: width, height: height, gravity: gravity))
     }
-    
+
     public func rotate(angle: Int) -> ImageProcessor {
         return process(ImageProcess.rotate(angle: angle))
     }
-    
+
     public func resize(width: Int?, height: Int?, mode: ResizeMode?) -> ImageProcessor {
         return process(ImageProcess.resize(width: width, height: height, mode: mode))
     }
-    
+
     public func watermark(text: String, color: String?, opacity: Float?, dpi: Int?) -> ImageProcessor {
         return process(ImageProcess.watermark(text: text, color: color, opacity: opacity, dpi: dpi))
     }
-    
+
     public func watermarkImage(url: String, left: Int?, top: Int?, opacity: Float?) -> ImageProcessor {
         return process(ImageProcess.watermarkImage(url: url, left: left, top: top, opacity: opacity))
     }
-    
+
     public func format(type: FormatType) -> ImageProcessor {
         return process(ImageProcess.format(type: type))
     }
-    
+
     public func resetProcessing() {
         processList.removeAll()
     }
-    
+
     public func processingResult() -> String {
         return processList
             .map { $0.processCode() }

@@ -37,32 +37,32 @@ class BucketExternalMirrorTests: QingStorTests {
     }
 
     override func setupFeature() {
-        When("^put bucket external mirror:$") { (args, userInfo) -> Void in
+        When("^put bucket external mirror:$") { (_, userInfo) -> Void in
             self.testPutExternalMirror(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase,
                                        json: userInfo?[kDocStringKey] as! String)
         }
 
-        Then("^put bucket external mirror status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^put bucket external mirror status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putExternalMirrorResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^get bucket external mirror$") { (args, userInfo) -> Void in
+        When("^get bucket external mirror$") { (_, userInfo) -> Void in
             self.testGetExternalMirror(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^get bucket external mirror status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^get bucket external mirror status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getExternalMirrorResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^get bucket external mirror should have source_site \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        And("^get bucket external mirror should have source_site \"([^\"]*)\"$") { (args, _) -> Void in
             self.assertEqual(value: self.getExternalMirrorResponse.output.sourceSite!, shouldBe: args![0])
         }
 
-        When("^delete bucket external mirror$") { (args, userInfo) -> Void in
+        When("^delete bucket external mirror$") { (_, userInfo) -> Void in
             self.testDeleteExternalMirror(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^delete bucket external mirror status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete bucket external mirror status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.deleteExternalMirrorResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
@@ -73,7 +73,7 @@ class BucketExternalMirrorTests: QingStorTests {
             self.bucket.putExternalMirror(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.putExternalMirrorResponse = response!
         }
     }
@@ -83,7 +83,7 @@ class BucketExternalMirrorTests: QingStorTests {
             self.bucket.getExternalMirror(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.getExternalMirrorResponse = response!
         }
     }
@@ -93,7 +93,7 @@ class BucketExternalMirrorTests: QingStorTests {
             self.bucket.deleteExternalMirror(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deleteExternalMirrorResponse = response!
         }
     }

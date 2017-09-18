@@ -37,24 +37,24 @@ class BucketCORSTests: QingStorTests {
     }
 
     override func setupFeature() {
-        When("^put bucket CORS:$") { (args, userInfo) -> Void in
+        When("^put bucket CORS:$") { (_, userInfo) -> Void in
             self.testPutCORS(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase,
                              json: userInfo?[kDocStringKey] as! String)
         }
 
-        Then("^put bucket CORS status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^put bucket CORS status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putCORSResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^get bucket CORS$") { (args, userInfo) -> Void in
+        When("^get bucket CORS$") { (_, userInfo) -> Void in
             self.testGetCORS(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^get bucket CORS status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^get bucket CORS status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getCORSResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^get bucket CORS should have allowed origin \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        And("^get bucket CORS should have allowed origin \"([^\"]*)\"$") { (args, _) -> Void in
             let allowedOrigin = args![0]
             for corsRule in self.getCORSResponse.output.corsRules! {
                 if corsRule.allowedOrigin == allowedOrigin {
@@ -65,11 +65,11 @@ class BucketCORSTests: QingStorTests {
             XCTAssert(false, "Allowed origin \"\(allowedOrigin)\" not found in bucket CORS rules")
         }
 
-        When("^delete bucket CORS") { (args, userInfo) -> Void in
+        When("^delete bucket CORS") { (_, userInfo) -> Void in
             self.testDeleteCORS(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^delete bucket CORS status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete bucket CORS status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.deleteCORSResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
@@ -80,7 +80,7 @@ class BucketCORSTests: QingStorTests {
             self.bucket.putCORS(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.putCORSResponse = response!
         }
     }
@@ -90,7 +90,7 @@ class BucketCORSTests: QingStorTests {
             self.bucket.getCORS(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.getCORSResponse = response!
         }
     }
@@ -100,7 +100,7 @@ class BucketCORSTests: QingStorTests {
             self.bucket.deleteCORS(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deleteCORSResponse = response!
         }
     }

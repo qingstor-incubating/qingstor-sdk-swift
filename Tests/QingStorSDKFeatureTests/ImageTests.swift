@@ -31,7 +31,7 @@ class ImageTests: QingStorTests {
 
     var imageProcessAction: String = ""
     var imageProcessResponse: Response<ImageProcessOutput>!
-    
+
     var processedImageURL: URL!
 
     lazy var testImagePath: String = {

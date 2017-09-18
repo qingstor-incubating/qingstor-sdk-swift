@@ -35,7 +35,7 @@ class APITests: XCTestCase {
         var context = APIContext.qingStor()
         XCTAssertEqual(context.url.absoluteString, "https://qingstor.com:443/")
 
-        context.readFrom(config: ["port":"80", "protocol":"http", "host":"example.com"])
+        context.readFrom(config: ["port": "80", "protocol": "http", "host": "example.com"])
         XCTAssertEqual(context.url.absoluteString, "http://example.com:80/")
     }
 
