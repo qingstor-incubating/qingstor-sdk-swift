@@ -106,7 +106,7 @@ open class RequestBuilder {
 
     public func buildRequest(completion: @escaping BuildCompletion) { }
 
-    public func send<T: BaseMappable>(completion: @escaping RequestCompletion<T>) { }
+    public func send<T>(completion: @escaping RequestCompletion<T>) { }
 
     func addHeaders(_ aHeaders: [String:String]) {
         for (key, value) in aHeaders {
@@ -251,7 +251,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         }
     }
 
-    public override func send<T: BaseMappable>(completion: @escaping RequestCompletion<T>) {
+    public override func send<T>(completion: @escaping RequestCompletion<T>) {
         self._buildRequest { request, error in
             if let request = request {
                 self.processRequest(request: request, completion: completion)
@@ -261,7 +261,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         }
     }
 
-    fileprivate func processRequest<T: BaseMappable>(request: Request, completion: @escaping RequestCompletion<T>) {
+    fileprivate func processRequest<T>(request: Request, completion: @escaping RequestCompletion<T>) {
         if let credential = self.credential {
             request.authenticate(usingCredential: credential)
         }

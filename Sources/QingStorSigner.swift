@@ -28,6 +28,8 @@ public enum QingStorSignatureType: Error {
 public class QingStorSigner: Signer {
     public var signatureType: QingStorSignatureType = .header
 
+    public init() { }
+
     public func signatureString(from requestBuilder: RequestBuilder) throws -> String {
         switch signatureType {
         case .query(let timeoutSeconds):
@@ -121,7 +123,7 @@ public class QingStorSigner: Signer {
 
         var query = ""
         if let index = urlString.range(of: "?", options: .backwards)?.lowerBound {
-            query = urlString.substring(from: urlString.index(after: index))
+            query = String(urlString[urlString.index(after: index)...])
         }
 
         if requestBuilder.encoding == .query {

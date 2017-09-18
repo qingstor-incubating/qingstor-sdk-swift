@@ -49,6 +49,7 @@ class ObjectTests: QingStorTests {
 
         timeout = 999999.9
         saveURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("save-object")
+        downloadedURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("download-object")
 
         bucket = qsService.bucket(bucketName: bucketName, zone: currentZone)
     }
@@ -205,8 +206,12 @@ class ObjectTests: QingStorTests {
 
         let (sender, _) = bucket.getObjectSender(objectKey: self.objectKey, input: input)
         sender?.buildRequest { request, error in
-            URLSession.shared.downloadTask(with: request!) { url, response, error in
-                self.downloadedURL = url
+            URLSession.shared.downloadTask(with: request!) { url, _, error in
+                if let url = url {
+                    let fileManager = FileManager.default
+                    try! fileManager.removeItem(at: self.downloadedURL)
+                    try! fileManager.copyItem(at: url, to: self.downloadedURL)
+                }
 
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
                     expectation.fulfill()

@@ -45,10 +45,10 @@ public class Bucket: QingStorAPI {
             var uri = uriFormat
 
             if let index = uri.range(of: "?", options: .backwards)?.lowerBound {
-                let query = uri.substring(from: uri.index(after: index))
+                let query = String(uri[uri.index(after: index)...])
                 self.context.query = query
 
-                uri = uri.substring(to: index)
+                uri = String(uri[..<index])
             }
 
             if uri.contains("<bucket-name>") {
@@ -773,32 +773,27 @@ public class Bucket: QingStorAPI {
 
 }
 
-
 public class DeleteBucketInput: QingStorInput { }
 
 public class DeleteBucketOutput: QingStorOutput { }
-
 
 public class DeleteBucketCORSInput: QingStorInput { }
 
 public class DeleteBucketCORSOutput: QingStorOutput { }
 
-
 public class DeleteBucketExternalMirrorInput: QingStorInput { }
 
 public class DeleteBucketExternalMirrorOutput: QingStorOutput { }
-
 
 public class DeleteBucketPolicyInput: QingStorInput { }
 
 public class DeleteBucketPolicyOutput: QingStorOutput { }
 
-
 public class DeleteMultipleObjectsInput: QingStorInput {
     // A list of keys to delete
     public var objects: [KeyModel]! // Required
     // Whether to return the list of deleted objects
-    public var quiet: Bool? = nil
+    public var quiet: Bool?
 
     override var headerProperties: [String] {
         return ["Content-MD5"]
@@ -858,9 +853,9 @@ public class DeleteMultipleObjectsInput: QingStorInput {
 
 public class DeleteMultipleObjectsOutput: QingStorOutput {
     // List of deleted objects
-    public var deleted: [KeyModel]? = nil
+    public var deleted: [KeyModel]?
     // Error messages
-    public var errors: [KeyDeleteErrorModel]? = nil
+    public var errors: [KeyDeleteErrorModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -870,14 +865,13 @@ public class DeleteMultipleObjectsOutput: QingStorOutput {
     }
 }
 
-
 public class GetBucketACLInput: QingStorInput { }
 
 public class GetBucketACLOutput: QingStorOutput {
     // Bucket ACL rules
-    public var acl: [ACLModel]? = nil
+    public var acl: [ACLModel]?
     // Bucket owner
-    public var owner: OwnerModel? = nil
+    public var owner: OwnerModel?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -887,12 +881,11 @@ public class GetBucketACLOutput: QingStorOutput {
     }
 }
 
-
 public class GetBucketCORSInput: QingStorInput { }
 
 public class GetBucketCORSOutput: QingStorOutput {
     // Bucket CORS rules
-    public var corsRules: [CORSRuleModel]? = nil
+    public var corsRules: [CORSRuleModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -901,12 +894,11 @@ public class GetBucketCORSOutput: QingStorOutput {
     }
 }
 
-
 public class GetBucketExternalMirrorInput: QingStorInput { }
 
 public class GetBucketExternalMirrorOutput: QingStorOutput {
     // Source site url
-    public var sourceSite: String? = nil
+    public var sourceSite: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -915,12 +907,11 @@ public class GetBucketExternalMirrorOutput: QingStorOutput {
     }
 }
 
-
 public class GetBucketPolicyInput: QingStorInput { }
 
 public class GetBucketPolicyOutput: QingStorOutput {
     // Bucket policy statement
-    public var statement: [StatementModel]? = nil
+    public var statement: [StatementModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -929,25 +920,24 @@ public class GetBucketPolicyOutput: QingStorOutput {
     }
 }
 
-
 public class GetBucketStatisticsInput: QingStorInput { }
 
 public class GetBucketStatisticsOutput: QingStorOutput {
     // Objects count in the bucket
-    public var count: Int? = nil
+    public var count: Int?
     // Bucket created time
-    public var created: Date? = nil
+    public var created: Date?
     // QingCloud Zone ID
-    public var location: String? = nil
+    public var location: String?
     // Bucket name
-    public var name: String? = nil
+    public var name: String?
     // Bucket storage size
-    public var size: Int? = nil
+    public var size: Int?
     // Bucket status
     // status's available values: active, suspended
-    public var status: String? = nil
+    public var status: String?
     // URL to access the bucket
-    public var url: String? = nil
+    public var url: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -962,23 +952,21 @@ public class GetBucketStatisticsOutput: QingStorOutput {
     }
 }
 
-
 public class HeadBucketInput: QingStorInput { }
 
 public class HeadBucketOutput: QingStorOutput { }
 
-
 public class ListMultipartUploadsInput: QingStorInput {
     // Put all keys that share a common prefix into a list
-    public var delimiter: String? = nil
+    public var delimiter: String?
     // Limit results returned from the first key after key_marker sorted by alphabetical order
-    public var keyMarker: String? = nil
+    public var keyMarker: String?
     // Results count limit
-    public var limit: Int? = nil
+    public var limit: Int?
     // Limits results to keys that begin with the prefix
-    public var prefix: String? = nil
+    public var prefix: String?
     // Limit results returned from the first uploading segment after upload_id_marker sorted by the time of upload_id
-    public var uploadIDMarker: String? = nil
+    public var uploadIDMarker: String?
 
     override var queryProperties: [String] {
         return ["delimiter", "key_marker", "limit", "prefix", "upload_id_marker"]
@@ -1015,23 +1003,23 @@ public class ListMultipartUploadsInput: QingStorInput {
 
 public class ListMultipartUploadsOutput: QingStorOutput {
     // Other object keys that share common prefixes
-    public var commonPrefixes: [String]? = nil
+    public var commonPrefixes: [String]?
     // Delimiter that specified in request parameters
-    public var delimiter: String? = nil
+    public var delimiter: String?
     // Limit that specified in request parameters
-    public var limit: Int? = nil
+    public var limit: Int?
     // Marker that specified in request parameters
-    public var marker: String? = nil
+    public var marker: String?
     // Bucket name
-    public var name: String? = nil
+    public var name: String?
     // The last key in uploads list
-    public var nextKeyMarker: String? = nil
+    public var nextKeyMarker: String?
     // The last upload_id in uploads list
-    public var nextUploadIDMarker: String? = nil
+    public var nextUploadIDMarker: String?
     // Prefix that specified in request parameters
-    public var prefix: String? = nil
+    public var prefix: String?
     // Multipart uploads
-    public var uploads: [UploadsModel]? = nil
+    public var uploads: [UploadsModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1048,16 +1036,15 @@ public class ListMultipartUploadsOutput: QingStorOutput {
     }
 }
 
-
 public class ListObjectsInput: QingStorInput {
     // Put all keys that share a common prefix into a list
-    public var delimiter: String? = nil
+    public var delimiter: String?
     // Results count limit
-    public var limit: Int? = nil
+    public var limit: Int?
     // Limit results to keys that start at this marker
-    public var marker: String? = nil
+    public var marker: String?
     // Limits results to keys that begin with the prefix
-    public var prefix: String? = nil
+    public var prefix: String?
 
     override var queryProperties: [String] {
         return ["delimiter", "limit", "marker", "prefix"]
@@ -1092,23 +1079,23 @@ public class ListObjectsInput: QingStorInput {
 
 public class ListObjectsOutput: QingStorOutput {
     // Other object keys that share common prefixes
-    public var commonPrefixes: [String]? = nil
+    public var commonPrefixes: [String]?
     // Delimiter that specified in request parameters
-    public var delimiter: String? = nil
+    public var delimiter: String?
     // Object keys
-    public var keys: [KeyModel]? = nil
+    public var keys: [KeyModel]?
     // Limit that specified in request parameters
-    public var limit: Int? = nil
+    public var limit: Int?
     // Marker that specified in request parameters
-    public var marker: String? = nil
+    public var marker: String?
     // Bucket name
-    public var name: String? = nil
+    public var name: String?
     // The last key in keys list
-    public var nextMarker: String? = nil
+    public var nextMarker: String?
     // Bucket owner
-    public var owner: OwnerModel? = nil
+    public var owner: OwnerModel?
     // Prefix that specified in request parameters
-    public var prefix: String? = nil
+    public var prefix: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1125,11 +1112,9 @@ public class ListObjectsOutput: QingStorOutput {
     }
 }
 
-
 public class PutBucketInput: QingStorInput { }
 
 public class PutBucketOutput: QingStorOutput { }
-
 
 public class PutBucketACLInput: QingStorInput {
     // Bucket ACL rules
@@ -1180,7 +1165,6 @@ public class PutBucketACLInput: QingStorInput {
 
 public class PutBucketACLOutput: QingStorOutput { }
 
-
 public class PutBucketCORSInput: QingStorInput {
     // Bucket CORS rules
     public var corsRules: [CORSRuleModel]! // Required
@@ -1230,7 +1214,6 @@ public class PutBucketCORSInput: QingStorInput {
 
 public class PutBucketCORSOutput: QingStorOutput { }
 
-
 public class PutBucketExternalMirrorInput: QingStorInput {
     // Source site url
     public var sourceSite: String! // Required
@@ -1265,7 +1248,6 @@ public class PutBucketExternalMirrorInput: QingStorInput {
 }
 
 public class PutBucketExternalMirrorOutput: QingStorOutput { }
-
 
 public class PutBucketPolicyInput: QingStorInput {
     // Bucket policy statement
@@ -1316,7 +1298,6 @@ public class PutBucketPolicyInput: QingStorInput {
 
 public class PutBucketPolicyOutput: QingStorOutput { }
 
-
 public class AbortMultipartUploadInput: QingStorInput {
     // Object multipart upload ID
     public var uploadID: String! // Required
@@ -1352,20 +1333,19 @@ public class AbortMultipartUploadInput: QingStorInput {
 
 public class AbortMultipartUploadOutput: QingStorOutput { }
 
-
 public class CompleteMultipartUploadInput: QingStorInput {
     // Object multipart upload ID
     public var uploadID: String! // Required
     // MD5sum of the object part
-    public var etag: String? = nil
+    public var etag: String?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String? = nil
+    public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String? = nil
+    public var xQSEncryptionCustomerKeyMD5: String?
     // Object parts
-    public var objectParts: [ObjectPartModel]? = nil
+    public var objectParts: [ObjectPartModel]?
 
     override var queryProperties: [String] {
         return ["upload_id"]
@@ -1426,41 +1406,39 @@ public class CompleteMultipartUploadInput: QingStorInput {
 
 public class CompleteMultipartUploadOutput: QingStorOutput { }
 
-
 public class DeleteObjectInput: QingStorInput { }
 
 public class DeleteObjectOutput: QingStorOutput { }
 
-
 public class GetObjectInput: QingStorDownloadInput {
     // Specified the Cache-Control response header
-    public var responseCacheControl: String? = nil
+    public var responseCacheControl: String?
     // Specified the Content-Disposition response header
-    public var responseContentDisposition: String? = nil
+    public var responseContentDisposition: String?
     // Specified the Content-Encoding response header
-    public var responseContentEncoding: String? = nil
+    public var responseContentEncoding: String?
     // Specified the Content-Language response header
-    public var responseContentLanguage: String? = nil
+    public var responseContentLanguage: String?
     // Specified the Content-Type response header
-    public var responseContentType: String? = nil
+    public var responseContentType: String?
     // Specified the Expires response header
-    public var responseExpires: String? = nil
+    public var responseExpires: String?
     // Check whether the ETag matches
-    public var ifMatch: String? = nil
+    public var ifMatch: String?
     // Check whether the object has been modified
-    public var ifModifiedSince: Date? = nil
+    public var ifModifiedSince: Date?
     // Check whether the ETag does not match
-    public var ifNoneMatch: String? = nil
+    public var ifNoneMatch: String?
     // Check whether the object has not been modified
-    public var ifUnmodifiedSince: Date? = nil
+    public var ifUnmodifiedSince: Date?
     // Specified range of the object
-    public var range: String? = nil
+    public var range: String?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String? = nil
+    public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String? = nil
+    public var xQSEncryptionCustomerKeyMD5: String?
 
     override var queryProperties: [String] {
         return ["response-cache-control", "response-content-disposition", "response-content-encoding", "response-content-language", "response-content-type", "response-expires"]
@@ -1519,13 +1497,13 @@ public class GetObjectInput: QingStorDownloadInput {
 
 public class GetObjectOutput: QingStorDownloadOutput {
     // Object content length
-    public var contentLength: Int? = nil
+    public var contentLength: Int?
     // Range of response data content
-    public var contentRange: String? = nil
+    public var contentRange: String?
     // MD5sum of the object
-    public var etag: String? = nil
+    public var etag: String?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1537,22 +1515,21 @@ public class GetObjectOutput: QingStorDownloadOutput {
     }
 }
 
-
 public class HeadObjectInput: QingStorInput {
     // Check whether the ETag matches
-    public var ifMatch: String? = nil
+    public var ifMatch: String?
     // Check whether the object has been modified
-    public var ifModifiedSince: Date? = nil
+    public var ifModifiedSince: Date?
     // Check whether the ETag does not match
-    public var ifNoneMatch: String? = nil
+    public var ifNoneMatch: String?
     // Check whether the object has not been modified
-    public var ifUnmodifiedSince: Date? = nil
+    public var ifUnmodifiedSince: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String? = nil
+    public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String? = nil
+    public var xQSEncryptionCustomerKeyMD5: String?
 
     override var headerProperties: [String] {
         return ["If-Match", "If-Modified-Since", "If-None-Match", "If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
@@ -1593,14 +1570,14 @@ public class HeadObjectInput: QingStorInput {
 
 public class HeadObjectOutput: QingStorOutput {
     // Object content length
-    public var contentLength: Int? = nil
+    public var contentLength: Int?
     // Object content type
-    public var contentType: String? = nil
+    public var contentType: String?
     // MD5sum of the object
-    public var etag: String? = nil
-    public var lastModified: Date? = nil
+    public var etag: String?
+    public var lastModified: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1613,24 +1590,23 @@ public class HeadObjectOutput: QingStorOutput {
     }
 }
 
-
 public class ImageProcessInput: QingStorDownloadInput {
     // Image process action
     public var action: String! // Required
     // Specified the Cache-Control response header
-    public var responseCacheControl: String? = nil
+    public var responseCacheControl: String?
     // Specified the Content-Disposition response header
-    public var responseContentDisposition: String? = nil
+    public var responseContentDisposition: String?
     // Specified the Content-Encoding response header
-    public var responseContentEncoding: String? = nil
+    public var responseContentEncoding: String?
     // Specified the Content-Language response header
-    public var responseContentLanguage: String? = nil
+    public var responseContentLanguage: String?
     // Specified the Content-Type response header
-    public var responseContentType: String? = nil
+    public var responseContentType: String?
     // Specified the Expires response header
-    public var responseExpires: String? = nil
+    public var responseExpires: String?
     // Check whether the object has been modified
-    public var ifModifiedSince: Date? = nil
+    public var ifModifiedSince: Date?
 
     override var queryProperties: [String] {
         return ["action", "response-cache-control", "response-content-disposition", "response-content-encoding", "response-content-language", "response-content-type", "response-expires"]
@@ -1681,7 +1657,7 @@ public class ImageProcessInput: QingStorDownloadInput {
 
 public class ImageProcessOutput: QingStorDownloadOutput {
     // Object content length
-    public var contentLength: Int? = nil
+    public var contentLength: Int?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1690,16 +1666,15 @@ public class ImageProcessOutput: QingStorDownloadOutput {
     }
 }
 
-
 public class InitiateMultipartUploadInput: QingStorInput {
     // Object content type
-    public var contentType: String? = nil
+    public var contentType: String?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String? = nil
+    public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String? = nil
+    public var xQSEncryptionCustomerKeyMD5: String?
 
     override var headerProperties: [String] {
         return ["Content-Type", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
@@ -1734,13 +1709,13 @@ public class InitiateMultipartUploadInput: QingStorInput {
 
 public class InitiateMultipartUploadOutput: QingStorOutput {
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
     // Bucket name
-    public var bucket: String? = nil
+    public var bucket: String?
     // Object key
-    public var key: String? = nil
+    public var key: String?
     // Object multipart upload ID
-    public var uploadID: String? = nil
+    public var uploadID: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1752,12 +1727,11 @@ public class InitiateMultipartUploadOutput: QingStorOutput {
     }
 }
 
-
 public class ListMultipartInput: QingStorInput {
     // Limit results count
-    public var limit: Int? = nil
+    public var limit: Int?
     // Object multipart upload part number
-    public var partNumberMarker: Int? = nil
+    public var partNumberMarker: Int?
     // Object multipart upload ID
     public var uploadID: String! // Required
 
@@ -1796,9 +1770,9 @@ public class ListMultipartInput: QingStorInput {
 
 public class ListMultipartOutput: QingStorOutput {
     // Object multipart count
-    public var count: Int? = nil
+    public var count: Int?
     // Object parts
-    public var objectParts: [ObjectPartModel]? = nil
+    public var objectParts: [ObjectPartModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1808,10 +1782,9 @@ public class ListMultipartOutput: QingStorOutput {
     }
 }
 
-
 public class OptionsObjectInput: QingStorInput {
     // Request headers
-    public var accessControlRequestHeaders: String? = nil
+    public var accessControlRequestHeaders: String?
     // Request method
     public var accessControlRequestMethod: String! // Required
     // Request origin
@@ -1856,15 +1829,15 @@ public class OptionsObjectInput: QingStorInput {
 
 public class OptionsObjectOutput: QingStorOutput {
     // Allowed headers
-    public var accessControlAllowHeaders: String? = nil
+    public var accessControlAllowHeaders: String?
     // Allowed methods
-    public var accessControlAllowMethods: String? = nil
+    public var accessControlAllowMethods: String?
     // Allowed origin
-    public var accessControlAllowOrigin: String? = nil
+    public var accessControlAllowOrigin: String?
     // Expose headers
-    public var accessControlExposeHeaders: String? = nil
+    public var accessControlExposeHeaders: String?
     // Max age
-    public var accessControlMaxAge: String? = nil
+    public var accessControlMaxAge: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1877,44 +1850,43 @@ public class OptionsObjectOutput: QingStorOutput {
     }
 }
 
-
 public class PutObjectInput: QingStorInput {
     // Object content size
     public var contentLength: Int! // Required
     // Object MD5sum
-    public var contentMD5: String? = nil
+    public var contentMD5: String?
     // Object content type
-    public var contentType: String? = nil
+    public var contentType: String?
     // Used to indicate that particular server behaviors are required by the client
-    public var expect: String? = nil
+    public var expect: String?
     // Copy source, format (/<bucket-name>/<object-key>)
-    public var xQSCopySource: String? = nil
+    public var xQSCopySource: String?
     // Encryption algorithm of the object
-    public var xQSCopySourceEncryptionCustomerAlgorithm: String? = nil
+    public var xQSCopySourceEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSCopySourceEncryptionCustomerKey: String? = nil
+    public var xQSCopySourceEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSCopySourceEncryptionCustomerKeyMD5: String? = nil
+    public var xQSCopySourceEncryptionCustomerKeyMD5: String?
     // Check whether the copy source matches
-    public var xQSCopySourceIfMatch: String? = nil
+    public var xQSCopySourceIfMatch: String?
     // Check whether the copy source has been modified
-    public var xQSCopySourceIfModifiedSince: Date? = nil
+    public var xQSCopySourceIfModifiedSince: Date?
     // Check whether the copy source does not match
-    public var xQSCopySourceIfNoneMatch: String? = nil
+    public var xQSCopySourceIfNoneMatch: String?
     // Check whether the copy source has not been modified
-    public var xQSCopySourceIfUnmodifiedSince: Date? = nil
+    public var xQSCopySourceIfUnmodifiedSince: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String? = nil
+    public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String? = nil
+    public var xQSEncryptionCustomerKeyMD5: String?
     // Check whether fetch target object has not been modified
-    public var xQSFetchIfUnmodifiedSince: Date? = nil
+    public var xQSFetchIfUnmodifiedSince: Date?
     // Fetch source, should be a valid url
-    public var xQSFetchSource: String? = nil
+    public var xQSFetchSource: String?
     // Move source, format (/<bucket-name>/<object-key>)
-    public var xQSMoveSource: String? = nil
+    public var xQSMoveSource: String?
     // The request body
     public var bodyInputStream: InputStream?
 
@@ -1995,40 +1967,39 @@ public class PutObjectInput: QingStorInput {
 
 public class PutObjectOutput: QingStorOutput { }
 
-
 public class UploadMultipartInput: QingStorInput {
     // Object multipart upload part number
     public var partNumber: Int = 0 // Required
     // Object multipart upload ID
     public var uploadID: String! // Required
     // Object multipart content length
-    public var contentLength: Int? = nil
+    public var contentLength: Int?
     // Object multipart content MD5sum
-    public var contentMD5: String? = nil
+    public var contentMD5: String?
     // Specify range of the source object
-    public var xQSCopyRange: String? = nil
+    public var xQSCopyRange: String?
     // Copy source, format (/<bucket-name>/<object-key>)
-    public var xQSCopySource: String? = nil
+    public var xQSCopySource: String?
     // Encryption algorithm of the object
-    public var xQSCopySourceEncryptionCustomerAlgorithm: String? = nil
+    public var xQSCopySourceEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSCopySourceEncryptionCustomerKey: String? = nil
+    public var xQSCopySourceEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSCopySourceEncryptionCustomerKeyMD5: String? = nil
+    public var xQSCopySourceEncryptionCustomerKeyMD5: String?
     // Check whether the Etag of copy source matches the specified value
-    public var xQSCopySourceIfMatch: String? = nil
+    public var xQSCopySourceIfMatch: String?
     // Check whether the copy source has been modified since the specified date
-    public var xQSCopySourceIfModifiedSince: Date? = nil
+    public var xQSCopySourceIfModifiedSince: Date?
     // Check whether the Etag of copy source does not matches the specified value
-    public var xQSCopySourceIfNoneMatch: String? = nil
+    public var xQSCopySourceIfNoneMatch: String?
     // Check whether the copy source has not been unmodified since the specified date
-    public var xQSCopySourceIfUnmodifiedSince: Date? = nil
+    public var xQSCopySourceIfUnmodifiedSince: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String? = nil
+    public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String? = nil
+    public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String? = nil
+    public var xQSEncryptionCustomerKeyMD5: String?
     // The request body
     public var bodyInputStream: InputStream?
 
@@ -2108,4 +2079,3 @@ public class UploadMultipartInput: QingStorInput {
 }
 
 public class UploadMultipartOutput: QingStorOutput { }
-

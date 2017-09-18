@@ -23,7 +23,7 @@ import Cucumberish
 import QingStorSDK
 
 class CucumberishInitializer: NSObject {
-    class func CucumberishSwift() {
+    @objc class func CucumberishSwift() {
         beforeStart { () -> Void in
             QingStorTests.setup()
             BucketACLTests.setup()

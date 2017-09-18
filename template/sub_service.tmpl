@@ -48,10 +48,10 @@ public class Bucket: QingStorAPI {
             var uri = uriFormat
             
             if let index = uri.range(of: "?", options: .backwards)?.lowerBound {
-                let query = uri.substring(from: uri.index(after: index))
+                let query = String(uri[uri.index(after: index)...])
                 self.context.query = query
                 
-                uri = uri.substring(to: index)
+                uri = String(uri[..<index])
             }
             
             if uri.contains("<bucket-name>") {
