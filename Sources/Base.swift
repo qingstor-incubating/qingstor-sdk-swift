@@ -361,7 +361,7 @@ public class APISender {
         requestBuilder.buildRequest(completion: completion)
     }
 
-    public func sendAPI<T: BaseMappable>(completion: @escaping RequestCompletion<T>) {
+    public func sendAPI<T>(completion: @escaping RequestCompletion<T>) {
         requestBuilder.send(completion: completion)
     }
 }

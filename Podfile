@@ -6,9 +6,9 @@ target 'QingStorSDK' do
   use_frameworks!
 
   # Pods for QingStorSDK
-  pod 'Alamofire', '~> 4.0'
-  pod 'CryptoSwift', '~> 0.6.1'
-  pod 'ObjectMapper', '~> 2.2'
+  pod 'Alamofire', '~> 4.5'
+  pod 'CryptoSwift', '~> 0.7.1'
+  pod 'ObjectMapper', git: 'https://github.com/Hearst-DD/ObjectMapper.git', branch: 'swift-4'
 
   target 'QingStorSDKTests' do
     inherit! :search_paths
