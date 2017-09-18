@@ -22,7 +22,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 
-fileprivate func append(map: [AnyHashable:Any], to JSONToMap: inout Any) {
+private func append(map: [AnyHashable:Any], to JSONToMap: inout Any) {
     if var jsonMap = JSONToMap as? [AnyHashable:Any] {
         for (key, value) in map {
             jsonMap[key] = value
@@ -145,7 +145,7 @@ extension DownloadRequest {
                 }
             }
 
-            append(map: ["destination_url":fileURL], to: &JSONToMap)
+            append(map: ["destination_url": fileURL], to: &JSONToMap)
 
             if writeHeaders {
                 if let headers = response?.allHeaderFields {

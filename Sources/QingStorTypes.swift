@@ -79,16 +79,15 @@ public class ACLModel: BaseModel {
     }
 }
 
-
 public class BucketModel: BaseModel {
     // Created time of the bucket
-    public var created: Date? = nil
+    public var created: Date?
     // QingCloud Zone ID
-    public var location: String? = nil
+    public var location: String?
     // Bucket name
-    public var name: String? = nil
+    public var name: String?
     // URL to access the bucket
-    public var url: String? = nil
+    public var url: String?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -117,13 +116,12 @@ public class BucketModel: BaseModel {
     }
 }
 
-
 public class ConditionModel: BaseModel {
-    public var ipAddress: IPAddressModel? = nil
-    public var isNull: IsNullModel? = nil
-    public var notIPAddress: NotIPAddressModel? = nil
-    public var stringLike: StringLikeModel? = nil
-    public var stringNotLike: StringNotLikeModel? = nil
+    public var ipAddress: IPAddressModel?
+    public var isNull: IsNullModel?
+    public var notIPAddress: NotIPAddressModel?
+    public var stringLike: StringLikeModel?
+    public var stringNotLike: StringNotLikeModel?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -184,18 +182,17 @@ public class ConditionModel: BaseModel {
     }
 }
 
-
 public class CORSRuleModel: BaseModel {
     // Allowed headers
-    public var allowedHeaders: [String]? = nil
+    public var allowedHeaders: [String]?
     // Allowed methods
     public var allowedMethods: [String]! // Required
     // Allowed origin
     public var allowedOrigin: String! // Required
     // Expose headers
-    public var exposeHeaders: [String]? = nil
+    public var exposeHeaders: [String]?
     // Max age seconds
-    public var maxAgeSeconds: Int? = nil
+    public var maxAgeSeconds: Int?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -238,12 +235,11 @@ public class CORSRuleModel: BaseModel {
     }
 }
 
-
 public class GranteeModel: BaseModel {
     // Grantee user ID
-    public var id: String? = nil
+    public var id: String?
     // Grantee group name
-    public var name: String? = nil
+    public var name: String?
     // Grantee type
     // type's available values: user, group
     public var type: String! // Required
@@ -292,10 +288,9 @@ public class GranteeModel: BaseModel {
     }
 }
 
-
 public class IPAddressModel: BaseModel {
     // Source IP
-    public var sourceIP: [String]? = nil
+    public var sourceIP: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -318,10 +313,9 @@ public class IPAddressModel: BaseModel {
     }
 }
 
-
 public class IsNullModel: BaseModel {
     // Refer url
-    public var referer: Bool? = nil
+    public var referer: Bool?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -344,22 +338,21 @@ public class IsNullModel: BaseModel {
     }
 }
 
-
 public class KeyModel: BaseModel {
     // Object created time
-    public var created: Date? = nil
+    public var created: Date?
     // Whether this key is encrypted
-    public var encrypted: Bool? = nil
+    public var encrypted: Bool?
     // MD5sum of the object
-    public var etag: String? = nil
+    public var etag: String?
     // Object key
-    public var key: String? = nil
+    public var key: String?
     // MIME type of the object
-    public var mimeType: String? = nil
+    public var mimeType: String?
     // Last modified time in unix time format
-    public var modified: Int? = nil
+    public var modified: Int?
     // Object content size
-    public var size: Int? = nil
+    public var size: Int?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -394,14 +387,13 @@ public class KeyModel: BaseModel {
     }
 }
 
-
 public class KeyDeleteErrorModel: BaseModel {
     // Error code
-    public var code: String? = nil
+    public var code: String?
     // Object key
-    public var key: String? = nil
+    public var key: String?
     // Error message
-    public var message: String? = nil
+    public var message: String?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -428,10 +420,9 @@ public class KeyDeleteErrorModel: BaseModel {
     }
 }
 
-
 public class NotIPAddressModel: BaseModel {
     // Source IP
-    public var sourceIP: [String]? = nil
+    public var sourceIP: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -454,16 +445,15 @@ public class NotIPAddressModel: BaseModel {
     }
 }
 
-
 public class ObjectPartModel: BaseModel {
     // Object part created time
-    public var created: Date? = nil
+    public var created: Date?
     // MD5sum of the object part
-    public var etag: String? = nil
+    public var etag: String?
     // Object part number
     public var partNumber: Int = 0 // Required
     // Object part size
-    public var size: Int? = nil
+    public var size: Int?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -492,12 +482,11 @@ public class ObjectPartModel: BaseModel {
     }
 }
 
-
 public class OwnerModel: BaseModel {
     // User ID
-    public var id: String? = nil
+    public var id: String?
     // Username
-    public var name: String? = nil
+    public var name: String?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -522,18 +511,17 @@ public class OwnerModel: BaseModel {
     }
 }
 
-
 public class StatementModel: BaseModel {
     // QingStor API methods
     public var action: [String]! // Required
-    public var condition: ConditionModel? = nil
+    public var condition: ConditionModel?
     // Statement effect
     // effect's available values: allow, deny
     public var effect: String! // Required
     // Bucket policy id, must be unique
     public var id: String! // Required
     // The resources to apply bucket policy
-    public var resource: [String]? = nil
+    public var resource: [String]?
     // The user to apply bucket policy
     public var user: [String]! // Required
 
@@ -613,10 +601,9 @@ public class StatementModel: BaseModel {
     }
 }
 
-
 public class StringLikeModel: BaseModel {
     // Refer url
-    public var referer: [String]? = nil
+    public var referer: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -638,11 +625,10 @@ public class StringLikeModel: BaseModel {
         return nil
     }
 }
-
 
 public class StringNotLikeModel: BaseModel {
     // Refer url
-    public var referer: [String]? = nil
+    public var referer: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
@@ -665,14 +651,13 @@ public class StringNotLikeModel: BaseModel {
     }
 }
 
-
 public class UploadsModel: BaseModel {
     // Object part created time
-    public var created: Date? = nil
+    public var created: Date?
     // Object key
-    public var key: String? = nil
+    public var key: String?
     // Object upload id
-    public var uploadID: String? = nil
+    public var uploadID: String?
 
     public required init?(map: Map) {
         super.init(map: map)

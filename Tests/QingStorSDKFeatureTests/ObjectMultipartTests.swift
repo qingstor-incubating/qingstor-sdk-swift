@@ -50,67 +50,67 @@ class ObjectMultipartTests: QingStorTests {
             self.testInitiateMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^initiate multipart upload status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^initiate multipart upload status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.initiateMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^upload the first part with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+        When("^upload the first part with key \"(.{1,})\"$") { (_, userInfo) -> Void in
             self.testUploadMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, partNumber: 0, isLastPart: false)
         }
 
-        Then("^upload the first part status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^upload the first part status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^upload the second part with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+        When("^upload the second part with key \"(.{1,})\"$") { (_, userInfo) -> Void in
             self.testUploadMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, partNumber: 1, isLastPart: false)
         }
 
-        Then("^upload the second part status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^upload the second part status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^upload the third part with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+        When("^upload the third part with key \"(.{1,})\"$") { (_, userInfo) -> Void in
             self.testUploadMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, partNumber: 2, isLastPart: true)
         }
 
-        Then("^upload the third part status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^upload the third part status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.uploadMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^list multipart with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+        When("^list multipart with key \"(.{1,})\"$") { (_, userInfo) -> Void in
             self.testListMultipart(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^list multipart status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^list multipart status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.listMultipartResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^list multipart object parts count is (\\d+)$") { (args, userInfo) -> Void in
+        And("^list multipart object parts count is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.listMultipartResponse.output.objectParts!.count)", shouldBe: "\(args![0])")
         }
 
-        When("^complete multipart upload with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+        When("^complete multipart upload with key \"(.{1,})\"$") { (_, userInfo) -> Void in
             self.testCompleteMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^complete multipart upload status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^complete multipart upload status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.completeMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^abort multipart upload with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+        When("^abort multipart upload with key \"(.{1,})\"$") { (_, userInfo) -> Void in
             self.testAbortMultipartUpload(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, isFalse: true)
         }
 
-        Then("^abort multipart upload status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^abort multipart upload status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.abortMultipartUploadResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^delete the multipart object with key \"(.{1,})\"$") { (args, userInfo) -> Void in
+        When("^delete the multipart object with key \"(.{1,})\"$") { (_, userInfo) -> Void in
             self.testDeleteMultipartObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^delete the multipart object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete the multipart object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.deleteTheMultipartObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
@@ -121,7 +121,7 @@ class ObjectMultipartTests: QingStorTests {
             self.bucket.initiateMultipartUpload(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.initiateMultipartUploadResponse = response!
         }
     }
@@ -161,7 +161,7 @@ class ObjectMultipartTests: QingStorTests {
             fileHandle.closeFile()
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.uploadMultipartResponse = response!
         }
     }
@@ -172,7 +172,7 @@ class ObjectMultipartTests: QingStorTests {
             self.bucket.listMultipart(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.listMultipartResponse = response!
         }
     }
@@ -184,7 +184,7 @@ class ObjectMultipartTests: QingStorTests {
             self.bucket.completeMultipartUpload(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.completeMultipartUploadResponse = response!
         }
     }
@@ -220,7 +220,7 @@ class ObjectMultipartTests: QingStorTests {
             self.bucket.deleteObject(objectKey: self.objectKey, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deleteTheMultipartObjectResponse = response!
         }
     }

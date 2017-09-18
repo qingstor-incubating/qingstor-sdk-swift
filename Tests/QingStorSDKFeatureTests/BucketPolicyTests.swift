@@ -37,24 +37,24 @@ class BucketPolicyTests: QingStorTests {
     }
 
     override func setupFeature() {
-        When("^put bucket policy:$") { (args, userInfo) -> Void in
+        When("^put bucket policy:$") { (_, userInfo) -> Void in
             self.testPutPolicy(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase,
                                json: userInfo?[kDocStringKey] as! String)
         }
 
-        Then("^put bucket policy status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^put bucket policy status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putPolicyResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        When("^get bucket policy$") { (args, userInfo) -> Void in
+        When("^get bucket policy$") { (_, userInfo) -> Void in
             self.testGetPolicy(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^get bucket policy status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^get bucket policy status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getPolicyResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^get bucket policy should have Referer \"([^\"]*)\"$") { (args, userInfo) -> Void in
+        And("^get bucket policy should have Referer \"([^\"]*)\"$") { (args, _) -> Void in
             let referer = args![0]
             for statement in self.getPolicyResponse.output.statement! {
                 if let condition = statement.condition {
@@ -71,11 +71,11 @@ class BucketPolicyTests: QingStorTests {
             XCTAssert(false, "Referer \"\(referer)\" not found in bucket policy statement")
         }
 
-        When("^delete bucket policy$") { (args, userInfo) -> Void in
+        When("^delete bucket policy$") { (_, userInfo) -> Void in
             self.testDeletePolicy(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^delete bucket policy status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete bucket policy status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.deletePolicyResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
@@ -87,7 +87,7 @@ class BucketPolicyTests: QingStorTests {
             self.bucket.putPolicy(input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.putPolicyResponse = response!
         }
     }
@@ -97,7 +97,7 @@ class BucketPolicyTests: QingStorTests {
             self.bucket.getPolicy(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.getPolicyResponse = response!
         }
     }
@@ -107,7 +107,7 @@ class BucketPolicyTests: QingStorTests {
             self.bucket.deletePolicy(completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deletePolicyResponse = response!
         }
     }

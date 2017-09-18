@@ -60,7 +60,7 @@ class ObjectTests: QingStorTests {
             self.testPutObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^put object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^put object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
@@ -69,7 +69,7 @@ class ObjectTests: QingStorTests {
             self.testCopyObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^copy object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^copy object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putTheCopyObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
@@ -78,7 +78,7 @@ class ObjectTests: QingStorTests {
             self.testMoveObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^move object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^move object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.putTheMoveObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
@@ -87,11 +87,11 @@ class ObjectTests: QingStorTests {
             self.testGetObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^get object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^get object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
-        And("^get object content length is (\\d+)$") { (args, userInfo) -> Void in
+        And("^get object content length is (\\d+)$") { (_, _) -> Void in
             self.assertEqual(value: "\(self.contentLength)", shouldBe: "\(self.saveURL.contentLength)")
         }
 
@@ -100,7 +100,7 @@ class ObjectTests: QingStorTests {
             self.testGetObjectWithContentType(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, contentType: args![1])
         }
 
-        Then("^get object content type is \"(.{1,})\"$") { (args, userInfo) -> Void in
+        Then("^get object content type is \"(.{1,})\"$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getObjectWithContentTypeResponse.rawResponse.allHeaderFields["Content-Type"]!)", shouldBe: "\(args![0])")
         }
 
@@ -109,7 +109,7 @@ class ObjectTests: QingStorTests {
             self.testGetObjectWithQuerySignature(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^get object with query signature content length is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^get object with query signature content length is (\\d+)$") { (_, _) -> Void in
             self.assertEqual(value: "\(self.contentLength)", shouldBe: "\(self.downloadedURL.contentLength)")
         }
 
@@ -118,7 +118,7 @@ class ObjectTests: QingStorTests {
             self.testHeadObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^head object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^head object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.headObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
@@ -127,7 +127,7 @@ class ObjectTests: QingStorTests {
             self.testOptionsObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase, method: args![0], origin: args![1])
         }
 
-        Then("^options object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^options object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.optionsObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
@@ -136,7 +136,7 @@ class ObjectTests: QingStorTests {
             self.testDeleteObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^delete object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.deleteObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
 
@@ -145,7 +145,7 @@ class ObjectTests: QingStorTests {
             self.testDeleteMoveObject(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
 
-        Then("^delete the move object status code is (\\d+)$") { (args, userInfo) -> Void in
+        Then("^delete the move object status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.deleteTheMoveObjectResponse.statusCode)", shouldBe: "\(args![0])")
         }
     }
@@ -156,7 +156,7 @@ class ObjectTests: QingStorTests {
             self.bucket.putObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.putObjectResponse = response!
         }
     }
@@ -169,7 +169,7 @@ class ObjectTests: QingStorTests {
             self.bucket.putObject(objectKey: self.copyObjectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.putTheCopyObjectResponse = response!
         }
     }
@@ -181,7 +181,7 @@ class ObjectTests: QingStorTests {
             self.bucket.putObject(objectKey: self.moveObjectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.putTheMoveObjectResponse = response!
         }
     }
@@ -193,7 +193,7 @@ class ObjectTests: QingStorTests {
             self.bucket.getObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.getObjectResponse = response!
         }
     }
@@ -231,7 +231,7 @@ class ObjectTests: QingStorTests {
             self.bucket.getObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.getObjectWithContentTypeResponse = response!
         }
     }
@@ -242,7 +242,7 @@ class ObjectTests: QingStorTests {
             self.bucket.headObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.headObjectResponse = response!
             print("object content length: \(String(describing: self.headObjectResponse.output.contentLength))")
         }
@@ -254,7 +254,7 @@ class ObjectTests: QingStorTests {
             self.bucket.optionsObject(objectKey: self.objectKey, input: input, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.optionsObjectResponse = response!
         }
     }
@@ -264,7 +264,7 @@ class ObjectTests: QingStorTests {
             self.bucket.deleteObject(objectKey: self.objectKey, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deleteObjectResponse = response!
         }
     }
@@ -274,7 +274,7 @@ class ObjectTests: QingStorTests {
             self.bucket.deleteObject(objectKey: self.moveObjectKey, completion: completion)
         }
 
-        self.assertReqeust(testCase: testCase, request: request) { response, error in
+        self.assertReqeust(testCase: testCase, request: request) { response, _ in
             self.deleteTheMoveObjectResponse = response!
         }
     }

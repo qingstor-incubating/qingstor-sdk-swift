@@ -43,10 +43,9 @@ public class QingStor: QingStorAPI {
 
 }
 
-
 public class ListBucketsInput: QingStorInput {
     // Limits results to buckets that in the location
-    public var location: String? = nil
+    public var location: String?
 
     override var headerProperties: [String] {
         return ["Location"]
@@ -75,9 +74,9 @@ public class ListBucketsInput: QingStorInput {
 
 public class ListBucketsOutput: QingStorOutput {
     // Buckets information
-    public var buckets: [BucketModel]? = nil
+    public var buckets: [BucketModel]?
     // Bucket count
-    public var count: Int? = nil
+    public var count: Int?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
