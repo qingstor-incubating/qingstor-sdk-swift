@@ -9,6 +9,15 @@ The official QingStor SDK for the Swift programming language.
 
 ## Getting Started
 
+### Swift versions support
+
+Below is a table that shows which version of QingCloudSDK you should use for your Swift version.
+
+| Swift Version | QingCloudSDK Version |
+| ------------- | -------------------- |
+| 3.X           | <= 2.4.0             |
+| 4.x           | >= 2.4.1             |
+
 ### Installation
 
 Refer to the [Installation Guide](docs/installation.md), and have this SDK installed.
@@ -32,6 +41,7 @@ Checkout our [releases](https://github.com/yunify/qingstor-sdk-swift/releases) a
 
 - [Configuration Guide](docs/configuration.md)
 - [QingStor Service Usage Guide](docs/qingstor_service_usage.md)
+- ​[Image Processing Usage Guide](docs/image_processing_usage.md)
 
 ___Quick Start Code Example:___
 
