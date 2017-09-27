@@ -9,8 +9,8 @@ env:
   - FRAMEWORK_TEST_SCHEME="QingStorSDKTests"
   - DESTINATION="OS=11.0,name=iPhone X"
   matrix:
-    - SCHEME="$FRAMEWORK_SCHEME"  RUN_TESTS="NO"  POD_LINT="YES"
-    - SCHEME="$FRAMEWORK_TEST_SCHEME"  RUN_TESTS="YES"  POD_LINT="NO"
+    - SCHEME="$FRAMEWORK_SCHEME"  RUN_TESTS="NO"
+    - SCHEME="$FRAMEWORK_TEST_SCHEME"  RUN_TESTS="YES"
 before_install:
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - gem install cocoapods --pre --no-rdoc --no-ri --no-document --quiet
@@ -33,9 +33,4 @@ script:
       xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" -configuration Release ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty;
     else
       xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" -configuration Release ONLY_ACTIVE_ARCH=NO clean build | xcpretty;
-    fi
-
-  # Run `pod lib lint` if specified
-  - if [ $POD_LINT == "YES" ]; then
-      pod lib lint --allow-warnings;
     fi
