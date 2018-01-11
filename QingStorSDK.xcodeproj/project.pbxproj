@@ -43,6 +43,7 @@
 		8373008A1F425BC60042001D /* ImageProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837300891F425BC60042001D /* ImageProcessorTests.swift */; };
 		83E618111DE381F300CCFFDB /* QingStorSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83E618071DE381F300CCFFDB /* QingStorSDK.framework */; };
 		83E618181DE381F300CCFFDB /* QingStorSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 83E6180A1DE381F300CCFFDB /* QingStorSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		83EF6F4B20076C2000098B15 /* CustomizedSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF6F4A20076C2000098B15 /* CustomizedSigner.swift */; };
 		83EF6F4D2007848700098B15 /* Signer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF6F4C2007848700098B15 /* Signer.swift */; };
 		FC3D9DE928736DC0704F068D /* Pods_QingStorSDKFeatureTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB0A7C66BA70678F239E2D /* Pods_QingStorSDKFeatureTests.framework */; };
 /* End PBXBuildFile section */
@@ -107,6 +108,7 @@
 		83E6180A1DE381F300CCFFDB /* QingStorSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QingStorSDK.h; sourceTree = "<group>"; };
 		83E6180B1DE381F300CCFFDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83E618101DE381F300CCFFDB /* QingStorSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QingStorSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		83EF6F4A20076C2000098B15 /* CustomizedSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizedSigner.swift; sourceTree = "<group>"; };
 		83EF6F4C2007848700098B15 /* Signer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signer.swift; sourceTree = "<group>"; };
 		D2FB0A7C66BA70678F239E2D /* Pods_QingStorSDKFeatureTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QingStorSDKFeatureTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D498BEC7CEFF9D97D55E9E70 /* Pods-QingStorSDKFeatureTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QingStorSDKFeatureTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QingStorSDKFeatureTests/Pods-QingStorSDKFeatureTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				836134051DF3470500FC5859 /* QingStorAPIs.swift */,
 				83EF6F4C2007848700098B15 /* Signer.swift */,
 				836134061DF3470500FC5859 /* QingStorSigner.swift */,
+				83EF6F4A20076C2000098B15 /* CustomizedSigner.swift */,
 				837300871F425BB60042001D /* ImageProcessor.swift */,
 			);
 			name = Core;
@@ -576,6 +579,7 @@
 				837300881F425BB60042001D /* ImageProcessor.swift in Sources */,
 				8361340C1DF3470500FC5859 /* Base.swift in Sources */,
 				836134111DF3470500FC5859 /* QingStorSigner.swift in Sources */,
+				83EF6F4B20076C2000098B15 /* CustomizedSigner.swift in Sources */,
 				836134141DF3470500FC5859 /* ResponseSerialization.swift in Sources */,
 				836134131DF3470500FC5859 /* RequestBuilder.swift in Sources */,
 				836134101DF3470500FC5859 /* QingStorAPIs.swift in Sources */,
