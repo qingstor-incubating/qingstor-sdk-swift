@@ -77,6 +77,8 @@ open class RequestBuilder {
     public var downloadDestination: URL?
     public var acceptableStatusCodes: [Int]?
     public var writeHeadersToOutput: Bool
+    public var buildingQueue: DispatchQueue
+    public var callbackQueue: DispatchQueue
 
     public required init(context: APIContext,
                          method: HTTPMethod = .get,
@@ -88,7 +90,9 @@ open class RequestBuilder {
                          isDownload: Bool = false,
                          downloadDestination: URL? = nil,
                          acceptableStatusCodes: [Int]? = nil,
-                         writeHeadersToOutput: Bool = false) {
+                         writeHeadersToOutput: Bool = false,
+                         buildingQueue: DispatchQueue = DispatchQueue.global(),
+                         callbackQueue: DispatchQueue = DispatchQueue.main) {
         self.context = context
         self.method = method
         self.parameters = parameters
@@ -100,6 +104,8 @@ open class RequestBuilder {
         self.downloadDestination = downloadDestination
         self.acceptableStatusCodes = acceptableStatusCodes
         self.writeHeadersToOutput = writeHeadersToOutput
+        self.buildingQueue = buildingQueue
+        self.callbackQueue = callbackQueue
 
         self.buildDefaultHeader()
     }
@@ -194,11 +200,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
             self.addHeaders(headers)
         }
 
-        do {
-            try self.signer.writeSignature(to: self)
-        } catch {
-            return request
-        }
+        try self.signer.writeSignature(to: self)
 
         request.url = self.context.url
         request.allHTTPHeaderFields = self.headers
@@ -207,46 +209,50 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
 
     public override func buildRequest(completion: @escaping BuildCompletion) {
         self._buildRequest { request, error in
-            completion(request?.request, error)
+            self.callbackQueue.async {
+                completion(request?.request, error)
+            }
         }
     }
 
     fileprivate func _buildRequest(completion: @escaping _BuildCompletion) {
-        let sessionManager = DefaultRequestBuilder.sessionManager
-        sessionManager.adapter = self
-
-        let httpMethod = Alamofire.HTTPMethod(rawValue: method.rawValue)
-        var encoding: Alamofire.ParameterEncoding
-
-        switch self.encoding {
-        case .json:
-            encoding = Alamofire.JSONEncoding.default
-        default:
-            encoding = Alamofire.URLEncoding.default
-        }
-
-        if self.isDownload {
-            var destination: DownloadRequest.DownloadFileDestination? = nil
-            if let url = self.downloadDestination {
-                destination = { _, _ in (url, [.removePreviousFile, .createIntermediateDirectories]) }
+        buildingQueue.async {
+            let sessionManager = DefaultRequestBuilder.sessionManager
+            sessionManager.adapter = self
+            
+            let httpMethod = Alamofire.HTTPMethod(rawValue: self.method.rawValue)
+            var encoding: Alamofire.ParameterEncoding
+            
+            switch self.encoding {
+            case .json:
+                encoding = Alamofire.JSONEncoding.default
+            default:
+                encoding = Alamofire.URLEncoding.default
             }
-
-            let request = sessionManager.download(self.context.url, method: httpMethod!, parameters: parameters, encoding: encoding, headers: self.headers, to: destination)
-            completion(request, nil)
-        } else {
-            if self.encoding == .binary, let inputStream = self.parameters["body"] as? InputStream {
-                let request = sessionManager.upload(inputStream,
-                                      to: self.context.url,
-                                      method: httpMethod!,
-                                      headers: self.headers)
+            
+            if self.isDownload {
+                var destination: DownloadRequest.DownloadFileDestination? = nil
+                if let url = self.downloadDestination {
+                    destination = { _, _ in (url, [.removePreviousFile, .createIntermediateDirectories]) }
+                }
+                
+                let request = sessionManager.download(self.context.url, method: httpMethod!, parameters: self.parameters, encoding: encoding, headers: self.headers, to: destination)
                 completion(request, nil)
             } else {
-                let request = sessionManager.request(self.context.url,
-                                                     method: httpMethod!,
-                                                     parameters: parameters,
-                                                     encoding: encoding,
-                                                     headers: self.headers)
-                completion(request, nil)
+                if self.encoding == .binary, let inputStream = self.parameters["body"] as? InputStream {
+                    let request = sessionManager.upload(inputStream,
+                                                        to: self.context.url,
+                                                        method: httpMethod!,
+                                                        headers: self.headers)
+                    completion(request, nil)
+                } else {
+                    let request = sessionManager.request(self.context.url,
+                                                         method: httpMethod!,
+                                                         parameters: self.parameters,
+                                                         encoding: encoding,
+                                                         headers: self.headers)
+                    completion(request, nil)
+                }
             }
         }
     }
@@ -256,7 +262,9 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
             if let request = request {
                 self.processRequest(request: request, completion: completion)
             } else {
-                completion(nil, error ?? APIError.buildingRequestError(info: "build request request"))
+                self.callbackQueue.async {
+                    completion(nil, error ?? APIError.buildingRequestError(info: "build request request"))
+                }
             }
         }
     }
@@ -272,7 +280,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         }
 
         if let dataRequest = request as? DataRequest {
-            dataRequest.validate(statusCode: statusCode).responseOutput(writeHeaders: self.writeHeadersToOutput) { (response: DataResponse<T>) in
+            dataRequest.validate(statusCode: statusCode).responseOutput(queue: self.callbackQueue, writeHeaders: self.writeHeadersToOutput) { (response: DataResponse<T>) in
                 if response.result.isFailure {
                     completion(nil, response.result.error)
                     return
@@ -285,7 +293,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
                 }
             }.resume()
         } else if let downloadRequest = request as? DownloadRequest {
-            downloadRequest.validate(statusCode: statusCode).responseOutput(writeHeaders: self.writeHeadersToOutput) { (response: DownloadResponse<T>) in
+            downloadRequest.validate(statusCode: statusCode).responseOutput(queue: self.callbackQueue, writeHeaders: self.writeHeadersToOutput) { (response: DownloadResponse<T>) in
                 if response.result.isFailure {
                     completion(nil, response.result.error)
                     return
