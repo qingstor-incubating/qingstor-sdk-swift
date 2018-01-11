@@ -38,7 +38,13 @@ public class QingStor: QingStorAPI {
 
     // listBucketsSender create sender of listBuckets.
     public func listBucketsSender(input: ListBucketsInput) -> (APISender?, Error?) {
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context,
+                                  input: input,
+                                  method: .get,
+                                  signer: self.signer,
+                                  credential: self.credential,
+                                  buildingQueue: self.buildingQueue,
+                                  callbackQueue: self.callbackQueue)
     }
 
 }

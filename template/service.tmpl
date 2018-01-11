@@ -62,7 +62,13 @@ public class {{$service.Name | camelCase}}: QingStorAPI {
     {{- end -}}
 
     ) -> (APISender?, Error?) {
-        return APISender.qingStor(context: self.context, input: input, method: {{template "HTTPMethod" $operation}})
+        return APISender.qingStor(context: self.context,
+                                  input: input,
+                                  method: {{template "HTTPMethod" $operation}},
+                                  signer: self.signer,
+                                  credential: self.credential,
+                                  buildingQueue: self.buildingQueue,
+                                  callbackQueue: self.callbackQueue)
     }
 {{end}}
 }

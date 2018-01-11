@@ -36,7 +36,9 @@ public extension APISender {
                                method: HTTPMethod = .get,
                                signer: Signer = QingStorSigner(),
                                headers: [String:String] = [:],
-                               credential: URLCredential? = nil) -> (APISender?, Error?) {
+                               credential: URLCredential? = nil,
+                               buildingQueue: DispatchQueue = DispatchQueue.global(),
+                               callbackQueue: DispatchQueue = DispatchQueue.main) -> (APISender?, Error?) {
         if let error = input.validate() {
             return (nil, error)
         }
@@ -48,7 +50,9 @@ public extension APISender {
                                signer: signer,
                                headers: headers,
                                credential: credential,
-                               acceptableStatusCodes: [301, 304, 400, 401, 402, 403, 404, 405, 409, 412, 416, 500, 503])
+                               acceptableStatusCodes: [301, 304, 400, 401, 402, 403, 404, 405, 409, 412, 416, 500, 503],
+                               buildingQueue: buildingQueue,
+                               callbackQueue: callbackQueue)
         sender.headers["Date"] = String.RFC822()
 
         return (sender, nil)
@@ -59,11 +63,19 @@ public class QingStorAPI: BaseAPI {
     public var context: APIContext
     public var signer: Signer
     public var credential: URLCredential?
+    public var buildingQueue: DispatchQueue
+    public var callbackQueue: DispatchQueue
 
-    public init(context: APIContext = APIContext.qingStor(), signer: Signer = QingStorSigner(), credential: URLCredential? = nil) {
+    public init(context: APIContext = APIContext.qingStor(),
+                signer: Signer = QingStorSigner(),
+                credential: URLCredential? = nil,
+                buildingQueue: DispatchQueue = DispatchQueue.global(),
+                callbackQueue: DispatchQueue = DispatchQueue.main) {
         self.context = context
         self.signer = signer
         self.credential = credential
+        self.buildingQueue = buildingQueue
+        self.callbackQueue = callbackQueue
     }
 }
 

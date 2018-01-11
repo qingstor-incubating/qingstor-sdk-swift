@@ -244,6 +244,8 @@ public class APISender {
     public var downloadDestination: URL?
     public var acceptableStatusCodes: [Int]?
     public var writeHeadersToOutput: Bool
+    public var buildingQueue: DispatchQueue
+    public var callbackQueue: DispatchQueue
     public var requestBuilderFactory: RequestBuilderFactory = DefaultRequestBuilderFactory()
 
     public var requestBuilder: RequestBuilder {
@@ -258,7 +260,9 @@ public class APISender {
                             isDownload: self.isDownload,
                             downloadDestination: self.downloadDestination,
                             acceptableStatusCodes: self.acceptableStatusCodes,
-                            writeHeadersToOutput: self.writeHeadersToOutput)
+                            writeHeadersToOutput: self.writeHeadersToOutput,
+                            buildingQueue: self.buildingQueue,
+                            callbackQueue: self.callbackQueue)
     }
 
     public init(context: APIContext,
@@ -271,7 +275,9 @@ public class APISender {
                 isDownload: Bool = false,
                 downloadDestination: URL? = nil,
                 acceptableStatusCodes: [Int]? = nil,
-                writeHeadersToOutput: Bool = false) {
+                writeHeadersToOutput: Bool = false,
+                buildingQueue: DispatchQueue = DispatchQueue.global(),
+                callbackQueue: DispatchQueue = DispatchQueue.main) {
         self.context = context
         self.parameters = parameters
         self.method = method
@@ -283,6 +289,8 @@ public class APISender {
         self.downloadDestination = downloadDestination
         self.acceptableStatusCodes = acceptableStatusCodes
         self.writeHeadersToOutput = writeHeadersToOutput
+        self.buildingQueue = buildingQueue
+        self.callbackQueue = callbackQueue
     }
 
     public convenience init(context: APIContext,
@@ -291,7 +299,9 @@ public class APISender {
                             signer: Signer,
                             headers: [String:String] = [:],
                             credential: URLCredential? = nil,
-                            acceptableStatusCodes: [Int]? = nil) {
+                            acceptableStatusCodes: [Int]? = nil,
+                            buildingQueue: DispatchQueue = DispatchQueue.global(),
+                            callbackQueue: DispatchQueue = DispatchQueue.main) {
         var parameters: [String:Any] = [:]
         var encoding = ParameterEncodingType.query
         var realContext = context
@@ -356,7 +366,9 @@ public class APISender {
                   isDownload: isDownload,
                   downloadDestination: downloadDestination,
                   acceptableStatusCodes: acceptableStatusCodes,
-                  writeHeadersToOutput: true)
+                  writeHeadersToOutput: true,
+                  buildingQueue: buildingQueue,
+                  callbackQueue: callbackQueue)
     }
 
     public func buildRequest(completion: @escaping BuildCompletion) {
