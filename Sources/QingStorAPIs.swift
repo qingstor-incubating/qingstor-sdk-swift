@@ -34,7 +34,7 @@ public extension APISender {
     public class func qingStor(context: APIContext = APIContext.qingStor(),
                                input: QingStorInput,
                                method: HTTPMethod = .get,
-                               signer: QingStorSigner = QingStorSigner(),
+                               signer: Signer = QingStorSigner(),
                                headers: [String:String] = [:],
                                credential: URLCredential? = nil) -> (APISender?, Error?) {
         if let error = input.validate() {
@@ -57,9 +57,13 @@ public extension APISender {
 
 public class QingStorAPI: BaseAPI {
     public var context: APIContext
+    public var signer: Signer
+    public var credential: URLCredential?
 
-    public init(context: APIContext = APIContext.qingStor()) {
+    public init(context: APIContext = APIContext.qingStor(), signer: Signer = QingStorSigner(), credential: URLCredential? = nil) {
         self.context = context
+        self.signer = signer
+        self.credential = credential
     }
 }
 

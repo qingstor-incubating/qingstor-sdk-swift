@@ -63,7 +63,9 @@ public enum APIError: Error {
     case parameterValueNotAllowedError(name: String, value: String?, allowedValues: [String])
 }
 
-public protocol Signer {
+public protocol Signer: class {
+    var signatureType: QingStorSignatureType { get set }
+
     func signatureString(from requestBuilder: RequestBuilder) throws -> String
     func writeSignature(to requestBuilder: RequestBuilder) throws
 }
@@ -244,7 +246,7 @@ public class APISender {
     public var writeHeadersToOutput: Bool
     public var requestBuilderFactory: RequestBuilderFactory = DefaultRequestBuilderFactory()
 
-    public lazy var requestBuilder: RequestBuilder = {
+    public var requestBuilder: RequestBuilder {
         let builder: RequestBuilder.Type = self.requestBuilderFactory.getBuilder()
         return builder.init(context: self.context,
                             method: self.method,
@@ -257,7 +259,7 @@ public class APISender {
                             downloadDestination: self.downloadDestination,
                             acceptableStatusCodes: self.acceptableStatusCodes,
                             writeHeadersToOutput: self.writeHeadersToOutput)
-    }()
+    }
 
     public init(context: APIContext,
                 parameters: [String:Any],

@@ -23,7 +23,7 @@ import ObjectMapper
 
 public extension QingStor {
     public func bucket(bucketName: String, zone: String) -> Bucket {
-        return Bucket(context: self.context.rawCopy(), bucketName: bucketName, zone: zone)
+        return Bucket(context: self.context.rawCopy(), bucketName: bucketName, zone: zone, signer: self.signer, credential: self.credential)
     }
 }
 
@@ -31,11 +31,11 @@ public class Bucket: QingStorAPI {
     public var zoneName: String
     public var bucketName: String
 
-    public init(context: APIContext = APIContext.qingStor(), bucketName: String, zone: String) {
+    public init(context: APIContext = APIContext.qingStor(), bucketName: String, zone: String, signer: Signer = QingStorSigner(), credential: URLCredential? = nil) {
         self.bucketName = bucketName
         self.zoneName = zone
 
-        super.init(context: context)
+        super.init(context: context, signer: signer, credential: credential)
     }
 
     func setupContext(uriFormat: String?, bucketName: String? = nil, objectKey: String? = nil, zone: String? = nil) throws {
@@ -96,7 +96,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .delete)
+        return APISender.qingStor(context: self.context, input: input, method: .delete, signer: self.signer, credential: self.credential)
     }
 
     // deleteCORS: Delete CORS information of the bucket.
@@ -120,7 +120,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .delete)
+        return APISender.qingStor(context: self.context, input: input, method: .delete, signer: self.signer, credential: self.credential)
     }
 
     // deleteExternalMirror: Delete external mirror of the bucket.
@@ -144,7 +144,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .delete)
+        return APISender.qingStor(context: self.context, input: input, method: .delete, signer: self.signer, credential: self.credential)
     }
 
     // deletePolicy: Delete policy information of the bucket.
@@ -168,7 +168,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .delete)
+        return APISender.qingStor(context: self.context, input: input, method: .delete, signer: self.signer, credential: self.credential)
     }
 
     // deleteMultipleObjects: Delete multiple objects from the bucket.
@@ -192,7 +192,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .post)
+        return APISender.qingStor(context: self.context, input: input, method: .post, signer: self.signer, credential: self.credential)
     }
 
     // getACL: Get ACL information of the bucket.
@@ -216,7 +216,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // getCORS: Get CORS information of the bucket.
@@ -240,7 +240,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // getExternalMirror: Get external mirror of the bucket.
@@ -264,7 +264,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // getPolicy: Get policy information of the bucket.
@@ -288,7 +288,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // getStatistics: Get statistics information of the bucket.
@@ -312,7 +312,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // head: Check whether the bucket exists and available.
@@ -336,7 +336,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .head)
+        return APISender.qingStor(context: self.context, input: input, method: .head, signer: self.signer, credential: self.credential)
     }
 
     // listMultipartUploads: List multipart uploads in the bucket.
@@ -360,7 +360,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // listObjects: Retrieve the object list in a bucket.
@@ -384,7 +384,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // put: Create a new bucket.
@@ -408,7 +408,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .put)
+        return APISender.qingStor(context: self.context, input: input, method: .put, signer: self.signer, credential: self.credential)
     }
 
     // putACL: Set ACL information of the bucket.
@@ -432,7 +432,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .put)
+        return APISender.qingStor(context: self.context, input: input, method: .put, signer: self.signer, credential: self.credential)
     }
 
     // putCORS: Set CORS information of the bucket.
@@ -456,7 +456,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .put)
+        return APISender.qingStor(context: self.context, input: input, method: .put, signer: self.signer, credential: self.credential)
     }
 
     // putExternalMirror: Set external mirror of the bucket.
@@ -480,7 +480,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .put)
+        return APISender.qingStor(context: self.context, input: input, method: .put, signer: self.signer, credential: self.credential)
     }
 
     // putPolicy: Set policy information of the bucket.
@@ -504,7 +504,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .put)
+        return APISender.qingStor(context: self.context, input: input, method: .put, signer: self.signer, credential: self.credential)
     }
 
     // abortMultipartUpload: Abort multipart upload.
@@ -528,7 +528,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .delete)
+        return APISender.qingStor(context: self.context, input: input, method: .delete, signer: self.signer, credential: self.credential)
     }
 
     // completeMultipartUpload: Complete multipart upload.
@@ -552,7 +552,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .post)
+        return APISender.qingStor(context: self.context, input: input, method: .post, signer: self.signer, credential: self.credential)
     }
 
     // deleteObject: Delete the object.
@@ -576,7 +576,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .delete)
+        return APISender.qingStor(context: self.context, input: input, method: .delete, signer: self.signer, credential: self.credential)
     }
 
     // getObject: Retrieve the object.
@@ -600,7 +600,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // headObject: Check whether the object exists and available.
@@ -624,7 +624,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .head)
+        return APISender.qingStor(context: self.context, input: input, method: .head, signer: self.signer, credential: self.credential)
     }
 
     // imageProcess: Image process with the action on the object
@@ -648,7 +648,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // initiateMultipartUpload: Initial multipart upload on the object.
@@ -672,7 +672,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .post)
+        return APISender.qingStor(context: self.context, input: input, method: .post, signer: self.signer, credential: self.credential)
     }
 
     // listMultipart: List object parts.
@@ -696,7 +696,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .get)
+        return APISender.qingStor(context: self.context, input: input, method: .get, signer: self.signer, credential: self.credential)
     }
 
     // optionsObject: Check whether the object accepts a origin with method and header.
@@ -720,7 +720,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .options)
+        return APISender.qingStor(context: self.context, input: input, method: .options, signer: self.signer, credential: self.credential)
     }
 
     // putObject: Upload the object.
@@ -744,7 +744,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .put)
+        return APISender.qingStor(context: self.context, input: input, method: .put, signer: self.signer, credential: self.credential)
     }
 
     // uploadMultipart: Upload object multipart.
@@ -768,7 +768,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
 
-        return APISender.qingStor(context: self.context, input: input, method: .put)
+        return APISender.qingStor(context: self.context, input: input, method: .put, signer: self.signer, credential: self.credential)
     }
 
 }
