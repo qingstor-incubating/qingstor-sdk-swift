@@ -1,11 +1,21 @@
 # Change Log
 All notable changes to QingStor SDK for Swift will be documented in this file.
 
+## [v2.5.0] - 2018-01-12
+
+### Added
+- Add CustomizedSigner to handle custom signatures.
+
+## [v2.4.1] - 2017-09-27
+
+### Improved
+- Support swift 4.0.
+
 ## [v2.4.0] - 2017-08-16
 
 ### Added
-- Add image process API
-- Add ImageProcessor util class to generate image processing result
+- Add image process API.
+- Add ImageProcessor util class to generate image processing result.
 
 ## [v2.3.0] - 2017-07-09
 
@@ -14,8 +24,8 @@ All notable changes to QingStor SDK for Swift will be documented in this file.
 - Add multipart copy and range support.
 
 ### BREAKING CHANGE
-- Remove default zone setting
-- Initializing Bucket must provide the zone parameter
+- Remove default zone setting.
+- Initializing Bucket must provide the zone parameter.
 
 ## [v2.2.0] - 2016-03-11
 
@@ -45,6 +55,8 @@ All notable changes to QingStor SDK for Swift will be documented in this file.
 ### Added
 - QingStor SDK for the Swift programming language.
 
+[v2.5.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.4.1...v2.5.0
+[v2.4.1]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.4.0...v2.4.1
 [v2.4.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.3.0...v2.4.0
 [v2.3.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.2.0...v2.3.0
 [v2.2.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.1.0...v2.2.0
