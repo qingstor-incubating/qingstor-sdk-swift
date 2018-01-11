@@ -1496,21 +1496,41 @@ public class GetObjectInput: QingStorDownloadInput {
 }
 
 public class GetObjectOutput: QingStorDownloadOutput {
+    // The Cache-Control general-header field is used to specify directives for caching mechanisms in both requests and responses.
+    public var cacheControl: String?
+    // In a multipart/form-data body, the HTTP Content-Disposition general header is a header that can be used on the subpart of a multipart body to give information about the field it applies to.
+    public var contentDisposition: String?
+    // The Content-Encoding entity header is used to compress the media-type.
+    public var contentEncoding: String?
+    // The Content-Language entity header is used to describe the language(s) intended for the audience.
+    public var contentLanguage: String?
     // Object content length
     public var contentLength: Int?
     // Range of response data content
     public var contentRange: String?
+    // The Content-Type entity header is used to indicate the media type of the resource.
+    public var contentType: String?
     // MD5sum of the object
     public var etag: String?
+    // The Expires header contains the date/time after which the response is considered stale.
+    public var expires: String?
+    public var lastModified: Date?
     // Encryption algorithm of the object
     public var xQSEncryptionCustomerAlgorithm: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
+        cacheControl <- map["Cache-Control"]
+        contentDisposition <- map["Content-Disposition"]
+        contentEncoding <- map["Content-Encoding"]
+        contentLanguage <- map["Content-Language"]
         contentLength <- map["Content-Length"]
         contentRange <- map["Content-Range"]
+        contentType <- map["Content-Type"]
         etag <- map["ETag"]
+        expires <- map["Expires"]
+        lastModified <- (map["Last-Modified"], RFC822DateTransform())
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
     }
 }
