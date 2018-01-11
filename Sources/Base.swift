@@ -59,15 +59,9 @@ public enum APIError: Error {
     case contextError(info: String)
     case buildingRequestError(info: String)
     case encodingError(info: String)
+    case signatureError(info: String)
     case parameterRequiredError(name: String, parentName: String)
     case parameterValueNotAllowedError(name: String, value: String?, allowedValues: [String])
-}
-
-public protocol Signer: class {
-    var signatureType: QingStorSignatureType { get set }
-
-    func signatureString(from requestBuilder: RequestBuilder) throws -> String
-    func writeSignature(to requestBuilder: RequestBuilder) throws
 }
 
 public struct APIContext {
