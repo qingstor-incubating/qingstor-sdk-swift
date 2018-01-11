@@ -182,6 +182,7 @@ open class RequestBuilder {
 }
 
 open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
+    fileprivate var buildingRequestError: Error?
 
     static let sessionManager: Alamofire.SessionManager = {
         let configuration = URLSessionConfiguration.default
@@ -200,7 +201,11 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
             self.addHeaders(headers)
         }
 
-        try self.signer.writeSignature(to: self)
+        do {
+            try self.signer.writeSignature(to: self)
+        } catch {
+            buildingRequestError = error
+        }
 
         request.url = self.context.url
         request.allHTTPHeaderFields = self.headers
@@ -219,23 +224,23 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         buildingQueue.async {
             let sessionManager = DefaultRequestBuilder.sessionManager
             sessionManager.adapter = self
-            
+
             let httpMethod = Alamofire.HTTPMethod(rawValue: self.method.rawValue)
             var encoding: Alamofire.ParameterEncoding
-            
+
             switch self.encoding {
             case .json:
                 encoding = Alamofire.JSONEncoding.default
             default:
                 encoding = Alamofire.URLEncoding.default
             }
-            
+
             if self.isDownload {
                 var destination: DownloadRequest.DownloadFileDestination? = nil
                 if let url = self.downloadDestination {
                     destination = { _, _ in (url, [.removePreviousFile, .createIntermediateDirectories]) }
                 }
-                
+
                 let request = sessionManager.download(self.context.url, method: httpMethod!, parameters: self.parameters, encoding: encoding, headers: self.headers, to: destination)
                 completion(request, nil)
             } else {
@@ -244,14 +249,24 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
                                                         to: self.context.url,
                                                         method: httpMethod!,
                                                         headers: self.headers)
-                    completion(request, nil)
+                    if let error = self.buildingRequestError {
+                        completion(nil, error)
+                        self.buildingRequestError = nil
+                    } else {
+                        completion(request, nil)
+                    }
                 } else {
                     let request = sessionManager.request(self.context.url,
                                                          method: httpMethod!,
                                                          parameters: self.parameters,
                                                          encoding: encoding,
                                                          headers: self.headers)
-                    completion(request, nil)
+                    if let error = self.buildingRequestError {
+                        completion(nil, error)
+                        self.buildingRequestError = nil
+                    } else {
+                        completion(request, nil)
+                    }
                 }
             }
         }
