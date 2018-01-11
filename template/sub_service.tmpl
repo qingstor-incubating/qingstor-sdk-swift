@@ -26,7 +26,7 @@ import ObjectMapper
 
 public extension {{$service.Name | camelCase}} {
     public func bucket(bucketName: String, zone: String) -> Bucket {
-        return Bucket(context: self.context.rawCopy(), bucketName: bucketName, zone: zone)
+        return Bucket(context: self.context.rawCopy(), bucketName: bucketName, zone: zone, signer: self.signer, credential: self.credential)
     }
 }
 
@@ -34,11 +34,11 @@ public class Bucket: QingStorAPI {
     public var zoneName: String
     public var bucketName: String
     
-    public init(context: APIContext = APIContext.qingStor(), bucketName: String, zone: String) {
+    public init(context: APIContext = APIContext.qingStor(), bucketName: String, zone: String, signer: Signer = QingStorSigner(), credential: URLCredential? = nil) {
         self.bucketName = bucketName
         self.zoneName = zone
 
-        super.init(context: context)
+        super.init(context: context, signer: signer, credential: credential)
     }
     
     func setupContext(uriFormat: String?, bucketName: String? = nil, objectKey: String? = nil, zone: String? = nil) throws {
@@ -178,7 +178,7 @@ public class Bucket: QingStorAPI {
             return (nil, error)
         }
         
-        return APISender.qingStor(context: self.context, input: input, method: {{template "HTTPMethod" $operation}})
+        return APISender.qingStor(context: self.context, input: input, method: {{template "HTTPMethod" $operation}}, signer: self.signer, credential: self.credential)
     }
     {{end -}}
 {{- end}}
