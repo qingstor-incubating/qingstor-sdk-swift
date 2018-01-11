@@ -47,7 +47,17 @@ class QingStorTests: NSObject {
         currentZone = testConfig["zone"]
         bucketName = testConfig["bucket_name"]
 
-        qsService = QingStor(context: context)
+        let qingstorSigner = QingStorSigner()
+        let signer = CustomizedSigner {
+            switch $0.signatureType {
+            case let .query(timeoutSeconds):
+                try $3(qingstorSigner.querySignatureString(from: $2, timeoutSeconds: timeoutSeconds))
+            case .header:
+                try $3(qingstorSigner.headerSignatureString(from: $2))
+            }
+        }
+
+        qsService = QingStor(context: context, signer: signer)
 
         setupFeature()
     }
