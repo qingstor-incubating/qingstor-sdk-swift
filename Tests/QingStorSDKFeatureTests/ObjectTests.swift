@@ -209,7 +209,7 @@ class ObjectTests: QingStorTests {
             URLSession.shared.downloadTask(with: request!) { url, _, error in
                 if let url = url {
                     let fileManager = FileManager.default
-                    try! fileManager.removeItem(at: self.downloadedURL)
+                    try? fileManager.removeItem(at: self.downloadedURL)
                     try! fileManager.copyItem(at: url, to: self.downloadedURL)
                 }
 
