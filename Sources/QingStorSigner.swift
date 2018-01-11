@@ -20,133 +20,23 @@
 
 import Foundation
 
-public enum QingStorSignatureType: Error {
-    case query(timeoutSeconds: Int)
-    case header
-}
+public struct QingStorSigner: Signer {
+    public var signatureType: QingStorSignatureType
 
-public class QingStorSigner: Signer {
-    public var signatureType: QingStorSignatureType = .header
-
-    public init() { }
-
-    public func signatureString(from requestBuilder: RequestBuilder) throws -> String {
-        switch signatureType {
-        case .query(let timeoutSeconds):
-            let (signatureString, _) = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
-            return signatureString
-        case .header:
-            return try headerSignatureString(from: requestBuilder)
-        }
+    public init(signatureType: QingStorSignatureType = .header) {
+        self.signatureType = signatureType
     }
 
-    public func writeSignature(to requestBuilder: RequestBuilder) throws {
-        switch signatureType {
-        case .query(let timeoutSeconds):
-            try writeQuerySignature(to: requestBuilder, timeoutSeconds: timeoutSeconds)
-        case .header:
-            try writeHeaderSignature(to: requestBuilder)
-        }
+    public func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult {
+        let expires = self.expires(from: requestBuilder, timeoutSeconds: timeoutSeconds)
+        let plainString = querySignaturePlainString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
+        let signatureString = try plainString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
+        return .query(signature: signatureString, accessKey: requestBuilder.context.accessKeyID, expires: expires)
     }
 
-    func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> (String, Int) {
-        let headers = requestBuilder.headers
-        let date = ((headers["Date"] ?? String.RFC822()).toRFC822Date())!
-        let expires = Int(date.timeIntervalSince1970) + timeoutSeconds
-
-        var signatureString = "\(requestBuilder.method.rawValue)\n\n\n"
-        signatureString += "\(expires)\n"
-        signatureString += buildCanonicalizedResource(requestBuilder)
-        signatureString = try signatureString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
-
-        return (signatureString, expires)
-    }
-
-    func headerSignatureString(from requestBuilder: RequestBuilder) throws -> String {
-        let headers = requestBuilder.headers
-        var signatureString = "\(requestBuilder.method.rawValue)\n"
-        signatureString += "\(headers["Content-MD5"] ?? "")\n"
-        signatureString += "\(headers["Content-Type"] ?? "")\n"
-        signatureString += "\(headers["Date"] ?? String.RFC822())\n"
-        signatureString += buildCanonicalizedHeaders(requestBuilder)
-        signatureString += buildCanonicalizedResource(requestBuilder)
-        signatureString = try signatureString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
-
-        return signatureString
-    }
-
-    func writeQuerySignature(to requestBuilder: RequestBuilder, timeoutSeconds: Int) throws {
-        let (signatureString, expires) = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
-        let query: [String] = ["access_key_id=\(requestBuilder.context.accessKeyID)", "expires=\(expires)", "signature=\(signatureString.escape())"]
-        let percentEncodedQuery = (requestBuilder.context.urlComponents.percentEncodedQuery.map { $0 + "&" } ?? "") + query.joined(separator: "&")
-        requestBuilder.context.urlComponents.percentEncodedQuery = percentEncodedQuery
-    }
-
-    func writeHeaderSignature(to requestBuilder: RequestBuilder) throws {
-        let signatureString = try headerSignatureString(from: requestBuilder)
-        requestBuilder.headers["Authorization"] = "QS \(requestBuilder.context.accessKeyID):\(signatureString)"
-    }
-
-    func buildCanonicalizedHeaders(_ requestBuilder: RequestBuilder) -> String {
-        var canonicalizedHeaders = ""
-        for key in requestBuilder.headers.keys.sorted(by: <) {
-            let encodeValue = requestBuilder.headers[key]?.escapeNonASCIIOnly()
-            requestBuilder.headers[key] = encodeValue
-
-            let lowercasedKey = key.lowercased()
-            if lowercasedKey.hasPrefix("x-qs-") {
-                canonicalizedHeaders += "\(lowercasedKey):\(encodeValue!.trimmingCharacters(in: CharacterSet.whitespaces))\n"
-            }
-        }
-        return canonicalizedHeaders
-    }
-
-    func buildCanonicalizedResource(_ requestBuilder: RequestBuilder) -> String {
-        let parametersToSign = ["acl",
-                                "cors",
-                                "delete",
-                                "mirror",
-                                "part_number",
-                                "policy",
-                                "stats",
-                                "upload_id",
-                                "uploads",
-                                "image",
-                                "response-expires",
-                                "response-cache-control",
-                                "response-content-type",
-                                "response-content-language",
-                                "response-content-encoding",
-                                "response-content-disposition"]
-
-        let urlString = requestBuilder.context.url.absoluteString
-
-        var query = ""
-        if let index = urlString.range(of: "?", options: .backwards)?.lowerBound {
-            query = String(urlString[urlString.index(after: index)...])
-        }
-
-        if requestBuilder.encoding == .query {
-            let parametersQuery = APIHelper.buildQueryString(parameters: &requestBuilder.parameters, escaped: false)
-
-            if !parametersQuery.isEmpty {
-                if !query.isEmpty {
-                    query += "&"
-                }
-                query += parametersQuery
-            }
-        }
-
-        query = query.components(separatedBy: "&")
-            .filter { parametersToSign.contains($0.components(separatedBy: "=")[0]) }
-            .joined(separator: "&")
-            .unescape()
-
-        let uri = requestBuilder.context.uri.urlPathEscape()
-        if !query.isEmpty {
-            return "\(uri)?\(query)"
-        }
-
-        return uri
+    public func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult {
+        let plainString = headerSignaturePlainString(from: requestBuilder)
+        let signatureString = try plainString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
+        return .header(signature: signatureString, accessKey: requestBuilder.context.accessKeyID)
     }
 }

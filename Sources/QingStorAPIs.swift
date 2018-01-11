@@ -43,11 +43,13 @@ public extension APISender {
             return (nil, error)
         }
 
-        signer.signatureType = input.signatureType
+        var actualSigner = signer
+        actualSigner.signatureType = input.signatureType
+
         let sender = APISender(context: context,
                                input: input,
                                method: method,
-                               signer: signer,
+                               signer: actualSigner,
                                headers: headers,
                                credential: credential,
                                acceptableStatusCodes: [301, 304, 400, 401, 402, 403, 404, 405, 409, 412, 416, 500, 503],
