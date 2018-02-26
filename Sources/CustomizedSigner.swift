@@ -18,7 +18,8 @@
 // +-------------------------------------------------------------------------
 //
 
-public struct CustomizedSigner: Signer {
+@objc(QSCustomizedSigner)
+final public class CustomizedSigner: NSObject, Signer {
     public typealias SignatureHandlerCompletion = (SignatureResult) -> Void
     public typealias SignatureHandler = (CustomizedSigner, String, RequestBuilder, @escaping SignatureHandlerCompletion) throws -> Void
     
@@ -56,5 +57,9 @@ public struct CustomizedSigner: Signer {
         
         semaphoreSignal.wait()
         return result
+    }
+    
+    public func rawCopy() -> CustomizedSigner {
+        return CustomizedSigner(signatureType: signatureType, handler: handler)
     }
 }

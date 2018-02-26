@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct QingStorSigner: Signer {
+final public class QingStorSigner: NSObject, Signer {
     public var signatureType: QingStorSignatureType
 
     public init(signatureType: QingStorSignatureType = .header) {
@@ -38,5 +38,9 @@ public struct QingStorSigner: Signer {
         let plainString = headerSignaturePlainString(from: requestBuilder)
         let signatureString = try plainString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
         return .header(signature: signatureString, accessKey: requestBuilder.context.accessKeyID)
+    }
+    
+    public func rawCopy() -> QingStorSigner {
+        return QingStorSigner(signatureType: signatureType)
     }
 }
