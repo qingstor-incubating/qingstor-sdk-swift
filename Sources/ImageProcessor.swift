@@ -1,5 +1,5 @@
 //
-//  QingStorAPIs.swift
+//  ImageProcessor.swift
 //
 // +-------------------------------------------------------------------------
 // | Copyright (C) 2017 Yunify, Inc.
