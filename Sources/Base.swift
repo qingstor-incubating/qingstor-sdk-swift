@@ -21,18 +21,19 @@
 import Foundation
 import ObjectMapper
 
-public class Registry {
-    public static var accessKeyID: String!
-    public static var secretAccessKey: String!
+@objc(QSRegistry)
+public class Registry: NSObject {
+    @objc public static var accessKeyID: String!
+    @objc public static var secretAccessKey: String!
 
     static var config: [String:String]!
 
-    public static func register(accessKeyID: String, secretAccessKey: String) {
+    @objc public static func register(accessKeyID: String, secretAccessKey: String) {
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
     }
 
-    public static func registerFrom(plist: URL) throws {
+    @objc public static func registerFrom(plist: URL) throws {
         guard let config = NSDictionary(contentsOf: plist) as? Dictionary<String, String> else {
             throw APIError.registerError(info: "plist not found")
         }
@@ -64,12 +65,13 @@ public enum APIError: Error {
     case parameterValueNotAllowedError(name: String, value: String?, allowedValues: [String])
 }
 
-public struct APIContext {
-    public var url: URL {
+@objc(QSAPIContext)
+public class APIContext: NSObject {
+    @objc public var url: URL {
         return urlComponents.url!
     }
 
-    public var `protocol`: String? {
+    @objc public var `protocol`: String? {
         get {
             return urlComponents.scheme
         }
@@ -78,7 +80,7 @@ public struct APIContext {
         }
     }
 
-    public var host: String? {
+    @objc public var host: String? {
         get {
             return urlComponents.host
         }
@@ -96,7 +98,7 @@ public struct APIContext {
         }
     }
 
-    public var uri: String {
+    @objc public var uri: String {
         get {
             return urlComponents.path
         }
@@ -105,7 +107,7 @@ public struct APIContext {
         }
     }
 
-    public var query: String? {
+    @objc public var query: String? {
         get {
             return urlComponents.query
         }
@@ -114,26 +116,28 @@ public struct APIContext {
         }
     }
 
-    public private(set) var accessKeyID: String
-    public private(set) var secretAccessKey: String
+    @objc public private(set) var accessKeyID: String
+    @objc public private(set) var secretAccessKey: String
 
-    public let urlString: String
-    public var urlComponents: URLComponents
+    @objc public let urlString: String
+    @objc public var urlComponents: URLComponents
 
-    public init(urlString: String,
+    @objc public init(urlString: String,
                 accessKeyID: String = Registry.accessKeyID,
                 secretAccessKey: String = Registry.secretAccessKey) {
         self.urlString = urlString
         self.urlComponents = URLComponents(string: urlString)!
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
+        
+        super.init()
 
         if let config = Registry.config {
             self.readFrom(config: config)
         }
     }
 
-    public init(plist: URL) throws {
+    @objc public init(plist: URL) throws {
         guard let config = NSDictionary(contentsOf: plist) as? Dictionary<String, String> else {
             throw APIError.contextError(info: "plist not found")
         }
@@ -169,7 +173,7 @@ public struct APIContext {
         self.urlComponents = URLComponents(string: urlString)!
     }
 
-    public mutating func readFrom(config: [String:String]) {
+    @objc public func readFrom(config: [String:String]) {
         if let `protocol` = config["protocol"] {
             self.`protocol` = `protocol`
         }
@@ -190,30 +194,33 @@ public struct APIContext {
     }
 }
 
-public class BaseModel: Mappable {
-    public init() {}
+@objc(QSBaseModel)
+public class BaseModel: NSObject, Mappable {
+    @objc public override init() {}
     public required init?(map: Map) { }
 
     public func mapping(map: Map) { }
 
-    public func toParameters() -> [String:Any] { return toJSON() }
-    public func validate() -> Error? { return nil }
+    @objc public func toParameters() -> [String:Any] { return toJSON() }
+    @objc public func validate() -> Error? { return nil }
 }
 
+@objc(QSAPIInput)
 public class APIInput: BaseModel {
-    var headerProperties: [String] {
+    @objc var headerProperties: [String] {
         return []
     }
 
-    var queryProperties: [String] {
+    @objc var queryProperties: [String] {
         return []
     }
 
-    var bodyProperties: [String] {
+    @objc var bodyProperties: [String] {
         return []
     }
 }
 
+@objc(QSAPIOutput)
 public class APIOutput: BaseModel {
 
 }
@@ -226,7 +233,8 @@ public protocol APIDownloadOutput {
     var destinationURL: URL? { get set }
 }
 
-public class APISender {
+@objc(QSAPISender)
+public class APISender: NSObject {
     public let context: APIContext
     public var parameters: [String:Any]
     public var method: HTTPMethod
@@ -298,7 +306,7 @@ public class APISender {
                             callbackQueue: DispatchQueue = DispatchQueue.main) {
         var parameters: [String:Any] = [:]
         var encoding = ParameterEncodingType.query
-        var realContext = context
+        let realContext = context.rawCopy()
         var realHeaders = headers
         var isDownload = false
         var downloadDestination: URL? = nil

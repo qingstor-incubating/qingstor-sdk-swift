@@ -23,7 +23,7 @@ import ObjectMapper
 
 private var contextZoneKey: UInt = 0
 public extension APIContext {
-    public static func qingStor(urlString: String = "https://qingstor.com:443/",
+    @objc public static func qingStor(urlString: String = "https://qingstor.com:443/",
                                 accessKeyID: String = Registry.accessKeyID,
                                 secretAccessKey: String = Registry.secretAccessKey) -> APIContext {
         return APIContext(urlString: urlString, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
@@ -43,8 +43,10 @@ public extension APISender {
             return (nil, error)
         }
 
-        var actualSigner = signer
-        actualSigner.signatureType = input.signatureType
+        let actualSigner = signer.rawCopy()
+        if let signatureType = input.signatureType {
+            actualSigner.signatureType = signatureType
+        }
 
         let sender = APISender(context: context,
                                input: input,
@@ -61,12 +63,12 @@ public extension APISender {
     }
 }
 
-public class QingStorAPI: BaseAPI {
-    public var context: APIContext
+public class QingStorAPI: NSObject, BaseAPI {
+    @objc public var context: APIContext
     public var signer: Signer
-    public var credential: URLCredential?
-    public var buildingQueue: DispatchQueue
-    public var callbackQueue: DispatchQueue
+    @objc public var credential: URLCredential?
+    @objc public var buildingQueue: DispatchQueue
+    @objc public var callbackQueue: DispatchQueue
 
     public init(context: APIContext = APIContext.qingStor(),
                 signer: Signer = QingStorSigner(),
@@ -82,13 +84,13 @@ public class QingStorAPI: BaseAPI {
 }
 
 public class QingStorInput: APIInput {
-    public var signatureType: QingStorSignatureType = .header
+    public var signatureType: QingStorSignatureType?
 }
 
 public class QingStorOutput: APIOutput {
-    public var code: String?
-    public var errMessage: String?
-    public var requestId: String?
+    @objc public var code: String?
+    @objc public var errMessage: String?
+    @objc public var requestId: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -100,11 +102,11 @@ public class QingStorOutput: APIOutput {
 }
 
 public class QingStorDownloadInput: QingStorInput, APIDownloadInput {
-    public var destinationURL: URL?
+    @objc public var destinationURL: URL?
 }
 
 public class QingStorDownloadOutput: QingStorOutput, APIDownloadOutput {
-    public var destinationURL: URL?
+    @objc public var destinationURL: URL?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)

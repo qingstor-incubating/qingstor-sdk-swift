@@ -18,7 +18,7 @@
 // +-------------------------------------------------------------------------
 //
 
-public protocol Signer {
+public protocol Signer: class {
     var signatureType: QingStorSignatureType { get set }
     
     func signatureString(from requestBuilder: RequestBuilder) throws -> String
@@ -26,9 +26,11 @@ public protocol Signer {
     
     func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult
     func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult
+    
+    func rawCopy() -> Self
 }
 
-public enum QingStorSignatureType: Error {
+public enum QingStorSignatureType {
     case query(timeoutSeconds: Int)
     case header
 }

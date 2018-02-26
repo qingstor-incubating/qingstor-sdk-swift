@@ -65,7 +65,8 @@ open class Response<T: BaseMappable> {
     }
 }
 
-open class RequestBuilder {
+@objc(QSRequestBuilder)
+open class RequestBuilder: NSObject {
     public var context: APIContext
     public var method: HTTPMethod
     public var parameters: [String:Any]
@@ -106,6 +107,8 @@ open class RequestBuilder {
         self.writeHeadersToOutput = writeHeadersToOutput
         self.buildingQueue = buildingQueue
         self.callbackQueue = callbackQueue
+        
+        super.init()
 
         self.buildDefaultHeader()
     }
@@ -181,6 +184,7 @@ open class RequestBuilder {
     }
 }
 
+@objc(QSDefaultRequestBuilder)
 open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
     fileprivate var buildingRequestError: Error?
 
