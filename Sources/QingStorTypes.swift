@@ -21,17 +21,18 @@
 import Foundation
 import ObjectMapper
 
+@objc(QSACLModel)
 public class ACLModel: BaseModel {
-    public var grantee: GranteeModel! // Required
+    @objc public var grantee: GranteeModel! // Required
     // Permission for this grantee
     // permission's available values: READ, WRITE, FULL_CONTROL
-    public var permission: String! // Required
+    @objc public var permission: String! // Required
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(grantee: GranteeModel, permission: String) {
+    @objc public init(grantee: GranteeModel, permission: String) {
         super.init()
 
         self.grantee = grantee
@@ -45,7 +46,7 @@ public class ACLModel: BaseModel {
         permission <- map["permission"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.grantee == nil {
             return APIError.parameterRequiredError(name: "grantee", parentName: "ACL")
         }
@@ -79,21 +80,22 @@ public class ACLModel: BaseModel {
     }
 }
 
+@objc(QSBucketModel)
 public class BucketModel: BaseModel {
     // Created time of the bucket
-    public var created: Date?
+    @objc public var created: Date?
     // QingCloud Zone ID
-    public var location: String?
+    @objc public var location: String?
     // Bucket name
-    public var name: String?
+    @objc public var name: String?
     // URL to access the bucket
-    public var url: String?
+    @objc public var url: String?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(created: Date? = nil, location: String? = nil, name: String? = nil, url: String? = nil) {
+    @objc public init(created: Date? = nil, location: String? = nil, name: String? = nil, url: String? = nil) {
         super.init()
 
         self.created = created
@@ -111,23 +113,24 @@ public class BucketModel: BaseModel {
         url <- map["url"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSConditionModel)
 public class ConditionModel: BaseModel {
-    public var ipAddress: IPAddressModel?
-    public var isNull: IsNullModel?
-    public var notIPAddress: NotIPAddressModel?
-    public var stringLike: StringLikeModel?
-    public var stringNotLike: StringNotLikeModel?
+    @objc public var ipAddress: IPAddressModel?
+    @objc public var isNull: IsNullModel?
+    @objc public var notIPAddress: NotIPAddressModel?
+    @objc public var stringLike: StringLikeModel?
+    @objc public var stringNotLike: StringNotLikeModel?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(ipAddress: IPAddressModel? = nil, isNull: IsNullModel? = nil, notIPAddress: NotIPAddressModel? = nil, stringLike: StringLikeModel? = nil, stringNotLike: StringNotLikeModel? = nil) {
+    @objc public init(ipAddress: IPAddressModel? = nil, isNull: IsNullModel? = nil, notIPAddress: NotIPAddressModel? = nil, stringLike: StringLikeModel? = nil, stringNotLike: StringNotLikeModel? = nil) {
         super.init()
 
         self.ipAddress = ipAddress
@@ -147,7 +150,7 @@ public class ConditionModel: BaseModel {
         stringNotLike <- map["string_not_like"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if let ipAddress = self.ipAddress {
             if let error = ipAddress.validate() {
                 return error
@@ -182,23 +185,24 @@ public class ConditionModel: BaseModel {
     }
 }
 
+@objc(QSCORSRuleModel)
 public class CORSRuleModel: BaseModel {
     // Allowed headers
-    public var allowedHeaders: [String]?
+    @objc public var allowedHeaders: [String]?
     // Allowed methods
-    public var allowedMethods: [String]! // Required
+    @objc public var allowedMethods: [String]! // Required
     // Allowed origin
-    public var allowedOrigin: String! // Required
+    @objc public var allowedOrigin: String! // Required
     // Expose headers
-    public var exposeHeaders: [String]?
+    @objc public var exposeHeaders: [String]?
     // Max age seconds
-    public var maxAgeSeconds: Int?
+    @objc public var maxAgeSeconds: Int = 0
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(allowedHeaders: [String]? = nil, allowedMethods: [String], allowedOrigin: String, exposeHeaders: [String]? = nil, maxAgeSeconds: Int? = nil) {
+    @objc public init(allowedHeaders: [String]? = nil, allowedMethods: [String], allowedOrigin: String, exposeHeaders: [String]? = nil, maxAgeSeconds: Int = 0) {
         super.init()
 
         self.allowedHeaders = allowedHeaders
@@ -218,7 +222,7 @@ public class CORSRuleModel: BaseModel {
         maxAgeSeconds <- map["max_age_seconds"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.allowedMethods == nil {
             return APIError.parameterRequiredError(name: "allowedMethods", parentName: "CORSRule")
         }
@@ -235,20 +239,21 @@ public class CORSRuleModel: BaseModel {
     }
 }
 
+@objc(QSGranteeModel)
 public class GranteeModel: BaseModel {
     // Grantee user ID
-    public var id: String?
+    @objc public var id: String?
     // Grantee group name
-    public var name: String?
+    @objc public var name: String?
     // Grantee type
     // type's available values: user, group
-    public var type: String! // Required
+    @objc public var type: String! // Required
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(id: String? = nil, name: String? = nil, type: String) {
+    @objc public init(id: String? = nil, name: String? = nil, type: String) {
         super.init()
 
         self.id = id
@@ -264,7 +269,7 @@ public class GranteeModel: BaseModel {
         type <- map["type"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.type == nil {
             return APIError.parameterRequiredError(name: "type", parentName: "Grantee")
         }
@@ -288,15 +293,16 @@ public class GranteeModel: BaseModel {
     }
 }
 
+@objc(QSIPAddressModel)
 public class IPAddressModel: BaseModel {
     // Source IP
-    public var sourceIP: [String]?
+    @objc public var sourceIP: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(sourceIP: [String]? = nil) {
+    @objc public init(sourceIP: [String]? = nil) {
         super.init()
 
         self.sourceIP = sourceIP
@@ -308,20 +314,21 @@ public class IPAddressModel: BaseModel {
         sourceIP <- map["source_ip"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSIsNullModel)
 public class IsNullModel: BaseModel {
     // Refer url
-    public var referer: Bool?
+    @objc public var referer: Bool = false
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(referer: Bool? = nil) {
+    @objc public init(referer: Bool = false) {
         super.init()
 
         self.referer = referer
@@ -333,32 +340,33 @@ public class IsNullModel: BaseModel {
         referer <- map["Referer"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSKeyModel)
 public class KeyModel: BaseModel {
     // Object created time
-    public var created: Date?
+    @objc public var created: Date?
     // Whether this key is encrypted
-    public var encrypted: Bool?
+    @objc public var encrypted: Bool = false
     // MD5sum of the object
-    public var etag: String?
+    @objc public var etag: String?
     // Object key
-    public var key: String?
+    @objc public var key: String?
     // MIME type of the object
-    public var mimeType: String?
+    @objc public var mimeType: String?
     // Last modified time in unix time format
-    public var modified: Int?
+    @objc public var modified: Int = 0
     // Object content size
-    public var size: Int?
+    @objc public var size: Int = 0
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(created: Date? = nil, encrypted: Bool? = nil, etag: String? = nil, key: String? = nil, mimeType: String? = nil, modified: Int? = nil, size: Int? = nil) {
+    @objc public init(created: Date? = nil, encrypted: Bool = false, etag: String? = nil, key: String? = nil, mimeType: String? = nil, modified: Int = 0, size: Int = 0) {
         super.init()
 
         self.created = created
@@ -382,24 +390,25 @@ public class KeyModel: BaseModel {
         size <- map["size"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSKeyDeleteErrorModel)
 public class KeyDeleteErrorModel: BaseModel {
     // Error code
-    public var code: String?
+    @objc public var code: String?
     // Object key
-    public var key: String?
+    @objc public var key: String?
     // Error message
-    public var message: String?
+    @objc public var message: String?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(code: String? = nil, key: String? = nil, message: String? = nil) {
+    @objc public init(code: String? = nil, key: String? = nil, message: String? = nil) {
         super.init()
 
         self.code = code
@@ -415,20 +424,21 @@ public class KeyDeleteErrorModel: BaseModel {
         message <- map["message"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSNotIPAddressModel)
 public class NotIPAddressModel: BaseModel {
     // Source IP
-    public var sourceIP: [String]?
+    @objc public var sourceIP: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(sourceIP: [String]? = nil) {
+    @objc public init(sourceIP: [String]? = nil) {
         super.init()
 
         self.sourceIP = sourceIP
@@ -440,26 +450,27 @@ public class NotIPAddressModel: BaseModel {
         sourceIP <- map["source_ip"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSObjectPartModel)
 public class ObjectPartModel: BaseModel {
     // Object part created time
-    public var created: Date?
+    @objc public var created: Date?
     // MD5sum of the object part
-    public var etag: String?
+    @objc public var etag: String?
     // Object part number
-    public var partNumber: Int = 0 // Required
+    @objc public var partNumber: Int = 0 // Required
     // Object part size
-    public var size: Int?
+    @objc public var size: Int = 0
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(created: Date? = nil, etag: String? = nil, partNumber: Int = 0, size: Int? = nil) {
+    @objc public init(created: Date? = nil, etag: String? = nil, partNumber: Int = 0, size: Int = 0) {
         super.init()
 
         self.created = created
@@ -477,22 +488,23 @@ public class ObjectPartModel: BaseModel {
         size <- map["size"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSOwnerModel)
 public class OwnerModel: BaseModel {
     // User ID
-    public var id: String?
+    @objc public var id: String?
     // Username
-    public var name: String?
+    @objc public var name: String?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(id: String? = nil, name: String? = nil) {
+    @objc public init(id: String? = nil, name: String? = nil) {
         super.init()
 
         self.id = id
@@ -506,30 +518,31 @@ public class OwnerModel: BaseModel {
         name <- map["name"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSStatementModel)
 public class StatementModel: BaseModel {
     // QingStor API methods
-    public var action: [String]! // Required
-    public var condition: ConditionModel?
+    @objc public var action: [String]! // Required
+    @objc public var condition: ConditionModel?
     // Statement effect
     // effect's available values: allow, deny
-    public var effect: String! // Required
+    @objc public var effect: String! // Required
     // Bucket policy id, must be unique
-    public var id: String! // Required
+    @objc public var id: String! // Required
     // The resources to apply bucket policy
-    public var resource: [String]?
+    @objc public var resource: [String]?
     // The user to apply bucket policy
-    public var user: [String]! // Required
+    @objc public var user: [String]! // Required
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(action: [String], condition: ConditionModel? = nil, effect: String, id: String, resource: [String]? = nil, user: [String]) {
+    @objc public init(action: [String], condition: ConditionModel? = nil, effect: String, id: String, resource: [String]? = nil, user: [String]) {
         super.init()
 
         self.action = action
@@ -551,7 +564,7 @@ public class StatementModel: BaseModel {
         user <- map["user"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.action == nil {
             return APIError.parameterRequiredError(name: "action", parentName: "Statement")
         }
@@ -601,15 +614,16 @@ public class StatementModel: BaseModel {
     }
 }
 
+@objc(QSStringLikeModel)
 public class StringLikeModel: BaseModel {
     // Refer url
-    public var referer: [String]?
+    @objc public var referer: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(referer: [String]? = nil) {
+    @objc public init(referer: [String]? = nil) {
         super.init()
 
         self.referer = referer
@@ -621,20 +635,21 @@ public class StringLikeModel: BaseModel {
         referer <- map["Referer"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSStringNotLikeModel)
 public class StringNotLikeModel: BaseModel {
     // Refer url
-    public var referer: [String]?
+    @objc public var referer: [String]?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(referer: [String]? = nil) {
+    @objc public init(referer: [String]? = nil) {
         super.init()
 
         self.referer = referer
@@ -646,24 +661,25 @@ public class StringNotLikeModel: BaseModel {
         referer <- map["Referer"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSUploadsModel)
 public class UploadsModel: BaseModel {
     // Object part created time
-    public var created: Date?
+    @objc public var created: Date?
     // Object key
-    public var key: String?
+    @objc public var key: String?
     // Object upload id
-    public var uploadID: String?
+    @objc public var uploadID: String?
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    public init(created: Date? = nil, key: String? = nil, uploadID: String? = nil) {
+    @objc public init(created: Date? = nil, key: String? = nil, uploadID: String? = nil) {
         super.init()
 
         self.created = created
@@ -679,7 +695,7 @@ public class UploadsModel: BaseModel {
         uploadID <- map["upload_id"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }

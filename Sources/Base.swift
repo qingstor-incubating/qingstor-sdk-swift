@@ -129,7 +129,7 @@ public class APIContext: NSObject {
         self.urlComponents = URLComponents(string: urlString)!
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
-        
+
         super.init()
 
         if let config = Registry.config {

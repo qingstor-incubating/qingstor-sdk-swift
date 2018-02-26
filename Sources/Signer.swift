@@ -20,13 +20,13 @@
 
 public protocol Signer: class {
     var signatureType: QingStorSignatureType { get set }
-    
+
     func signatureString(from requestBuilder: RequestBuilder) throws -> String
     func writeSignature(to requestBuilder: RequestBuilder) throws
-    
+
     func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult
     func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult
-    
+
     func rawCopy() -> Self
 }
 
@@ -39,7 +39,7 @@ public enum SignatureResult {
     case query(signature: String, accessKey: String, expires: Int?)
     case header(signature: String, accessKey: String)
     case authorization(String)
-    
+
     var signature: String {
         switch self {
         case let .query(signature, _, _):
@@ -61,7 +61,7 @@ public extension Signer {
             return try headerSignatureString(from: requestBuilder).signature
         }
     }
-    
+
     public func writeSignature(to requestBuilder: RequestBuilder) throws {
         switch signatureType {
         case .query(let timeoutSeconds):
@@ -70,7 +70,7 @@ public extension Signer {
             try writeHeaderSignature(to: requestBuilder)
         }
     }
-    
+
     public func writeQuerySignature(to requestBuilder: RequestBuilder, timeoutSeconds: Int) throws {
         let result = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
         switch result {
@@ -85,7 +85,7 @@ public extension Signer {
             throw APIError.signatureError(info: "The signature result expected to be .query, but it's actually \(result)")
         }
     }
-    
+
     public func writeHeaderSignature(to requestBuilder: RequestBuilder) throws {
         let result = try headerSignatureString(from: requestBuilder)
         switch result {
@@ -104,16 +104,16 @@ public extension Signer {
         let date = ((requestBuilder.headers["Date"] ?? String.RFC822()).toRFC822Date())!
         return Int(date.timeIntervalSince1970) + timeoutSeconds
     }
-    
+
     public func querySignaturePlainString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) -> String {
         let expires = self.expires(from: requestBuilder, timeoutSeconds: timeoutSeconds)
         var plainString = "\(requestBuilder.method.rawValue)\n\n\n"
         plainString += "\(expires)\n"
         plainString += buildCanonicalizedResource(requestBuilder)
-        
+
         return plainString
     }
-    
+
     public func headerSignaturePlainString(from requestBuilder: RequestBuilder) -> String {
         let headers = requestBuilder.headers
         var plainString = "\(requestBuilder.method.rawValue)\n"
@@ -122,16 +122,16 @@ public extension Signer {
         plainString += "\(headers["Date"] ?? String.RFC822())\n"
         plainString += buildCanonicalizedHeaders(requestBuilder)
         plainString += buildCanonicalizedResource(requestBuilder)
-        
+
         return plainString
     }
-    
+
     public func buildCanonicalizedHeaders(_ requestBuilder: RequestBuilder) -> String {
         var canonicalizedHeaders = ""
         for key in requestBuilder.headers.keys.sorted(by: <) {
             let encodeValue = requestBuilder.headers[key]?.escapeNonASCIIOnly()
             requestBuilder.headers[key] = encodeValue
-            
+
             let lowercasedKey = key.lowercased()
             if lowercasedKey.hasPrefix("x-qs-") {
                 canonicalizedHeaders += "\(lowercasedKey):\(encodeValue!.trimmingCharacters(in: CharacterSet.whitespaces))\n"
@@ -139,7 +139,7 @@ public extension Signer {
         }
         return canonicalizedHeaders
     }
-    
+
     public func buildCanonicalizedResource(_ requestBuilder: RequestBuilder) -> String {
         let parametersToSign = ["acl",
                                 "cors",
@@ -157,14 +157,14 @@ public extension Signer {
                                 "response-content-language",
                                 "response-content-encoding",
                                 "response-content-disposition"]
-        
+
         let urlString = requestBuilder.context.url.absoluteString
-        
+
         var query = ""
         if let index = urlString.range(of: "?", options: .backwards)?.lowerBound {
             query = String(urlString[urlString.index(after: index)...])
         }
-        
+
         if requestBuilder.encoding == .query {
             let parametersQuery = APIHelper.buildQueryString(parameters: &requestBuilder.parameters, escaped: false)
             if !parametersQuery.isEmpty {
@@ -174,17 +174,17 @@ public extension Signer {
                 query += parametersQuery
             }
         }
-        
+
         query = query.components(separatedBy: "&")
             .filter { parametersToSign.contains($0.components(separatedBy: "=")[0]) }
             .joined(separator: "&")
             .unescape()
-        
+
         let uri = requestBuilder.context.uri.urlPathEscape()
         if !query.isEmpty {
             return "\(uri)?\(query)"
         }
-        
+
         return uri
     }
 }
@@ -197,7 +197,7 @@ public extension SignatureResult {
             return false
         }
     }
-    
+
     public var isHeader: Bool {
         if case .header = self {
             return true
@@ -205,7 +205,7 @@ public extension SignatureResult {
             return false
         }
     }
-    
+
     public var isAuthorization: Bool {
         if case .authorization = self {
             return true

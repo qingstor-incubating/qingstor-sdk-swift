@@ -22,25 +22,25 @@
 final public class CustomizedSigner: NSObject, Signer {
     public typealias SignatureHandlerCompletion = (SignatureResult) -> Void
     public typealias SignatureHandler = (CustomizedSigner, String, RequestBuilder, @escaping SignatureHandlerCompletion) throws -> Void
-    
+
     public var signatureType: QingStorSignatureType
     public var handler: SignatureHandler
-    
+
     public init(signatureType: QingStorSignatureType = .header, handler: @escaping SignatureHandler) {
         self.signatureType = signatureType
         self.handler = handler
     }
-    
+
     public func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult {
         let semaphoreSignal = DispatchSemaphore(value: 0)
         let plainString = querySignaturePlainString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
-        
+
         var result: SignatureResult!
         try handler(self, plainString, requestBuilder) {
             result = $0
             semaphoreSignal.signal()
         }
-        
+
         semaphoreSignal.wait()
         return result
     }
@@ -48,17 +48,17 @@ final public class CustomizedSigner: NSObject, Signer {
     public func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult {
         let semaphoreSignal = DispatchSemaphore(value: 0)
         let plainString = headerSignaturePlainString(from: requestBuilder)
-        
+
         var result: SignatureResult!
         try handler(self, plainString, requestBuilder) {
             result = $0
             semaphoreSignal.signal()
         }
-        
+
         semaphoreSignal.wait()
         return result
     }
-    
+
     public func rawCopy() -> CustomizedSigner {
         return CustomizedSigner(signatureType: signatureType, handler: handler)
     }

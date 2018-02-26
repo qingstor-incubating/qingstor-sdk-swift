@@ -22,6 +22,7 @@ import Foundation
 import ObjectMapper
 
 // QingStor: QingStor provides low-cost and reliable online storage service with unlimited storage space, high read and write performance, high reliability and data safety, fine-grained access control, and easy to use API.
+@objc(QSQingStor)
 public class QingStor: QingStorAPI {
     // ListBuckets: Retrieve the bucket list.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
@@ -49,9 +50,10 @@ public class QingStor: QingStorAPI {
 
 }
 
+@objc(QSListBucketsInput)
 public class ListBucketsInput: QingStorInput {
     // Limits results to buckets that in the location
-    public var location: String?
+    @objc public var location: String?
 
     override var headerProperties: [String] {
         return ["Location"]
@@ -61,7 +63,7 @@ public class ListBucketsInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(location: String? = nil) {
+    @objc public init(location: String? = nil) {
         super.init()
 
         self.location = location
@@ -73,16 +75,17 @@ public class ListBucketsInput: QingStorInput {
         location <- map["Location"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSListBucketsOutput)
 public class ListBucketsOutput: QingStorOutput {
     // Buckets information
-    public var buckets: [BucketModel]?
+    @objc public var buckets: [BucketModel]?
     // Bucket count
-    public var count: Int?
+    @objc public var count: Int = 0
 
     public override func mapping(map: Map) {
         super.mapping(map: map)

@@ -39,7 +39,7 @@ final public class QingStorSigner: NSObject, Signer {
         let signatureString = try plainString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
         return .header(signature: signatureString, accessKey: requestBuilder.context.accessKeyID)
     }
-    
+
     public func rawCopy() -> QingStorSigner {
         return QingStorSigner(signatureType: signatureType)
     }

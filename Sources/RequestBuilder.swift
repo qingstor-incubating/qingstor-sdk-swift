@@ -107,7 +107,7 @@ open class RequestBuilder: NSObject {
         self.writeHeadersToOutput = writeHeadersToOutput
         self.buildingQueue = buildingQueue
         self.callbackQueue = callbackQueue
-        
+
         super.init()
 
         self.buildDefaultHeader()
