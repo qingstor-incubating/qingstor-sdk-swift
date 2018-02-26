@@ -22,7 +22,7 @@ import Foundation
 import ObjectMapper
 
 public extension QingStor {
-    public func bucket(bucketName: String, zone: String) -> Bucket {
+    @objc public func bucket(bucketName: String, zone: String) -> Bucket {
         return Bucket(context: self.context.rawCopy(),
                       bucketName: bucketName,
                       zone: zone,
@@ -33,9 +33,10 @@ public extension QingStor {
     }
 }
 
+@objc(QSBucket)
 public class Bucket: QingStorAPI {
-    public var zoneName: String
-    public var bucketName: String
+    @objc public var zoneName: String
+    @objc public var bucketName: String
 
     public init(context: APIContext = APIContext.qingStor(),
                 bucketName: String,
@@ -959,27 +960,36 @@ public class Bucket: QingStorAPI {
 
 }
 
+@objc(QSDeleteBucketInput)
 public class DeleteBucketInput: QingStorInput { }
 
+@objc(QSDeleteBucketOutput)
 public class DeleteBucketOutput: QingStorOutput { }
 
+@objc(QSDeleteBucketCORSInput)
 public class DeleteBucketCORSInput: QingStorInput { }
 
+@objc(QSDeleteBucketCORSOutput)
 public class DeleteBucketCORSOutput: QingStorOutput { }
 
+@objc(QSDeleteBucketExternalMirrorInput)
 public class DeleteBucketExternalMirrorInput: QingStorInput { }
 
+@objc(QSDeleteBucketExternalMirrorOutput)
 public class DeleteBucketExternalMirrorOutput: QingStorOutput { }
 
+@objc(QSDeleteBucketPolicyInput)
 public class DeleteBucketPolicyInput: QingStorInput { }
 
+@objc(QSDeleteBucketPolicyOutput)
 public class DeleteBucketPolicyOutput: QingStorOutput { }
 
+@objc(QSDeleteMultipleObjectsInput)
 public class DeleteMultipleObjectsInput: QingStorInput {
     // A list of keys to delete
-    public var objects: [KeyModel]! // Required
+    @objc public var objects: [KeyModel]! // Required
     // Whether to return the list of deleted objects
-    public var quiet: Bool?
+    @objc public var quiet: Bool = false
 
     override var headerProperties: [String] {
         return ["Content-MD5"]
@@ -993,7 +1003,7 @@ public class DeleteMultipleObjectsInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(objects: [KeyModel], quiet: Bool? = nil) {
+    @objc public init(objects: [KeyModel], quiet: Bool = false) {
         super.init()
 
         self.objects = objects
@@ -1007,14 +1017,14 @@ public class DeleteMultipleObjectsInput: QingStorInput {
         quiet <- map["quiet"]
     }
 
-    public override func toParameters() -> [String: Any] {
+    @objc public override func toParameters() -> [String: Any] {
         var parameters = super.toParameters()
         parameters["Content-MD5"] = (try! JSONSerialization.data(withJSONObject: parameters)).md5().base64EncodedString()
 
         return parameters
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.objects == nil {
             return APIError.parameterRequiredError(name: "objects", parentName: "DeleteMultipleObjectsInput")
         }
@@ -1037,11 +1047,12 @@ public class DeleteMultipleObjectsInput: QingStorInput {
     }
 }
 
+@objc(QSDeleteMultipleObjectsOutput)
 public class DeleteMultipleObjectsOutput: QingStorOutput {
     // List of deleted objects
-    public var deleted: [KeyModel]?
+    @objc public var deleted: [KeyModel]?
     // Error messages
-    public var errors: [KeyDeleteErrorModel]?
+    @objc public var errors: [KeyDeleteErrorModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1051,13 +1062,15 @@ public class DeleteMultipleObjectsOutput: QingStorOutput {
     }
 }
 
+@objc(QSGetBucketACLInput)
 public class GetBucketACLInput: QingStorInput { }
 
+@objc(QSGetBucketACLOutput)
 public class GetBucketACLOutput: QingStorOutput {
     // Bucket ACL rules
-    public var acl: [ACLModel]?
+    @objc public var acl: [ACLModel]?
     // Bucket owner
-    public var owner: OwnerModel?
+    @objc public var owner: OwnerModel?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1067,11 +1080,13 @@ public class GetBucketACLOutput: QingStorOutput {
     }
 }
 
+@objc(QSGetBucketCORSInput)
 public class GetBucketCORSInput: QingStorInput { }
 
+@objc(QSGetBucketCORSOutput)
 public class GetBucketCORSOutput: QingStorOutput {
     // Bucket CORS rules
-    public var corsRules: [CORSRuleModel]?
+    @objc public var corsRules: [CORSRuleModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1080,11 +1095,13 @@ public class GetBucketCORSOutput: QingStorOutput {
     }
 }
 
+@objc(QSGetBucketExternalMirrorInput)
 public class GetBucketExternalMirrorInput: QingStorInput { }
 
+@objc(QSGetBucketExternalMirrorOutput)
 public class GetBucketExternalMirrorOutput: QingStorOutput {
     // Source site url
-    public var sourceSite: String?
+    @objc public var sourceSite: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1093,11 +1110,13 @@ public class GetBucketExternalMirrorOutput: QingStorOutput {
     }
 }
 
+@objc(QSGetBucketPolicyInput)
 public class GetBucketPolicyInput: QingStorInput { }
 
+@objc(QSGetBucketPolicyOutput)
 public class GetBucketPolicyOutput: QingStorOutput {
     // Bucket policy statement
-    public var statement: [StatementModel]?
+    @objc public var statement: [StatementModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1106,24 +1125,26 @@ public class GetBucketPolicyOutput: QingStorOutput {
     }
 }
 
+@objc(QSGetBucketStatisticsInput)
 public class GetBucketStatisticsInput: QingStorInput { }
 
+@objc(QSGetBucketStatisticsOutput)
 public class GetBucketStatisticsOutput: QingStorOutput {
     // Objects count in the bucket
-    public var count: Int?
+    @objc public var count: Int = 0
     // Bucket created time
-    public var created: Date?
+    @objc public var created: Date?
     // QingCloud Zone ID
-    public var location: String?
+    @objc public var location: String?
     // Bucket name
-    public var name: String?
+    @objc public var name: String?
     // Bucket storage size
-    public var size: Int?
+    @objc public var size: Int = 0
     // Bucket status
     // status's available values: active, suspended
-    public var status: String?
+    @objc public var status: String?
     // URL to access the bucket
-    public var url: String?
+    @objc public var url: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1138,21 +1159,24 @@ public class GetBucketStatisticsOutput: QingStorOutput {
     }
 }
 
+@objc(QSHeadBucketInput)
 public class HeadBucketInput: QingStorInput { }
 
+@objc(QSHeadBucketOutput)
 public class HeadBucketOutput: QingStorOutput { }
 
+@objc(QSListMultipartUploadsInput)
 public class ListMultipartUploadsInput: QingStorInput {
     // Put all keys that share a common prefix into a list
-    public var delimiter: String?
+    @objc public var delimiter: String?
     // Limit results returned from the first key after key_marker sorted by alphabetical order
-    public var keyMarker: String?
+    @objc public var keyMarker: String?
     // Results count limit
-    public var limit: Int?
+    @objc public var limit: Int = 0
     // Limits results to keys that begin with the prefix
-    public var prefix: String?
+    @objc public var prefix: String?
     // Limit results returned from the first uploading segment after upload_id_marker sorted by the time of upload_id
-    public var uploadIDMarker: String?
+    @objc public var uploadIDMarker: String?
 
     override var queryProperties: [String] {
         return ["delimiter", "key_marker", "limit", "prefix", "upload_id_marker"]
@@ -1162,7 +1186,7 @@ public class ListMultipartUploadsInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(delimiter: String? = nil, keyMarker: String? = nil, limit: Int? = nil, prefix: String? = nil, uploadIDMarker: String? = nil) {
+    @objc public init(delimiter: String? = nil, keyMarker: String? = nil, limit: Int = 0, prefix: String? = nil, uploadIDMarker: String? = nil) {
         super.init()
 
         self.delimiter = delimiter
@@ -1182,30 +1206,31 @@ public class ListMultipartUploadsInput: QingStorInput {
         uploadIDMarker <- map["upload_id_marker"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSListMultipartUploadsOutput)
 public class ListMultipartUploadsOutput: QingStorOutput {
     // Other object keys that share common prefixes
-    public var commonPrefixes: [String]?
+    @objc public var commonPrefixes: [String]?
     // Delimiter that specified in request parameters
-    public var delimiter: String?
+    @objc public var delimiter: String?
     // Limit that specified in request parameters
-    public var limit: Int?
+    @objc public var limit: Int = 0
     // Marker that specified in request parameters
-    public var marker: String?
+    @objc public var marker: String?
     // Bucket name
-    public var name: String?
+    @objc public var name: String?
     // The last key in uploads list
-    public var nextKeyMarker: String?
+    @objc public var nextKeyMarker: String?
     // The last upload_id in uploads list
-    public var nextUploadIDMarker: String?
+    @objc public var nextUploadIDMarker: String?
     // Prefix that specified in request parameters
-    public var prefix: String?
+    @objc public var prefix: String?
     // Multipart uploads
-    public var uploads: [UploadsModel]?
+    @objc public var uploads: [UploadsModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1222,15 +1247,16 @@ public class ListMultipartUploadsOutput: QingStorOutput {
     }
 }
 
+@objc(QSListObjectsInput)
 public class ListObjectsInput: QingStorInput {
     // Put all keys that share a common prefix into a list
-    public var delimiter: String?
+    @objc public var delimiter: String?
     // Results count limit
-    public var limit: Int?
+    @objc public var limit: Int = 0
     // Limit results to keys that start at this marker
-    public var marker: String?
+    @objc public var marker: String?
     // Limits results to keys that begin with the prefix
-    public var prefix: String?
+    @objc public var prefix: String?
 
     override var queryProperties: [String] {
         return ["delimiter", "limit", "marker", "prefix"]
@@ -1240,7 +1266,7 @@ public class ListObjectsInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(delimiter: String? = nil, limit: Int? = nil, marker: String? = nil, prefix: String? = nil) {
+    @objc public init(delimiter: String? = nil, limit: Int = 0, marker: String? = nil, prefix: String? = nil) {
         super.init()
 
         self.delimiter = delimiter
@@ -1258,30 +1284,31 @@ public class ListObjectsInput: QingStorInput {
         prefix <- map["prefix"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSListObjectsOutput)
 public class ListObjectsOutput: QingStorOutput {
     // Other object keys that share common prefixes
-    public var commonPrefixes: [String]?
+    @objc public var commonPrefixes: [String]?
     // Delimiter that specified in request parameters
-    public var delimiter: String?
+    @objc public var delimiter: String?
     // Object keys
-    public var keys: [KeyModel]?
+    @objc public var keys: [KeyModel]?
     // Limit that specified in request parameters
-    public var limit: Int?
+    @objc public var limit: Int = 0
     // Marker that specified in request parameters
-    public var marker: String?
+    @objc public var marker: String?
     // Bucket name
-    public var name: String?
+    @objc public var name: String?
     // The last key in keys list
-    public var nextMarker: String?
+    @objc public var nextMarker: String?
     // Bucket owner
-    public var owner: OwnerModel?
+    @objc public var owner: OwnerModel?
     // Prefix that specified in request parameters
-    public var prefix: String?
+    @objc public var prefix: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1298,13 +1325,16 @@ public class ListObjectsOutput: QingStorOutput {
     }
 }
 
+@objc(QSPutBucketInput)
 public class PutBucketInput: QingStorInput { }
 
+@objc(QSPutBucketOutput)
 public class PutBucketOutput: QingStorOutput { }
 
+@objc(QSPutBucketACLInput)
 public class PutBucketACLInput: QingStorInput {
     // Bucket ACL rules
-    public var acl: [ACLModel]! // Required
+    @objc public var acl: [ACLModel]! // Required
 
     override var bodyProperties: [String] {
         return ["acl"]
@@ -1314,7 +1344,7 @@ public class PutBucketACLInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(acl: [ACLModel]) {
+    @objc public init(acl: [ACLModel]) {
         super.init()
 
         self.acl = acl
@@ -1326,7 +1356,7 @@ public class PutBucketACLInput: QingStorInput {
         acl <- map["acl"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.acl == nil {
             return APIError.parameterRequiredError(name: "acl", parentName: "PutBucketACLInput")
         }
@@ -1349,11 +1379,13 @@ public class PutBucketACLInput: QingStorInput {
     }
 }
 
+@objc(QSPutBucketACLOutput)
 public class PutBucketACLOutput: QingStorOutput { }
 
+@objc(QSPutBucketCORSInput)
 public class PutBucketCORSInput: QingStorInput {
     // Bucket CORS rules
-    public var corsRules: [CORSRuleModel]! // Required
+    @objc public var corsRules: [CORSRuleModel]! // Required
 
     override var bodyProperties: [String] {
         return ["cors_rules"]
@@ -1363,7 +1395,7 @@ public class PutBucketCORSInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(corsRules: [CORSRuleModel]) {
+    @objc public init(corsRules: [CORSRuleModel]) {
         super.init()
 
         self.corsRules = corsRules
@@ -1375,7 +1407,7 @@ public class PutBucketCORSInput: QingStorInput {
         corsRules <- map["cors_rules"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.corsRules == nil {
             return APIError.parameterRequiredError(name: "corsRules", parentName: "PutBucketCORSInput")
         }
@@ -1398,11 +1430,13 @@ public class PutBucketCORSInput: QingStorInput {
     }
 }
 
+@objc(QSPutBucketCORSOutput)
 public class PutBucketCORSOutput: QingStorOutput { }
 
+@objc(QSPutBucketExternalMirrorInput)
 public class PutBucketExternalMirrorInput: QingStorInput {
     // Source site url
-    public var sourceSite: String! // Required
+    @objc public var sourceSite: String! // Required
 
     override var bodyProperties: [String] {
         return ["source_site"]
@@ -1412,7 +1446,7 @@ public class PutBucketExternalMirrorInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(sourceSite: String) {
+    @objc public init(sourceSite: String) {
         super.init()
 
         self.sourceSite = sourceSite
@@ -1424,7 +1458,7 @@ public class PutBucketExternalMirrorInput: QingStorInput {
         sourceSite <- map["source_site"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.sourceSite == nil {
             return APIError.parameterRequiredError(name: "sourceSite", parentName: "PutBucketExternalMirrorInput")
         }
@@ -1433,11 +1467,13 @@ public class PutBucketExternalMirrorInput: QingStorInput {
     }
 }
 
+@objc(QSPutBucketExternalMirrorOutput)
 public class PutBucketExternalMirrorOutput: QingStorOutput { }
 
+@objc(QSPutBucketPolicyInput)
 public class PutBucketPolicyInput: QingStorInput {
     // Bucket policy statement
-    public var statement: [StatementModel]! // Required
+    @objc public var statement: [StatementModel]! // Required
 
     override var bodyProperties: [String] {
         return ["statement"]
@@ -1447,7 +1483,7 @@ public class PutBucketPolicyInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(statement: [StatementModel]) {
+    @objc public init(statement: [StatementModel]) {
         super.init()
 
         self.statement = statement
@@ -1459,7 +1495,7 @@ public class PutBucketPolicyInput: QingStorInput {
         statement <- map["statement"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.statement == nil {
             return APIError.parameterRequiredError(name: "statement", parentName: "PutBucketPolicyInput")
         }
@@ -1482,11 +1518,13 @@ public class PutBucketPolicyInput: QingStorInput {
     }
 }
 
+@objc(QSPutBucketPolicyOutput)
 public class PutBucketPolicyOutput: QingStorOutput { }
 
+@objc(QSAbortMultipartUploadInput)
 public class AbortMultipartUploadInput: QingStorInput {
     // Object multipart upload ID
-    public var uploadID: String! // Required
+    @objc public var uploadID: String! // Required
 
     override var queryProperties: [String] {
         return ["upload_id"]
@@ -1496,7 +1534,7 @@ public class AbortMultipartUploadInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(uploadID: String) {
+    @objc public init(uploadID: String) {
         super.init()
 
         self.uploadID = uploadID
@@ -1508,7 +1546,7 @@ public class AbortMultipartUploadInput: QingStorInput {
         uploadID <- map["upload_id"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.uploadID == nil {
             return APIError.parameterRequiredError(name: "uploadID", parentName: "AbortMultipartUploadInput")
         }
@@ -1517,21 +1555,23 @@ public class AbortMultipartUploadInput: QingStorInput {
     }
 }
 
+@objc(QSAbortMultipartUploadOutput)
 public class AbortMultipartUploadOutput: QingStorOutput { }
 
+@objc(QSCompleteMultipartUploadInput)
 public class CompleteMultipartUploadInput: QingStorInput {
     // Object multipart upload ID
-    public var uploadID: String! // Required
+    @objc public var uploadID: String! // Required
     // MD5sum of the object part
-    public var etag: String?
+    @objc public var etag: String?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String?
+    @objc public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String?
+    @objc public var xQSEncryptionCustomerKeyMD5: String?
     // Object parts
-    public var objectParts: [ObjectPartModel]?
+    @objc public var objectParts: [ObjectPartModel]?
 
     override var queryProperties: [String] {
         return ["upload_id"]
@@ -1549,7 +1589,7 @@ public class CompleteMultipartUploadInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(uploadID: String, etag: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, objectParts: [ObjectPartModel]? = nil) {
+    @objc public init(uploadID: String, etag: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, objectParts: [ObjectPartModel]? = nil) {
         super.init()
 
         self.uploadID = uploadID
@@ -1571,7 +1611,7 @@ public class CompleteMultipartUploadInput: QingStorInput {
         objectParts <- map["object_parts"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.uploadID == nil {
             return APIError.parameterRequiredError(name: "uploadID", parentName: "CompleteMultipartUploadInput")
         }
@@ -1590,41 +1630,45 @@ public class CompleteMultipartUploadInput: QingStorInput {
     }
 }
 
+@objc(QSCompleteMultipartUploadOutput)
 public class CompleteMultipartUploadOutput: QingStorOutput { }
 
+@objc(QSDeleteObjectInput)
 public class DeleteObjectInput: QingStorInput { }
 
+@objc(QSDeleteObjectOutput)
 public class DeleteObjectOutput: QingStorOutput { }
 
+@objc(QSGetObjectInput)
 public class GetObjectInput: QingStorDownloadInput {
     // Specified the Cache-Control response header
-    public var responseCacheControl: String?
+    @objc public var responseCacheControl: String?
     // Specified the Content-Disposition response header
-    public var responseContentDisposition: String?
+    @objc public var responseContentDisposition: String?
     // Specified the Content-Encoding response header
-    public var responseContentEncoding: String?
+    @objc public var responseContentEncoding: String?
     // Specified the Content-Language response header
-    public var responseContentLanguage: String?
+    @objc public var responseContentLanguage: String?
     // Specified the Content-Type response header
-    public var responseContentType: String?
+    @objc public var responseContentType: String?
     // Specified the Expires response header
-    public var responseExpires: String?
+    @objc public var responseExpires: String?
     // Check whether the ETag matches
-    public var ifMatch: String?
+    @objc public var ifMatch: String?
     // Check whether the object has been modified
-    public var ifModifiedSince: Date?
+    @objc public var ifModifiedSince: Date?
     // Check whether the ETag does not match
-    public var ifNoneMatch: String?
+    @objc public var ifNoneMatch: String?
     // Check whether the object has not been modified
-    public var ifUnmodifiedSince: Date?
+    @objc public var ifUnmodifiedSince: Date?
     // Specified range of the object
-    public var range: String?
+    @objc public var range: String?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String?
+    @objc public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String?
+    @objc public var xQSEncryptionCustomerKeyMD5: String?
 
     override var queryProperties: [String] {
         return ["response-cache-control", "response-content-disposition", "response-content-encoding", "response-content-language", "response-content-type", "response-expires"]
@@ -1638,7 +1682,7 @@ public class GetObjectInput: QingStorDownloadInput {
         super.init(map: map)
     }
 
-    public init(responseCacheControl: String? = nil, responseContentDisposition: String? = nil, responseContentEncoding: String? = nil, responseContentLanguage: String? = nil, responseContentType: String? = nil, responseExpires: String? = nil, ifMatch: String? = nil, ifModifiedSince: Date? = nil, ifNoneMatch: String? = nil, ifUnmodifiedSince: Date? = nil, range: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
+    @objc public init(responseCacheControl: String? = nil, responseContentDisposition: String? = nil, responseContentEncoding: String? = nil, responseContentLanguage: String? = nil, responseContentType: String? = nil, responseExpires: String? = nil, ifMatch: String? = nil, ifModifiedSince: Date? = nil, ifNoneMatch: String? = nil, ifUnmodifiedSince: Date? = nil, range: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
         super.init()
 
         self.responseCacheControl = responseCacheControl
@@ -1676,33 +1720,34 @@ public class GetObjectInput: QingStorDownloadInput {
         xQSEncryptionCustomerKeyMD5 <- map["X-QS-Encryption-Customer-Key-MD5"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSGetObjectOutput)
 public class GetObjectOutput: QingStorDownloadOutput {
     // The Cache-Control general-header field is used to specify directives for caching mechanisms in both requests and responses.
-    public var cacheControl: String?
+    @objc public var cacheControl: String?
     // In a multipart/form-data body, the HTTP Content-Disposition general header is a header that can be used on the subpart of a multipart body to give information about the field it applies to.
-    public var contentDisposition: String?
+    @objc public var contentDisposition: String?
     // The Content-Encoding entity header is used to compress the media-type.
-    public var contentEncoding: String?
+    @objc public var contentEncoding: String?
     // The Content-Language entity header is used to describe the language(s) intended for the audience.
-    public var contentLanguage: String?
+    @objc public var contentLanguage: String?
     // Object content length
-    public var contentLength: Int?
+    @objc public var contentLength: Int = 0
     // Range of response data content
-    public var contentRange: String?
+    @objc public var contentRange: String?
     // The Content-Type entity header is used to indicate the media type of the resource.
-    public var contentType: String?
+    @objc public var contentType: String?
     // MD5sum of the object
-    public var etag: String?
+    @objc public var etag: String?
     // The Expires header contains the date/time after which the response is considered stale.
-    public var expires: String?
-    public var lastModified: Date?
+    @objc public var expires: String?
+    @objc public var lastModified: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1721,21 +1766,22 @@ public class GetObjectOutput: QingStorDownloadOutput {
     }
 }
 
+@objc(QSHeadObjectInput)
 public class HeadObjectInput: QingStorInput {
     // Check whether the ETag matches
-    public var ifMatch: String?
+    @objc public var ifMatch: String?
     // Check whether the object has been modified
-    public var ifModifiedSince: Date?
+    @objc public var ifModifiedSince: Date?
     // Check whether the ETag does not match
-    public var ifNoneMatch: String?
+    @objc public var ifNoneMatch: String?
     // Check whether the object has not been modified
-    public var ifUnmodifiedSince: Date?
+    @objc public var ifUnmodifiedSince: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String?
+    @objc public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String?
+    @objc public var xQSEncryptionCustomerKeyMD5: String?
 
     override var headerProperties: [String] {
         return ["If-Match", "If-Modified-Since", "If-None-Match", "If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
@@ -1745,7 +1791,7 @@ public class HeadObjectInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(ifMatch: String? = nil, ifModifiedSince: Date? = nil, ifNoneMatch: String? = nil, ifUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
+    @objc public init(ifMatch: String? = nil, ifModifiedSince: Date? = nil, ifNoneMatch: String? = nil, ifUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
         super.init()
 
         self.ifMatch = ifMatch
@@ -1769,21 +1815,22 @@ public class HeadObjectInput: QingStorInput {
         xQSEncryptionCustomerKeyMD5 <- map["X-QS-Encryption-Customer-Key-MD5"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSHeadObjectOutput)
 public class HeadObjectOutput: QingStorOutput {
     // Object content length
-    public var contentLength: Int?
+    @objc public var contentLength: Int = 0
     // Object content type
-    public var contentType: String?
+    @objc public var contentType: String?
     // MD5sum of the object
-    public var etag: String?
-    public var lastModified: Date?
+    @objc public var etag: String?
+    @objc public var lastModified: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1796,23 +1843,24 @@ public class HeadObjectOutput: QingStorOutput {
     }
 }
 
+@objc(QSImageProcessInput)
 public class ImageProcessInput: QingStorDownloadInput {
     // Image process action
-    public var action: String! // Required
+    @objc public var action: String! // Required
     // Specified the Cache-Control response header
-    public var responseCacheControl: String?
+    @objc public var responseCacheControl: String?
     // Specified the Content-Disposition response header
-    public var responseContentDisposition: String?
+    @objc public var responseContentDisposition: String?
     // Specified the Content-Encoding response header
-    public var responseContentEncoding: String?
+    @objc public var responseContentEncoding: String?
     // Specified the Content-Language response header
-    public var responseContentLanguage: String?
+    @objc public var responseContentLanguage: String?
     // Specified the Content-Type response header
-    public var responseContentType: String?
+    @objc public var responseContentType: String?
     // Specified the Expires response header
-    public var responseExpires: String?
+    @objc public var responseExpires: String?
     // Check whether the object has been modified
-    public var ifModifiedSince: Date?
+    @objc public var ifModifiedSince: Date?
 
     override var queryProperties: [String] {
         return ["action", "response-cache-control", "response-content-disposition", "response-content-encoding", "response-content-language", "response-content-type", "response-expires"]
@@ -1826,7 +1874,7 @@ public class ImageProcessInput: QingStorDownloadInput {
         super.init(map: map)
     }
 
-    public init(action: String, responseCacheControl: String? = nil, responseContentDisposition: String? = nil, responseContentEncoding: String? = nil, responseContentLanguage: String? = nil, responseContentType: String? = nil, responseExpires: String? = nil, ifModifiedSince: Date? = nil) {
+    @objc public init(action: String, responseCacheControl: String? = nil, responseContentDisposition: String? = nil, responseContentEncoding: String? = nil, responseContentLanguage: String? = nil, responseContentType: String? = nil, responseExpires: String? = nil, ifModifiedSince: Date? = nil) {
         super.init()
 
         self.action = action
@@ -1852,7 +1900,7 @@ public class ImageProcessInput: QingStorDownloadInput {
         ifModifiedSince <- (map["If-Modified-Since"], RFC822DateTransform())
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.action == nil {
             return APIError.parameterRequiredError(name: "action", parentName: "ImageProcessInput")
         }
@@ -1861,9 +1909,10 @@ public class ImageProcessInput: QingStorDownloadInput {
     }
 }
 
+@objc(QSImageProcessOutput)
 public class ImageProcessOutput: QingStorDownloadOutput {
     // Object content length
-    public var contentLength: Int?
+    @objc public var contentLength: Int = 0
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1872,15 +1921,16 @@ public class ImageProcessOutput: QingStorDownloadOutput {
     }
 }
 
+@objc(QSInitiateMultipartUploadInput)
 public class InitiateMultipartUploadInput: QingStorInput {
     // Object content type
-    public var contentType: String?
+    @objc public var contentType: String?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String?
+    @objc public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String?
+    @objc public var xQSEncryptionCustomerKeyMD5: String?
 
     override var headerProperties: [String] {
         return ["Content-Type", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
@@ -1890,7 +1940,7 @@ public class InitiateMultipartUploadInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(contentType: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
+    @objc public init(contentType: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
         super.init()
 
         self.contentType = contentType
@@ -1908,20 +1958,21 @@ public class InitiateMultipartUploadInput: QingStorInput {
         xQSEncryptionCustomerKeyMD5 <- map["X-QS-Encryption-Customer-Key-MD5"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSInitiateMultipartUploadOutput)
 public class InitiateMultipartUploadOutput: QingStorOutput {
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
     // Bucket name
-    public var bucket: String?
+    @objc public var bucket: String?
     // Object key
-    public var key: String?
+    @objc public var key: String?
     // Object multipart upload ID
-    public var uploadID: String?
+    @objc public var uploadID: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1933,13 +1984,14 @@ public class InitiateMultipartUploadOutput: QingStorOutput {
     }
 }
 
+@objc(QSListMultipartInput)
 public class ListMultipartInput: QingStorInput {
     // Limit results count
-    public var limit: Int?
+    @objc public var limit: Int = 0
     // Object multipart upload part number
-    public var partNumberMarker: Int?
+    @objc public var partNumberMarker: Int = 0
     // Object multipart upload ID
-    public var uploadID: String! // Required
+    @objc public var uploadID: String! // Required
 
     override var queryProperties: [String] {
         return ["limit", "part_number_marker", "upload_id"]
@@ -1949,7 +2001,7 @@ public class ListMultipartInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(limit: Int? = nil, partNumberMarker: Int? = nil, uploadID: String) {
+    @objc public init(limit: Int = 0, partNumberMarker: Int = 0, uploadID: String) {
         super.init()
 
         self.limit = limit
@@ -1965,7 +2017,7 @@ public class ListMultipartInput: QingStorInput {
         uploadID <- map["upload_id"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.uploadID == nil {
             return APIError.parameterRequiredError(name: "uploadID", parentName: "ListMultipartInput")
         }
@@ -1974,11 +2026,12 @@ public class ListMultipartInput: QingStorInput {
     }
 }
 
+@objc(QSListMultipartOutput)
 public class ListMultipartOutput: QingStorOutput {
     // Object multipart count
-    public var count: Int?
+    @objc public var count: Int = 0
     // Object parts
-    public var objectParts: [ObjectPartModel]?
+    @objc public var objectParts: [ObjectPartModel]?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -1988,13 +2041,14 @@ public class ListMultipartOutput: QingStorOutput {
     }
 }
 
+@objc(QSOptionsObjectInput)
 public class OptionsObjectInput: QingStorInput {
     // Request headers
-    public var accessControlRequestHeaders: String?
+    @objc public var accessControlRequestHeaders: String?
     // Request method
-    public var accessControlRequestMethod: String! // Required
+    @objc public var accessControlRequestMethod: String! // Required
     // Request origin
-    public var origin: String! // Required
+    @objc public var origin: String! // Required
 
     override var headerProperties: [String] {
         return ["Access-Control-Request-Headers", "Access-Control-Request-Method", "Origin"]
@@ -2004,7 +2058,7 @@ public class OptionsObjectInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(accessControlRequestHeaders: String? = nil, accessControlRequestMethod: String, origin: String) {
+    @objc public init(accessControlRequestHeaders: String? = nil, accessControlRequestMethod: String, origin: String) {
         super.init()
 
         self.accessControlRequestHeaders = accessControlRequestHeaders
@@ -2020,7 +2074,7 @@ public class OptionsObjectInput: QingStorInput {
         origin <- map["Origin"]
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.accessControlRequestMethod == nil {
             return APIError.parameterRequiredError(name: "accessControlRequestMethod", parentName: "OptionsObjectInput")
         }
@@ -2033,17 +2087,18 @@ public class OptionsObjectInput: QingStorInput {
     }
 }
 
+@objc(QSOptionsObjectOutput)
 public class OptionsObjectOutput: QingStorOutput {
     // Allowed headers
-    public var accessControlAllowHeaders: String?
+    @objc public var accessControlAllowHeaders: String?
     // Allowed methods
-    public var accessControlAllowMethods: String?
+    @objc public var accessControlAllowMethods: String?
     // Allowed origin
-    public var accessControlAllowOrigin: String?
+    @objc public var accessControlAllowOrigin: String?
     // Expose headers
-    public var accessControlExposeHeaders: String?
+    @objc public var accessControlExposeHeaders: String?
     // Max age
-    public var accessControlMaxAge: String?
+    @objc public var accessControlMaxAge: String?
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -2056,45 +2111,46 @@ public class OptionsObjectOutput: QingStorOutput {
     }
 }
 
+@objc(QSPutObjectInput)
 public class PutObjectInput: QingStorInput {
     // Object content size
-    public var contentLength: Int! // Required
+    @objc public var contentLength: Int = 0 // Required
     // Object MD5sum
-    public var contentMD5: String?
+    @objc public var contentMD5: String?
     // Object content type
-    public var contentType: String?
+    @objc public var contentType: String?
     // Used to indicate that particular server behaviors are required by the client
-    public var expect: String?
+    @objc public var expect: String?
     // Copy source, format (/<bucket-name>/<object-key>)
-    public var xQSCopySource: String?
+    @objc public var xQSCopySource: String?
     // Encryption algorithm of the object
-    public var xQSCopySourceEncryptionCustomerAlgorithm: String?
+    @objc public var xQSCopySourceEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSCopySourceEncryptionCustomerKey: String?
+    @objc public var xQSCopySourceEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSCopySourceEncryptionCustomerKeyMD5: String?
+    @objc public var xQSCopySourceEncryptionCustomerKeyMD5: String?
     // Check whether the copy source matches
-    public var xQSCopySourceIfMatch: String?
+    @objc public var xQSCopySourceIfMatch: String?
     // Check whether the copy source has been modified
-    public var xQSCopySourceIfModifiedSince: Date?
+    @objc public var xQSCopySourceIfModifiedSince: Date?
     // Check whether the copy source does not match
-    public var xQSCopySourceIfNoneMatch: String?
+    @objc public var xQSCopySourceIfNoneMatch: String?
     // Check whether the copy source has not been modified
-    public var xQSCopySourceIfUnmodifiedSince: Date?
+    @objc public var xQSCopySourceIfUnmodifiedSince: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String?
+    @objc public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String?
+    @objc public var xQSEncryptionCustomerKeyMD5: String?
     // Check whether fetch target object has not been modified
-    public var xQSFetchIfUnmodifiedSince: Date?
+    @objc public var xQSFetchIfUnmodifiedSince: Date?
     // Fetch source, should be a valid url
-    public var xQSFetchSource: String?
+    @objc public var xQSFetchSource: String?
     // Move source, format (/<bucket-name>/<object-key>)
-    public var xQSMoveSource: String?
+    @objc public var xQSMoveSource: String?
     // The request body
-    public var bodyInputStream: InputStream?
+    @objc public var bodyInputStream: InputStream?
 
     override var headerProperties: [String] {
         return ["Content-Length", "Content-MD5", "Content-Type", "Expect", "X-QS-Copy-Source", "X-QS-Copy-Source-Encryption-Customer-Algorithm", "X-QS-Copy-Source-Encryption-Customer-Key", "X-QS-Copy-Source-Encryption-Customer-Key-MD5", "X-QS-Copy-Source-If-Match", "X-QS-Copy-Source-If-Modified-Since", "X-QS-Copy-Source-If-None-Match", "X-QS-Copy-Source-If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5", "X-QS-Fetch-If-Unmodified-Since", "X-QS-Fetch-Source", "X-QS-Move-Source"]
@@ -2108,7 +2164,7 @@ public class PutObjectInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(contentLength: Int, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchIfUnmodifiedSince: Date? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, bodyInputStream: InputStream? = nil) {
+    @objc public init(contentLength: Int = 0, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchIfUnmodifiedSince: Date? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, bodyInputStream: InputStream? = nil) {
         super.init()
 
         self.contentLength = contentLength
@@ -2155,59 +2211,57 @@ public class PutObjectInput: QingStorInput {
         xQSMoveSource <- map["X-QS-Move-Source"]
     }
 
-    public override func toParameters() -> [String: Any] {
+    @objc public override func toParameters() -> [String: Any] {
         var parameters = super.toParameters()
         parameters["body"] = self.bodyInputStream
 
         return parameters
     }
 
-    public override func validate() -> Error? {
-        if self.contentLength == nil {
-            return APIError.parameterRequiredError(name: "contentLength", parentName: "PutObjectInput")
-        }
-
+    @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+@objc(QSPutObjectOutput)
 public class PutObjectOutput: QingStorOutput { }
 
+@objc(QSUploadMultipartInput)
 public class UploadMultipartInput: QingStorInput {
     // Object multipart upload part number
-    public var partNumber: Int = 0 // Required
+    @objc public var partNumber: Int = 0 // Required
     // Object multipart upload ID
-    public var uploadID: String! // Required
+    @objc public var uploadID: String! // Required
     // Object multipart content length
-    public var contentLength: Int?
+    @objc public var contentLength: Int = 0
     // Object multipart content MD5sum
-    public var contentMD5: String?
+    @objc public var contentMD5: String?
     // Specify range of the source object
-    public var xQSCopyRange: String?
+    @objc public var xQSCopyRange: String?
     // Copy source, format (/<bucket-name>/<object-key>)
-    public var xQSCopySource: String?
+    @objc public var xQSCopySource: String?
     // Encryption algorithm of the object
-    public var xQSCopySourceEncryptionCustomerAlgorithm: String?
+    @objc public var xQSCopySourceEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSCopySourceEncryptionCustomerKey: String?
+    @objc public var xQSCopySourceEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSCopySourceEncryptionCustomerKeyMD5: String?
+    @objc public var xQSCopySourceEncryptionCustomerKeyMD5: String?
     // Check whether the Etag of copy source matches the specified value
-    public var xQSCopySourceIfMatch: String?
+    @objc public var xQSCopySourceIfMatch: String?
     // Check whether the copy source has been modified since the specified date
-    public var xQSCopySourceIfModifiedSince: Date?
+    @objc public var xQSCopySourceIfModifiedSince: Date?
     // Check whether the Etag of copy source does not matches the specified value
-    public var xQSCopySourceIfNoneMatch: String?
+    @objc public var xQSCopySourceIfNoneMatch: String?
     // Check whether the copy source has not been unmodified since the specified date
-    public var xQSCopySourceIfUnmodifiedSince: Date?
+    @objc public var xQSCopySourceIfUnmodifiedSince: Date?
     // Encryption algorithm of the object
-    public var xQSEncryptionCustomerAlgorithm: String?
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
     // Encryption key of the object
-    public var xQSEncryptionCustomerKey: String?
+    @objc public var xQSEncryptionCustomerKey: String?
     // MD5sum of encryption key
-    public var xQSEncryptionCustomerKeyMD5: String?
+    @objc public var xQSEncryptionCustomerKeyMD5: String?
     // The request body
-    public var bodyInputStream: InputStream?
+    @objc public var bodyInputStream: InputStream?
 
     override var queryProperties: [String] {
         return ["part_number", "upload_id"]
@@ -2225,7 +2279,7 @@ public class UploadMultipartInput: QingStorInput {
         super.init(map: map)
     }
 
-    public init(partNumber: Int = 0, uploadID: String, contentLength: Int? = nil, contentMD5: String? = nil, xQSCopyRange: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, bodyInputStream: InputStream? = nil) {
+    @objc public init(partNumber: Int = 0, uploadID: String, contentLength: Int = 0, contentMD5: String? = nil, xQSCopyRange: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, bodyInputStream: InputStream? = nil) {
         super.init()
 
         self.partNumber = partNumber
@@ -2268,14 +2322,14 @@ public class UploadMultipartInput: QingStorInput {
         xQSEncryptionCustomerKeyMD5 <- map["X-QS-Encryption-Customer-Key-MD5"]
     }
 
-    public override func toParameters() -> [String: Any] {
+    @objc public override func toParameters() -> [String: Any] {
         var parameters = super.toParameters()
         parameters["body"] = self.bodyInputStream
 
         return parameters
     }
 
-    public override func validate() -> Error? {
+    @objc public override func validate() -> Error? {
         if self.uploadID == nil {
             return APIError.parameterRequiredError(name: "uploadID", parentName: "UploadMultipartInput")
         }
@@ -2284,4 +2338,5 @@ public class UploadMultipartInput: QingStorInput {
     }
 }
 
+@objc(QSUploadMultipartOutput)
 public class UploadMultipartOutput: QingStorOutput { }

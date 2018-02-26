@@ -24,6 +24,7 @@ import Foundation
 import ObjectMapper
 
 {{if $service.Description -}}// {{$service.Name | camelCase}}: {{$service.Description}}{{- end}}
+@objc(QS{{$service.Name | camelCase}})
 public class {{$service.Name | camelCase}}: QingStorAPI {
 {{- range $_, $operation := $service.Operations -}}
     {{- $hasParams := gt (len $operation.Request.Params.Properties) 0 -}}

@@ -63,6 +63,7 @@ public extension APISender {
     }
 }
 
+@objc(QSQingStorAPI)
 public class QingStorAPI: NSObject, BaseAPI {
     @objc public var context: APIContext
     public var signer: Signer
@@ -83,10 +84,12 @@ public class QingStorAPI: NSObject, BaseAPI {
     }
 }
 
+@objc(QSQingStorInput)
 public class QingStorInput: APIInput {
     public var signatureType: QingStorSignatureType?
 }
 
+@objc(QSQingStorOutput)
 public class QingStorOutput: APIOutput {
     @objc public var code: String?
     @objc public var errMessage: String?
@@ -101,10 +104,12 @@ public class QingStorOutput: APIOutput {
     }
 }
 
+@objc(QSQingStorDownloadInput)
 public class QingStorDownloadInput: QingStorInput, APIDownloadInput {
     @objc public var destinationURL: URL?
 }
 
+@objc(QSQingStorDownloadOutput)
 public class QingStorDownloadOutput: QingStorOutput, APIDownloadOutput {
     @objc public var destinationURL: URL?
 

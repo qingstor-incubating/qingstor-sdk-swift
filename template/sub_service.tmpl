@@ -25,7 +25,7 @@ import Foundation
 import ObjectMapper
 
 public extension {{$service.Name | camelCase}} {
-    public func bucket(bucketName: String, zone: String) -> Bucket {
+    @objc public func bucket(bucketName: String, zone: String) -> Bucket {
         return Bucket(context: self.context.rawCopy(),
                       bucketName: bucketName,
                       zone: zone,
@@ -36,9 +36,10 @@ public extension {{$service.Name | camelCase}} {
     }
 }
 
+@objc(QSBucket)
 public class Bucket: QingStorAPI {
-    public var zoneName: String
-    public var bucketName: String
+    @objc public var zoneName: String
+    @objc public var bucketName: String
     
     public init(context: APIContext = APIContext.qingStor(),
                 bucketName: String,
