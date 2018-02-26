@@ -6,9 +6,9 @@ target 'QingStorSDK' do
   use_frameworks!
 
   # Pods for QingStorSDK
-  pod 'Alamofire', '~> 4.5'
-  pod 'CryptoSwift', '~> 0.7.1'
-  pod 'ObjectMapper', '~> 3.0'
+  pod 'Alamofire', '~> 4.6'
+  pod 'CryptoSwift', '~> 0.7.2'
+  pod 'ObjectMapper', '~> 3.1'
 
   target 'QingStorSDKTests' do
     inherit! :search_paths
