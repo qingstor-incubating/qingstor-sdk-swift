@@ -1,0 +1,97 @@
+{{- define "ReplaceKeywordProperty" -}}
+    {{- $original := . -}}
+
+    {{- if eq $original "protocol" -}}
+        `protocol`
+    {{- else if eq $original "operator"}}
+        `operator`
+    {{- else -}}
+        {{- $original -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "FormatPropertyID" -}}
+    {{- $property := . -}}
+
+    {{- template "ReplaceKeywordProperty" ($property.ID | camelCase | lowerFirstWord) -}}
+{{- end -}}
+
+
+{{- define "RenderInitializationAssignment" -}}
+    {{- $customizedType := index . 0 -}}
+    {{- $operationName := index . 1 -}}
+    {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
+
+    {{- range $_, $property := $customizedType.Properties}}
+        {{- if or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")}}
+            {{- if ne $property.ID $firstPropertyID -}}{{- ", " -}}{{- end -}}
+            {{- template "FormatPropertyID" $property -}}
+            {{- if eq $property.Type "boolean" -}}
+                {{- ": false" -}}
+            {{- else if eq $property.Type "integer" -}}
+                {{- ": 0" -}}
+            {{- else if eq $property.Type "long" -}}
+                {{- ": 0" -}}
+            {{- else if not $property.IsRequired -}}
+                {{- ": nil" -}}
+            {{- else if eq $property.Type "array" -}}
+                {{- ": []" -}}
+            {{- else if eq $property.Type "object" -}}
+                {{- ": " -}}{{- $property.ExtraType | camelCase -}}Model.empty()
+            {{- else if $property.IsRequired -}}
+                {{- ": \"\"" -}}
+            {{- else -}}
+                {{- ": nil" -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
+
+{{- define "RenderExtensionModel" -}}
+    {{- $customizedType := index . }}
+
+extension {{$customizedType.ID | camelCase}}Model {
+    @objc public static func empty() -> {{$customizedType.ID | camelCase}}Model { 
+        return {{ $customizedType.ID | camelCase}}Model({{template "RenderInitializationAssignment" passThrough $customizedType "" }})
+    }
+}
+{{- end -}}
+
+
+{{- define "RenderExtensionInput" -}}
+    {{- $operation := index . }}
+
+extension {{$operation.ID | camelCase}}Input {
+    @objc public static func empty() -> {{$operation.ID | camelCase}}Input { 
+        return {{$operation.ID | camelCase}}Input(
+            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Params $operation.Name -}}
+            {{- if and (gt ($operation.Request.Params.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
+                {{- if or (ne ($operation.Request.Params.Properties | len) 1) (ne ($operation.Request.Params | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+                    {{- ", " -}}
+                {{- end -}}
+            {{- end -}}
+
+            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Headers $operation.Name -}}
+            {{- if and (gt ($operation.Request.Headers.Properties | len) 0) (or (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
+                {{- if or (ne ($operation.Request.Headers.Properties | len) 1) (ne ($operation.Request.Headers | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+                    {{- ", " -}}
+                {{- end -}}
+            {{- end -}}
+
+            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Elements $operation.Name -}}
+            {{- if and (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary") -}}
+                {{- if or (ne ($operation.Request.Elements.Properties | len) 1) (ne ($operation.Request.Elements | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+                    {{- ", " -}}
+                {{- end -}}
+            {{- end -}}
+
+            {{- if eq $operation.Request.Body.Type "binary" -}}
+                bodyInputStream: nil
+            {{- end -}}
+        )
+    }
+}
+
+{{- end -}}

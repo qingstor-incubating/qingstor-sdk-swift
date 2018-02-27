@@ -41,6 +41,10 @@
 		836134A31DF3666C00FC5859 /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836134A21DF3666C00FC5859 /* APITests.swift */; };
 		837300881F425BB60042001D /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837300871F425BB60042001D /* ImageProcessor.swift */; };
 		8373008A1F425BC60042001D /* ImageProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837300891F425BC60042001D /* ImageProcessorTests.swift */; };
+		837EC0F52045381B00EB2664 /* QingStorObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0F12045381A00EB2664 /* QingStorObjcBridge.swift */; };
+		837EC0F62045381B00EB2664 /* BucketObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0F22045381A00EB2664 /* BucketObjcBridge.swift */; };
+		837EC0F72045381B00EB2664 /* QingStorTypesObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0F32045381B00EB2664 /* QingStorTypesObjcBridge.swift */; };
+		837EC0F92045385500EB2664 /* ObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0F82045385500EB2664 /* ObjcBridge.swift */; };
 		83E618111DE381F300CCFFDB /* QingStorSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83E618071DE381F300CCFFDB /* QingStorSDK.framework */; };
 		83E618181DE381F300CCFFDB /* QingStorSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 83E6180A1DE381F300CCFFDB /* QingStorSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83EF6F4B20076C2000098B15 /* CustomizedSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF6F4A20076C2000098B15 /* CustomizedSigner.swift */; };
@@ -104,6 +108,10 @@
 		836134A21DF3666C00FC5859 /* APITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APITests.swift; sourceTree = "<group>"; };
 		837300871F425BB60042001D /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
 		837300891F425BC60042001D /* ImageProcessorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessorTests.swift; sourceTree = "<group>"; };
+		837EC0F12045381A00EB2664 /* QingStorObjcBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QingStorObjcBridge.swift; sourceTree = "<group>"; };
+		837EC0F22045381A00EB2664 /* BucketObjcBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BucketObjcBridge.swift; sourceTree = "<group>"; };
+		837EC0F32045381B00EB2664 /* QingStorTypesObjcBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QingStorTypesObjcBridge.swift; sourceTree = "<group>"; };
+		837EC0F82045385500EB2664 /* ObjcBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcBridge.swift; sourceTree = "<group>"; };
 		83E618071DE381F300CCFFDB /* QingStorSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QingStorSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83E6180A1DE381F300CCFFDB /* QingStorSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QingStorSDK.h; sourceTree = "<group>"; };
 		83E6180B1DE381F300CCFFDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -229,6 +237,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		837EC0A02043E8AC00EB2664 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				837EC0F82045385500EB2664 /* ObjcBridge.swift */,
+				837EC0F22045381A00EB2664 /* BucketObjcBridge.swift */,
+				837EC0F12045381A00EB2664 /* QingStorObjcBridge.swift */,
+				837EC0F32045381B00EB2664 /* QingStorTypesObjcBridge.swift */,
+			);
+			name = Bridge;
+			sourceTree = "<group>";
+		};
 		83E617FD1DE381F300CCFFDB = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +275,7 @@
 			children = (
 				836133FE1DF346EA00FC5859 /* Core */,
 				836133FF1DF346FB00FC5859 /* APIs */,
+				837EC0A02043E8AC00EB2664 /* Bridge */,
 				83E618211DE3823B00CCFFDB /* Supporting Files */,
 			);
 			name = QingStorSDK;
@@ -608,6 +628,10 @@
 				836134141DF3470500FC5859 /* ResponseSerialization.swift in Sources */,
 				836134131DF3470500FC5859 /* RequestBuilder.swift in Sources */,
 				836134101DF3470500FC5859 /* QingStorAPIs.swift in Sources */,
+				837EC0F62045381B00EB2664 /* BucketObjcBridge.swift in Sources */,
+				837EC0F52045381B00EB2664 /* QingStorObjcBridge.swift in Sources */,
+				837EC0F72045381B00EB2664 /* QingStorTypesObjcBridge.swift in Sources */,
+				837EC0F92045385500EB2664 /* ObjcBridge.swift in Sources */,
 				8361341A1DF3471D00FC5859 /* QingStor.swift in Sources */,
 				8361341B1DF3471D00FC5859 /* QingStorTypes.swift in Sources */,
 				836134191DF3471D00FC5859 /* Bucket.swift in Sources */,

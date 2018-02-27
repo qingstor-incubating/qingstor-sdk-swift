@@ -19,13 +19,24 @@ generate:
 	@if [[ ! -f "$$(which snips)" ]]; then \
 		echo "ERROR: Command \"snips\" not found."; \
 	fi
+
 	snips \
 		--service=qingstor \
 		--service-api-version=latest \
 		--spec="./specs" \
 		--template="./template" \
 		--output="./Sources" || exit 1
+
+	snips \
+		--service=qingstor \
+		--service-api-version=latest \
+		--spec="./specs" \
+		--template="./template/objc-bridge" \
+		--output="./Sources" || exit 1
+
 	rm ./Sources/Object.swift
+	rm ./Sources/ObjectObjcBridge.swift
+
 	swiftlint autocorrect
 	@echo "ok"
 
