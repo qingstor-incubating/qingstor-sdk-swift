@@ -1115,7 +1115,7 @@ public class ListMultipartUploadsInput: QingStorInput {
     // Limit results returned from the first key after key_marker sorted by alphabetical order
     @objc public var keyMarker: String?
     // Results count limit
-    @objc public var limit: Int = 0
+    @objc public var limit: Int = 500
     // Limits results to keys that begin with the prefix
     @objc public var prefix: String?
     // Limit results returned from the first uploading segment after upload_id_marker sorted by the time of upload_id
@@ -1129,7 +1129,7 @@ public class ListMultipartUploadsInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(delimiter: String? = nil, keyMarker: String? = nil, limit: Int = 0, prefix: String? = nil, uploadIDMarker: String? = nil) {
+    @objc public init(delimiter: String? = nil, keyMarker: String? = nil, limit: Int = 500, prefix: String? = nil, uploadIDMarker: String? = nil) {
         super.init()
 
         self.delimiter = delimiter
@@ -1161,7 +1161,7 @@ public class ListMultipartUploadsOutput: QingStorOutput {
     // Delimiter that specified in request parameters
     @objc public var delimiter: String?
     // Limit that specified in request parameters
-    @objc public var limit: Int = 0
+    @objc public var limit: Int = 500
     // Marker that specified in request parameters
     @objc public var marker: String?
     // Bucket name
@@ -1195,7 +1195,7 @@ public class ListObjectsInput: QingStorInput {
     // Put all keys that share a common prefix into a list
     @objc public var delimiter: String?
     // Results count limit
-    @objc public var limit: Int = 0
+    @objc public var limit: Int = 500
     // Limit results to keys that start at this marker
     @objc public var marker: String?
     // Limits results to keys that begin with the prefix
@@ -1209,7 +1209,7 @@ public class ListObjectsInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(delimiter: String? = nil, limit: Int = 0, marker: String? = nil, prefix: String? = nil) {
+    @objc public init(delimiter: String? = nil, limit: Int = 500, marker: String? = nil, prefix: String? = nil) {
         super.init()
 
         self.delimiter = delimiter
@@ -1241,7 +1241,7 @@ public class ListObjectsOutput: QingStorOutput {
     // Object keys
     @objc public var keys: [KeyModel]?
     // Limit that specified in request parameters
-    @objc public var limit: Int = 0
+    @objc public var limit: Int = 500
     // Marker that specified in request parameters
     @objc public var marker: String?
     // Bucket name
@@ -1930,7 +1930,7 @@ public class InitiateMultipartUploadOutput: QingStorOutput {
 @objc(QSListMultipartInput)
 public class ListMultipartInput: QingStorInput {
     // Limit results count
-    @objc public var limit: Int = 0
+    @objc public var limit: Int = 500
     // Object multipart upload part number
     @objc public var partNumberMarker: Int = 0
     // Object multipart upload ID
@@ -1944,7 +1944,7 @@ public class ListMultipartInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(limit: Int = 0, partNumberMarker: Int = 0, uploadID: String) {
+    @objc public init(limit: Int = 500, partNumberMarker: Int = 0, uploadID: String) {
         super.init()
 
         self.limit = limit

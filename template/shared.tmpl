@@ -76,7 +76,11 @@
         {{- if eq $property.Type "boolean" -}}
             {{- " = false" -}}
         {{- else if eq $property.Type "integer" -}}
-            {{- " = 0" -}}
+            {{- if eq $property.ID "limit" -}}
+                {{- " = 500" -}}
+            {{- else -}}
+                {{- " = 0" -}}
+            {{- end -}}
         {{- else if eq $property.Type "long" -}}
             {{- " = 0" -}}
         {{- else if not $property.IsRequired -}}
