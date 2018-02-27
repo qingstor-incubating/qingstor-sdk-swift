@@ -82,7 +82,7 @@ public class QingStorAPI: NSObject, BaseAPI {
         self.buildingQueue = buildingQueue
         self.callbackQueue = callbackQueue
     }
-    
+
     @objc public override convenience init() {
         self.init(context: APIContext.qingStor(),
                   signer: QingStorSigner(),

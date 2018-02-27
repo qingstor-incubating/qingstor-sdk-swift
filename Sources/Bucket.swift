@@ -51,15 +51,15 @@ public class Bucket: QingStorAPI {
         super.init(context: context, signer: signer, credential: credential, buildingQueue: buildingQueue, callbackQueue: callbackQueue)
     }
 
-    func setupContext(uriFormat: String?, bucketName: String? = nil, objectKey: String? = nil, zone: String? = nil) throws {
-        self.context = self.context.rawCopy()
+    func setupContext(uriFormat: String?, bucketName: String? = nil, objectKey: String? = nil, zone: String? = nil) throws -> APIContext {
+        let context = self.context.rawCopy()
 
         if let uriFormat = uriFormat {
             var uri = uriFormat
 
             if let index = uri.range(of: "?", options: .backwards)?.lowerBound {
                 let query = String(uri[uri.index(after: index)...])
-                self.context.query = query
+                context.query = query
 
                 uri = String(uri[..<index])
             }
@@ -82,10 +82,11 @@ public class Bucket: QingStorAPI {
                 uri = uri.replacingOccurrences(of: "<object-key>", with: _objectKey)
             }
 
-            self.context.uri = uri
+            context.uri = uri
         }
 
-        self.context.host = "\(zone ?? self.zoneName)." + (self.context.host ?? "")
+        context.host = "\(zone ?? self.zoneName)." + (context.host ?? "")
+        return context
     }
 
     // delete: Delete a bucket.
@@ -104,18 +105,16 @@ public class Bucket: QingStorAPI {
     // deleteSender create sender of delete.
     public func deleteSender(input: DeleteBucketInput = DeleteBucketInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>"),
+                                      input: input,
+                                      method: .delete,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .delete,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // deleteCORS: Delete CORS information of the bucket.
@@ -134,18 +133,16 @@ public class Bucket: QingStorAPI {
     // deleteCORSSender create sender of deleteCORS.
     public func deleteCORSSender(input: DeleteBucketCORSInput = DeleteBucketCORSInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?cors")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?cors"),
+                                      input: input,
+                                      method: .delete,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .delete,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // deleteExternalMirror: Delete external mirror of the bucket.
@@ -164,18 +161,16 @@ public class Bucket: QingStorAPI {
     // deleteExternalMirrorSender create sender of deleteExternalMirror.
     public func deleteExternalMirrorSender(input: DeleteBucketExternalMirrorInput = DeleteBucketExternalMirrorInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?mirror")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?mirror"),
+                                      input: input,
+                                      method: .delete,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .delete,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // deletePolicy: Delete policy information of the bucket.
@@ -194,18 +189,16 @@ public class Bucket: QingStorAPI {
     // deletePolicySender create sender of deletePolicy.
     public func deletePolicySender(input: DeleteBucketPolicyInput = DeleteBucketPolicyInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?policy")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?policy"),
+                                      input: input,
+                                      method: .delete,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .delete,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // deleteMultipleObjects: Delete multiple objects from the bucket.
@@ -224,18 +217,16 @@ public class Bucket: QingStorAPI {
     // deleteMultipleObjectsSender create sender of deleteMultipleObjects.
     public func deleteMultipleObjectsSender(input: DeleteMultipleObjectsInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?delete")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?delete"),
+                                      input: input,
+                                      method: .post,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .post,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // getACL: Get ACL information of the bucket.
@@ -254,18 +245,16 @@ public class Bucket: QingStorAPI {
     // getACLSender create sender of getACL.
     public func getACLSender(input: GetBucketACLInput = GetBucketACLInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?acl")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?acl"),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // getCORS: Get CORS information of the bucket.
@@ -284,18 +273,16 @@ public class Bucket: QingStorAPI {
     // getCORSSender create sender of getCORS.
     public func getCORSSender(input: GetBucketCORSInput = GetBucketCORSInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?cors")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?cors"),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // getExternalMirror: Get external mirror of the bucket.
@@ -314,18 +301,16 @@ public class Bucket: QingStorAPI {
     // getExternalMirrorSender create sender of getExternalMirror.
     public func getExternalMirrorSender(input: GetBucketExternalMirrorInput = GetBucketExternalMirrorInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?mirror")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?mirror"),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // getPolicy: Get policy information of the bucket.
@@ -344,18 +329,16 @@ public class Bucket: QingStorAPI {
     // getPolicySender create sender of getPolicy.
     public func getPolicySender(input: GetBucketPolicyInput = GetBucketPolicyInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?policy")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?policy"),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // getStatistics: Get statistics information of the bucket.
@@ -374,18 +357,16 @@ public class Bucket: QingStorAPI {
     // getStatisticsSender create sender of getStatistics.
     public func getStatisticsSender(input: GetBucketStatisticsInput = GetBucketStatisticsInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?stats")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?stats"),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // head: Check whether the bucket exists and available.
@@ -404,18 +385,16 @@ public class Bucket: QingStorAPI {
     // headSender create sender of head.
     public func headSender(input: HeadBucketInput = HeadBucketInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>"),
+                                      input: input,
+                                      method: .head,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .head,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // listMultipartUploads: List multipart uploads in the bucket.
@@ -434,18 +413,16 @@ public class Bucket: QingStorAPI {
     // listMultipartUploadsSender create sender of listMultipartUploads.
     public func listMultipartUploadsSender(input: ListMultipartUploadsInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?uploads")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?uploads"),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // listObjects: Retrieve the object list in a bucket.
@@ -464,18 +441,16 @@ public class Bucket: QingStorAPI {
     // listObjectsSender create sender of listObjects.
     public func listObjectsSender(input: ListObjectsInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>"),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // put: Create a new bucket.
@@ -494,18 +469,16 @@ public class Bucket: QingStorAPI {
     // putSender create sender of put.
     public func putSender(input: PutBucketInput = PutBucketInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>"),
+                                      input: input,
+                                      method: .put,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .put,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // putACL: Set ACL information of the bucket.
@@ -524,18 +497,16 @@ public class Bucket: QingStorAPI {
     // putACLSender create sender of putACL.
     public func putACLSender(input: PutBucketACLInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?acl")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?acl"),
+                                      input: input,
+                                      method: .put,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .put,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // putCORS: Set CORS information of the bucket.
@@ -554,18 +525,16 @@ public class Bucket: QingStorAPI {
     // putCORSSender create sender of putCORS.
     public func putCORSSender(input: PutBucketCORSInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?cors")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?cors"),
+                                      input: input,
+                                      method: .put,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .put,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // putExternalMirror: Set external mirror of the bucket.
@@ -584,18 +553,16 @@ public class Bucket: QingStorAPI {
     // putExternalMirrorSender create sender of putExternalMirror.
     public func putExternalMirrorSender(input: PutBucketExternalMirrorInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?mirror")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?mirror"),
+                                      input: input,
+                                      method: .put,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .put,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // putPolicy: Set policy information of the bucket.
@@ -614,18 +581,16 @@ public class Bucket: QingStorAPI {
     // putPolicySender create sender of putPolicy.
     public func putPolicySender(input: PutBucketPolicyInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>?policy")
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>?policy"),
+                                      input: input,
+                                      method: .put,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .put,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // abortMultipartUpload: Abort multipart upload.
@@ -644,18 +609,16 @@ public class Bucket: QingStorAPI {
     // abortMultipartUploadSender create sender of abortMultipartUpload.
     public func abortMultipartUploadSender(objectKey: String, input: AbortMultipartUploadInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .delete,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .delete,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // completeMultipartUpload: Complete multipart upload.
@@ -674,18 +637,16 @@ public class Bucket: QingStorAPI {
     // completeMultipartUploadSender create sender of completeMultipartUpload.
     public func completeMultipartUploadSender(objectKey: String, input: CompleteMultipartUploadInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .post,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .post,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // deleteObject: Delete the object.
@@ -704,18 +665,16 @@ public class Bucket: QingStorAPI {
     // deleteObjectSender create sender of deleteObject.
     public func deleteObjectSender(objectKey: String, input: DeleteObjectInput = DeleteObjectInput()) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .delete,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .delete,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // getObject: Retrieve the object.
@@ -734,18 +693,16 @@ public class Bucket: QingStorAPI {
     // getObjectSender create sender of getObject.
     public func getObjectSender(objectKey: String, input: GetObjectInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // headObject: Check whether the object exists and available.
@@ -764,18 +721,16 @@ public class Bucket: QingStorAPI {
     // headObjectSender create sender of headObject.
     public func headObjectSender(objectKey: String, input: HeadObjectInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .head,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .head,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // imageProcess: Image process with the action on the object
@@ -794,18 +749,16 @@ public class Bucket: QingStorAPI {
     // imageProcessSender create sender of imageProcess.
     public func imageProcessSender(objectKey: String, input: ImageProcessInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>?image", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>?image", objectKey: objectKey),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // initiateMultipartUpload: Initial multipart upload on the object.
@@ -824,18 +777,16 @@ public class Bucket: QingStorAPI {
     // initiateMultipartUploadSender create sender of initiateMultipartUpload.
     public func initiateMultipartUploadSender(objectKey: String, input: InitiateMultipartUploadInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>?uploads", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>?uploads", objectKey: objectKey),
+                                      input: input,
+                                      method: .post,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .post,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // listMultipart: List object parts.
@@ -854,18 +805,16 @@ public class Bucket: QingStorAPI {
     // listMultipartSender create sender of listMultipart.
     public func listMultipartSender(objectKey: String, input: ListMultipartInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .get,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .get,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // optionsObject: Check whether the object accepts a origin with method and header.
@@ -884,18 +833,16 @@ public class Bucket: QingStorAPI {
     // optionsObjectSender create sender of optionsObject.
     public func optionsObjectSender(objectKey: String, input: OptionsObjectInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .options,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .options,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // putObject: Upload the object.
@@ -914,18 +861,16 @@ public class Bucket: QingStorAPI {
     // putObjectSender create sender of putObject.
     public func putObjectSender(objectKey: String, input: PutObjectInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .put,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .put,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
     // uploadMultipart: Upload object multipart.
@@ -944,18 +889,16 @@ public class Bucket: QingStorAPI {
     // uploadMultipartSender create sender of uploadMultipart.
     public func uploadMultipartSender(objectKey: String, input: UploadMultipartInput) -> (APISender?, Error?) {
         do {
-            try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey)
+            return APISender.qingStor(context: try self.setupContext(uriFormat: "/<bucket-name>/<object-key>", objectKey: objectKey),
+                                      input: input,
+                                      method: .put,
+                                      signer: self.signer,
+                                      credential: self.credential,
+                                      buildingQueue: self.buildingQueue,
+                                      callbackQueue: self.callbackQueue)
         } catch {
             return (nil, error)
         }
-
-        return APISender.qingStor(context: self.context,
-                                  input: input,
-                                  method: .put,
-                                  signer: self.signer,
-                                  credential: self.credential,
-                                  buildingQueue: self.buildingQueue,
-                                  callbackQueue: self.callbackQueue)
     }
 
 }
