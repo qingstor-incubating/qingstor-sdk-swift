@@ -306,7 +306,6 @@ public class APISender: NSObject {
                             callbackQueue: DispatchQueue = DispatchQueue.main) {
         var parameters: [String:Any] = [:]
         var encoding = ParameterEncodingType.query
-        let realContext = context.rawCopy()
         var realHeaders = headers
         var isDownload = false
         var downloadDestination: URL? = nil
@@ -346,8 +345,8 @@ public class APISender: NSObject {
                 }
 
                 let queryString = APIHelper.buildQueryString(parameters: &queryParameters)
-                let percentEncodedQuery = (realContext.urlComponents.percentEncodedQuery.map { $0 + "&" } ?? "") + queryString
-                realContext.urlComponents.percentEncodedQuery = percentEncodedQuery
+                let percentEncodedQuery = (context.urlComponents.percentEncodedQuery.map { $0 + "&" } ?? "") + queryString
+                context.urlComponents.percentEncodedQuery = percentEncodedQuery
             }
 
             if let downloadInput = input as? APIDownloadInput {
@@ -358,7 +357,7 @@ public class APISender: NSObject {
             }
         }
 
-        self.init(context: realContext,
+        self.init(context: context,
                   parameters: parameters,
                   method: method,
                   signer: signer,
