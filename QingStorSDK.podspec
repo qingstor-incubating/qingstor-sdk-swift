@@ -7,11 +7,21 @@ Pod::Spec.new do |s|
   s.homepage = "https://www.qingstor.com"
   s.source = { :git => "https://github.com/yunify/qingstor-sdk-swift.git", :tag => s.version }
   s.platform = :ios, "9.0"
-  s.source_files = 'Sources/**/*.swift'
-  s.dependency 'Alamofire', '~> 4.5'
-  s.dependency 'CryptoSwift', '~> 0.7.2'
-  s.dependency 'ObjectMapper', '~> 3.1'
+  s.default_subspec = "Core"
   s.pod_target_xcconfig = {
     'SWIFT_VERSION' => '4.0',
   }
+
+  s.subspec "Core" do |ss|
+    ss.source_files  = "Sources/QingStor/"
+    ss.dependency 'Alamofire', '~> 4.6'
+    ss.dependency 'CryptoSwift', '~> 0.8.3'
+    ss.dependency 'ObjectMapper', '~> 3.1'
+  end
+
+  s.subspec "ObjcBridge" do |ss|
+    ss.source_files = "Sources/ObjcBridge/"
+    ss.dependency "QingStorSDK/Core"
+  end
+  
 end
