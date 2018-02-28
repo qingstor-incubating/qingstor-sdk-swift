@@ -1,5 +1,5 @@
 //
-//  ResponseSerialization.swift
+//  Signer.swift
 //
 // +-------------------------------------------------------------------------
 // | Copyright (C) 2018 Yunify, Inc.
