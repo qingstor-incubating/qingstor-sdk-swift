@@ -184,6 +184,7 @@
 				837300871F425BB60042001D /* ImageProcessor.swift */,
 			);
 			name = Core;
+			path = QingStor;
 			sourceTree = "<group>";
 		};
 		836133FF1DF346FB00FC5859 /* APIs */ = {
@@ -194,6 +195,7 @@
 				836134181DF3471D00FC5859 /* QingStorTypes.swift */,
 			);
 			name = APIs;
+			path = QingStor;
 			sourceTree = "<group>";
 		};
 		836134601DF34A2800FC5859 /* QingStorSDKTests */ = {
@@ -252,6 +254,7 @@
 				837EC0FC2046A20800EB2664 /* ImageProcessorObjcBridge.swift */,
 			);
 			name = Bridge;
+			path = ObjcBridge;
 			sourceTree = "<group>";
 		};
 		83E617FD1DE381F300CCFFDB = {
@@ -294,7 +297,7 @@
 				83E6180A1DE381F300CCFFDB /* QingStorSDK.h */,
 				83E6180B1DE381F300CCFFDB /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		902A61D570F782C39238CE1F /* Pods */ = {
@@ -833,7 +836,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = "Sources/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yunify.QingStorSDK;
@@ -854,7 +857,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = "Sources/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yunify.QingStorSDK;
