@@ -316,7 +316,7 @@ public class APISender: NSObject {
             // Handle header properties
             if input.headerProperties.count > 0 {
                 for key in input.headerProperties {
-                    if let value = parameters[key] {
+                    if let value = parameters[key], (value as? Int) != defaultIgnoreIntValue {
                         realHeaders[key] = "\(value)"
                     }
 
@@ -337,7 +337,7 @@ public class APISender: NSObject {
             if input.queryProperties.count > 0 {
                 var queryParameters: [String:Any] = [:]
                 for key in input.queryProperties {
-                    if let value = parameters[key] {
+                    if let value = parameters[key], (value as? Int) != defaultIgnoreIntValue {
                         queryParameters[key] = value
                     }
 

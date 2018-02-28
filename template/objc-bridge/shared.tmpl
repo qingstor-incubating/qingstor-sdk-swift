@@ -21,6 +21,7 @@
 {{- define "RenderInitializationAssignment" -}}
     {{- $customizedType := index . 0 -}}
     {{- $operationName := index . 1 -}}
+    {{- $ignoreIntValue := index . 2 -}}
     {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
 
     {{- range $_, $property := $customizedType.Properties}}
@@ -30,9 +31,17 @@
             {{- if eq $property.Type "boolean" -}}
                 {{- ": false" -}}
             {{- else if eq $property.Type "integer" -}}
-                {{- ": 0" -}}
+                {{- if $ignoreIntValue -}}
+                    {{- ": Int.min" -}}
+                {{- else -}}
+                    {{- ": 0" -}}
+                {{- end -}}
             {{- else if eq $property.Type "long" -}}
-                {{- ": 0" -}}
+                {{- if $ignoreIntValue -}}
+                    {{- ": Int.min" -}}
+                {{- else -}}
+                    {{- ": 0" -}}
+                {{- end -}}
             {{- else if not $property.IsRequired -}}
                 {{- ": nil" -}}
             {{- else if eq $property.Type "array" -}}
@@ -54,7 +63,7 @@
 
 extension {{$customizedType.ID | camelCase}}Model {
     @objc public static func empty() -> {{$customizedType.ID | camelCase}}Model { 
-        return {{ $customizedType.ID | camelCase}}Model({{template "RenderInitializationAssignment" passThrough $customizedType "" }})
+        return {{ $customizedType.ID | camelCase}}Model({{template "RenderInitializationAssignment" passThrough $customizedType "" false }})
     }
 }
 {{- end -}}
@@ -66,21 +75,21 @@ extension {{$customizedType.ID | camelCase}}Model {
 extension {{$operation.ID | camelCase}}Input {
     @objc public static func empty() -> {{$operation.ID | camelCase}}Input { 
         return {{$operation.ID | camelCase}}Input(
-            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Params $operation.Name -}}
+            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Params $operation.Name true -}}
             {{- if and (gt ($operation.Request.Params.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
                 {{- if or (ne ($operation.Request.Params.Properties | len) 1) (ne ($operation.Request.Params | firstPropertyIDInCustomizedType) "Content-MD5") -}}
                     {{- ", " -}}
                 {{- end -}}
             {{- end -}}
 
-            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Headers $operation.Name -}}
+            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Headers $operation.Name true -}}
             {{- if and (gt ($operation.Request.Headers.Properties | len) 0) (or (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
                 {{- if or (ne ($operation.Request.Headers.Properties | len) 1) (ne ($operation.Request.Headers | firstPropertyIDInCustomizedType) "Content-MD5") -}}
                     {{- ", " -}}
                 {{- end -}}
             {{- end -}}
 
-            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Elements $operation.Name -}}
+            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Elements $operation.Name true -}}
             {{- if and (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary") -}}
                 {{- if or (ne ($operation.Request.Elements.Properties | len) 1) (ne ($operation.Request.Elements | firstPropertyIDInCustomizedType) "Content-MD5") -}}
                     {{- ", " -}}

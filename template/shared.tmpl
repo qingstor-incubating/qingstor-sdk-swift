@@ -32,6 +32,7 @@
 	{{- $checkOptionalType := index . 1 -}}
 	{{- $needNilDefault := index . 2 -}}
 	{{- $inBody := index . 3 -}}
+    {{- $ignoreIntValue := index . 4 -}}
 
 	{{- if eq $property.Type "object" -}}
 		{{template "Type" $property.ExtraType}}
@@ -76,13 +77,17 @@
         {{- if eq $property.Type "boolean" -}}
             {{- " = false" -}}
         {{- else if eq $property.Type "integer" -}}
-            {{- if eq $property.ID "limit" -}}
-                {{- " = 500" -}}
+            {{- if $ignoreIntValue -}}
+                {{- " = Int.min" -}}
             {{- else -}}
                 {{- " = 0" -}}
             {{- end -}}
         {{- else if eq $property.Type "long" -}}
-            {{- " = 0" -}}
+            {{- if $ignoreIntValue -}}
+                {{- " = Int.min" -}}
+            {{- else -}}
+                {{- " = 0" -}}
+            {{- end -}}
         {{- else if not $property.IsRequired -}}
             {{- " = nil" -}}
         {{- end -}}
@@ -121,6 +126,7 @@
     {{- $checkOptionalType := index . 1 -}}
     {{- $needNilDefault := index . 2 -}}
     {{- $operationName := index . 3 -}}
+    {{- $ignoreIntValue := index . 4 -}}
     {{- $firstPropertyID := $customizedType | firstPropertyIDInCustomizedType -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
@@ -128,7 +134,7 @@
             {{- if ne $property.ID $firstPropertyID -}}{{- ", " -}}{{- end -}}
             {{- template "FormatPropertyID" $property -}}
             {{- ": " -}}
-            {{- template "PropertyType" passThrough $property $checkOptionalType $needNilDefault false -}}
+            {{- template "PropertyType" passThrough $property $checkOptionalType $needNilDefault false $ignoreIntValue -}}
         {{- end -}}
     {{- end -}}
 {{- end -}}
@@ -171,21 +177,21 @@
 {{- define "RenderInitializationDeclarationRequest" -}}
     {{- $operation := . -}}
 
-    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Params 2 true $operation.Name -}}
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Params 2 true $operation.Name true -}}
     {{- if and (gt ($operation.Request.Params.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
         {{- if or (ne ($operation.Request.Params.Properties | len) 1) (ne ($operation.Request.Params | firstPropertyIDInCustomizedType) "Content-MD5") -}}
             {{- ", " -}}
         {{- end -}}
     {{- end -}}
 
-    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Headers 2 true $operation.Name -}}
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Headers 2 true $operation.Name true -}}
     {{- if and (gt ($operation.Request.Headers.Properties | len) 0) (or (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
         {{- if or (ne ($operation.Request.Headers.Properties | len) 1) (ne ($operation.Request.Headers | firstPropertyIDInCustomizedType) "Content-MD5") -}}
             {{- ", " -}}
         {{- end -}}
     {{- end -}}
 
-    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Elements 2 true $operation.Name -}}
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Elements 2 true $operation.Name true -}}
     {{- if and (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary") -}}
         {{- if or (ne ($operation.Request.Elements.Properties | len) 1) (ne ($operation.Request.Elements | firstPropertyIDInCustomizedType) "Content-MD5") -}}
             {{- ", " -}}
@@ -202,6 +208,7 @@
     {{- $customizedType := index . 0 -}}
     {{- $needExcluded := index . 1 -}}
     {{- $operationName := index . 2 -}}
+    {{- $ignoreIntValue := index . 3 -}}
 
     {{- range $_, $property := $customizedType.Properties -}}
         {{- if and (or (not $needExcluded) (and (ne $property.ID "message") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
@@ -211,7 +218,7 @@
             {{- if $property.Enum}}
     // {{ template "FormatPropertyID" $property -}}'s available values: {{$property.Enum | commaConnected -}}
             {{- end}}
-    @objc public var {{template "FormatPropertyID" $property}}: {{template "PropertyType" passThrough $property 3 true false}}
+    @objc public var {{template "FormatPropertyID" $property}}: {{template "PropertyType" passThrough $property 3 true false $ignoreIntValue }}
             {{- if $property.IsRequired}} // Required {{- end -}}
         {{- end -}}
     {{- end -}}
@@ -219,13 +226,14 @@
 
 
 {{- define "RenderInitialization" -}}
-    {{- $customizedType := index . }}
+    {{- $customizedType := index . 0 -}}
+    {{- $ignoreIntValue := index . 1 }}
 
     public required init?(map: Map) {
         super.init(map: map)
     }
 
-    @objc public init({{- template "RenderInitializationDeclaration" passThrough $customizedType 2 true "" -}}) {
+    @objc public init({{- template "RenderInitializationDeclaration" passThrough $customizedType 2 true "" $ignoreIntValue -}}) {
         super.init()
         {{template "RenderInitializationAssignment" passThrough $customizedType "" }}
     }
@@ -366,8 +374,8 @@
 @objc(QS{{$customizedType.ID | camelCase}}Model)
 public class {{$customizedType.ID | camelCase}}Model: BaseModel {
     {{- if gt ($customizedType.Properties | len) 0 -}}
-        {{- template "RenderProperties" passThrough $customizedType false "" -}}
-        {{- template "RenderInitialization" $customizedType}}
+        {{- template "RenderProperties" passThrough $customizedType false "" false -}}
+        {{- template "RenderInitialization" passThrough $customizedType false }}
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -398,15 +406,15 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     {{- else}}
 @objc(QS{{$operation.ID | camelCase}}Input)
 public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input {
-    {{- template "RenderProperties" passThrough $operation.Request.Params false $operation.Name -}}
-    {{- template "RenderProperties" passThrough $operation.Request.Headers false $operation.Name -}}
-    {{- template "RenderProperties" passThrough $operation.Request.Elements false $operation.Name -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Params false $operation.Name true -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Headers false $operation.Name true -}}
+    {{- template "RenderProperties" passThrough $operation.Request.Elements false $operation.Name true -}}
 
     {{- if eq $operation.Request.Body.Type "binary"}}
         {{- if $operation.Request.Body.Description}}
     // {{$operation.Request.Body.Description -}}
         {{- end}}
-    @objc public var bodyInputStream: {{template "PropertyType" passThrough $operation.Request.Body 3 false true}}
+    @objc public var bodyInputStream: {{template "PropertyType" passThrough $operation.Request.Body 3 false true true }}
     {{- end -}}
 
     {{- if gt ($operation.Request.Params.Properties | len) 0}}{{"\n"}}
@@ -504,8 +512,8 @@ public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Res
     {{- else}}
 @objc(QS{{$operation.ID | camelCase}}Output)
 public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Output {
-    {{- template "RenderProperties" passThrough $operation.Response.Headers true "" -}}
-    {{- template "RenderProperties" passThrough $operation.Response.Elements true "" -}}
+    {{- template "RenderProperties" passThrough $operation.Response.Headers true "" false -}}
+    {{- template "RenderProperties" passThrough $operation.Response.Elements true "" false -}}
 
     {{- if or (gt ($operation.Response.Headers.Properties | len) 0) (gt ($operation.Response.Elements.Properties | len) 0)}}
 
