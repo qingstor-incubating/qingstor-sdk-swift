@@ -21,7 +21,8 @@
 import Foundation
 import ObjectMapper
 
-private var contextZoneKey: UInt = 0
+let defaultIgnoreIntValue = Int.min
+
 public extension APIContext {
     @objc public static func qingStor(urlString: String = "https://qingstor.com:443/",
                                 accessKeyID: String = Registry.accessKeyID,

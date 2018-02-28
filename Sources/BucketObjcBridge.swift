@@ -643,13 +643,13 @@ extension HeadBucketInput {
 
 extension ListMultipartUploadsInput {
     @objc public static func empty() -> ListMultipartUploadsInput {
-        return ListMultipartUploadsInput(delimiter: nil, keyMarker: nil, limit: 0, prefix: nil, uploadIDMarker: nil)
+        return ListMultipartUploadsInput(delimiter: nil, keyMarker: nil, limit: Int.min, prefix: nil, uploadIDMarker: nil)
     }
 }
 
 extension ListObjectsInput {
     @objc public static func empty() -> ListObjectsInput {
-        return ListObjectsInput(delimiter: nil, limit: 0, marker: nil, prefix: nil)
+        return ListObjectsInput(delimiter: nil, limit: Int.min, marker: nil, prefix: nil)
     }
 }
 
@@ -727,7 +727,7 @@ extension InitiateMultipartUploadInput {
 
 extension ListMultipartInput {
     @objc public static func empty() -> ListMultipartInput {
-        return ListMultipartInput(limit: 0, partNumberMarker: 0, uploadID: "")
+        return ListMultipartInput(limit: Int.min, partNumberMarker: Int.min, uploadID: "")
     }
 }
 
@@ -739,12 +739,12 @@ extension OptionsObjectInput {
 
 extension PutObjectInput {
     @objc public static func empty() -> PutObjectInput {
-        return PutObjectInput(contentLength: 0, contentMD5: nil, contentType: nil, expect: nil, xQSCopySource: nil, xQSCopySourceEncryptionCustomerAlgorithm: nil, xQSCopySourceEncryptionCustomerKey: nil, xQSCopySourceEncryptionCustomerKeyMD5: nil, xQSCopySourceIfMatch: nil, xQSCopySourceIfModifiedSince: nil, xQSCopySourceIfNoneMatch: nil, xQSCopySourceIfUnmodifiedSince: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, xQSFetchIfUnmodifiedSince: nil, xQSFetchSource: nil, xQSMoveSource: nil, bodyInputStream: nil)
+        return PutObjectInput(contentLength: Int.min, contentMD5: nil, contentType: nil, expect: nil, xQSCopySource: nil, xQSCopySourceEncryptionCustomerAlgorithm: nil, xQSCopySourceEncryptionCustomerKey: nil, xQSCopySourceEncryptionCustomerKeyMD5: nil, xQSCopySourceIfMatch: nil, xQSCopySourceIfModifiedSince: nil, xQSCopySourceIfNoneMatch: nil, xQSCopySourceIfUnmodifiedSince: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, xQSFetchIfUnmodifiedSince: nil, xQSFetchSource: nil, xQSMoveSource: nil, bodyInputStream: nil)
     }
 }
 
 extension UploadMultipartInput {
     @objc public static func empty() -> UploadMultipartInput {
-        return UploadMultipartInput(partNumber: 0, uploadID: "", contentLength: 0, contentMD5: nil, xQSCopyRange: nil, xQSCopySource: nil, xQSCopySourceEncryptionCustomerAlgorithm: nil, xQSCopySourceEncryptionCustomerKey: nil, xQSCopySourceEncryptionCustomerKeyMD5: nil, xQSCopySourceIfMatch: nil, xQSCopySourceIfModifiedSince: nil, xQSCopySourceIfNoneMatch: nil, xQSCopySourceIfUnmodifiedSince: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, bodyInputStream: nil)
+        return UploadMultipartInput(partNumber: Int.min, uploadID: "", contentLength: Int.min, contentMD5: nil, xQSCopyRange: nil, xQSCopySource: nil, xQSCopySourceEncryptionCustomerAlgorithm: nil, xQSCopySourceEncryptionCustomerKey: nil, xQSCopySourceEncryptionCustomerKeyMD5: nil, xQSCopySourceIfMatch: nil, xQSCopySourceIfModifiedSince: nil, xQSCopySourceIfNoneMatch: nil, xQSCopySourceIfUnmodifiedSince: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, bodyInputStream: nil)
     }
 }

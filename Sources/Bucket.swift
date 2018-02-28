@@ -1115,7 +1115,7 @@ public class ListMultipartUploadsInput: QingStorInput {
     // Limit results returned from the first key after key_marker sorted by alphabetical order
     @objc public var keyMarker: String?
     // Results count limit
-    @objc public var limit: Int = 500
+    @objc public var limit: Int = Int.min
     // Limits results to keys that begin with the prefix
     @objc public var prefix: String?
     // Limit results returned from the first uploading segment after upload_id_marker sorted by the time of upload_id
@@ -1129,7 +1129,7 @@ public class ListMultipartUploadsInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(delimiter: String? = nil, keyMarker: String? = nil, limit: Int = 500, prefix: String? = nil, uploadIDMarker: String? = nil) {
+    @objc public init(delimiter: String? = nil, keyMarker: String? = nil, limit: Int = Int.min, prefix: String? = nil, uploadIDMarker: String? = nil) {
         super.init()
 
         self.delimiter = delimiter
@@ -1161,7 +1161,7 @@ public class ListMultipartUploadsOutput: QingStorOutput {
     // Delimiter that specified in request parameters
     @objc public var delimiter: String?
     // Limit that specified in request parameters
-    @objc public var limit: Int = 500
+    @objc public var limit: Int = 0
     // Marker that specified in request parameters
     @objc public var marker: String?
     // Bucket name
@@ -1195,7 +1195,7 @@ public class ListObjectsInput: QingStorInput {
     // Put all keys that share a common prefix into a list
     @objc public var delimiter: String?
     // Results count limit
-    @objc public var limit: Int = 500
+    @objc public var limit: Int = Int.min
     // Limit results to keys that start at this marker
     @objc public var marker: String?
     // Limits results to keys that begin with the prefix
@@ -1209,7 +1209,7 @@ public class ListObjectsInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(delimiter: String? = nil, limit: Int = 500, marker: String? = nil, prefix: String? = nil) {
+    @objc public init(delimiter: String? = nil, limit: Int = Int.min, marker: String? = nil, prefix: String? = nil) {
         super.init()
 
         self.delimiter = delimiter
@@ -1241,7 +1241,7 @@ public class ListObjectsOutput: QingStorOutput {
     // Object keys
     @objc public var keys: [KeyModel]?
     // Limit that specified in request parameters
-    @objc public var limit: Int = 500
+    @objc public var limit: Int = 0
     // Marker that specified in request parameters
     @objc public var marker: String?
     // Bucket name
@@ -1930,9 +1930,9 @@ public class InitiateMultipartUploadOutput: QingStorOutput {
 @objc(QSListMultipartInput)
 public class ListMultipartInput: QingStorInput {
     // Limit results count
-    @objc public var limit: Int = 500
+    @objc public var limit: Int = Int.min
     // Object multipart upload part number
-    @objc public var partNumberMarker: Int = 0
+    @objc public var partNumberMarker: Int = Int.min
     // Object multipart upload ID
     @objc public var uploadID: String! // Required
 
@@ -1944,7 +1944,7 @@ public class ListMultipartInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(limit: Int = 500, partNumberMarker: Int = 0, uploadID: String) {
+    @objc public init(limit: Int = Int.min, partNumberMarker: Int = Int.min, uploadID: String) {
         super.init()
 
         self.limit = limit
@@ -2057,7 +2057,7 @@ public class OptionsObjectOutput: QingStorOutput {
 @objc(QSPutObjectInput)
 public class PutObjectInput: QingStorInput {
     // Object content size
-    @objc public var contentLength: Int = 0 // Required
+    @objc public var contentLength: Int = Int.min // Required
     // Object MD5sum
     @objc public var contentMD5: String?
     // Object content type
@@ -2107,7 +2107,7 @@ public class PutObjectInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(contentLength: Int = 0, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchIfUnmodifiedSince: Date? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, bodyInputStream: InputStream? = nil) {
+    @objc public init(contentLength: Int = Int.min, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchIfUnmodifiedSince: Date? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, bodyInputStream: InputStream? = nil) {
         super.init()
 
         self.contentLength = contentLength
@@ -2176,7 +2176,7 @@ public class UploadMultipartInput: QingStorInput {
     // Object multipart upload ID
     @objc public var uploadID: String! // Required
     // Object multipart content length
-    @objc public var contentLength: Int = 0
+    @objc public var contentLength: Int = Int.min
     // Object multipart content MD5sum
     @objc public var contentMD5: String?
     // Specify range of the source object
@@ -2222,7 +2222,7 @@ public class UploadMultipartInput: QingStorInput {
         super.init(map: map)
     }
 
-    @objc public init(partNumber: Int = 0, uploadID: String, contentLength: Int = 0, contentMD5: String? = nil, xQSCopyRange: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, bodyInputStream: InputStream? = nil) {
+    @objc public init(partNumber: Int = 0, uploadID: String, contentLength: Int = Int.min, contentMD5: String? = nil, xQSCopyRange: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, bodyInputStream: InputStream? = nil) {
         super.init()
 
         self.partNumber = partNumber
