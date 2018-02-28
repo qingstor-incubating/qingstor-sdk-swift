@@ -24,7 +24,7 @@ class SignatureTests: XCTestCase {
     func testWriteHeaderSignature() throws {
         let expectation = self.expectation(description: "")
 
-        var context = APIContext.qingStor()
+        let context = APIContext.qingStor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc"
 
         let requestBuild = DefaultRequestBuilder(context: context, signer: QingStorSigner())
@@ -50,10 +50,10 @@ class SignatureTests: XCTestCase {
     func testWriteQuerySignature() throws {
         let expectation = self.expectation(description: "")
 
-        var context = APIContext.qingStor()
+        let context = APIContext.qingStor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc"
 
-        var signer = QingStorSigner()
+        let signer = QingStorSigner()
         signer.signatureType = .query(timeoutSeconds: 500)
         let requestBuild = DefaultRequestBuilder(context: context, signer: signer)
         requestBuild.addHeaders(["Date": String.RFC822(date: Date(timeIntervalSince1970: 0))])
@@ -77,7 +77,7 @@ class SignatureTests: XCTestCase {
     func testWriteNonASCIIHeaderSignature() throws {
         let expectation = self.expectation(description: "")
 
-        var context = APIContext.qingStor()
+        let context = APIContext.qingStor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=测试中文"
 
         let requestBuild = DefaultRequestBuilder(context: context, signer: QingStorSigner())
@@ -103,10 +103,10 @@ class SignatureTests: XCTestCase {
     func testWriteNonASCIIQuerySignature() throws {
         let expectation = self.expectation(description: "")
 
-        var context = APIContext.qingStor()
+        let context = APIContext.qingStor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=测试中文"
 
-        var signer = QingStorSigner()
+        let signer = QingStorSigner()
         signer.signatureType = .query(timeoutSeconds: 500)
         let requestBuild = DefaultRequestBuilder(context: context, signer: signer)
         requestBuild.addHeaders(["Date": String.RFC822(date: Date(timeIntervalSince1970: 0))])
@@ -130,7 +130,7 @@ class SignatureTests: XCTestCase {
     func testWriteQueryCustomizedSigner() throws {
         let expectation = self.expectation(description: "")
 
-        var signer = CustomizedSigner { _, _, _, completion in
+        let signer = CustomizedSigner { _, _, _, completion in
             DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 1) {
                 completion(self.fakeQuerySignatureResult())
             }
@@ -155,7 +155,7 @@ class SignatureTests: XCTestCase {
     func testWriteExpiresQueryCustomizedSigner() throws {
         let expectation = self.expectation(description: "")
 
-        var signer = CustomizedSigner { _, _, _, completion in
+        let signer = CustomizedSigner { _, _, _, completion in
             DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 1) {
                 completion(self.fakeQuerySignatureResult(expires: 999999))
             }
@@ -180,7 +180,7 @@ class SignatureTests: XCTestCase {
     func testWriteHeaderCustomizedSigner() throws {
         let expectation = self.expectation(description: "")
 
-        var signer = CustomizedSigner { _, _, _, completion in
+        let signer = CustomizedSigner { _, _, _, completion in
             DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 1) {
                 completion(self.fakeHeaderSignatureResult())
             }
@@ -204,7 +204,7 @@ class SignatureTests: XCTestCase {
     func testWriteAuthorizationCustomizedSigner() throws {
         let expectation = self.expectation(description: "")
 
-        var signer = CustomizedSigner { _, _, _, completion in
+        let signer = CustomizedSigner { _, _, _, completion in
             DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 1) {
                 completion(self.fakeAuthorizationSignatureResult())
             }

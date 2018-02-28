@@ -32,7 +32,7 @@ class APITests: XCTestCase {
     }
 
     func testContextReadConfig() {
-        var context = APIContext.qingStor()
+        let context = APIContext.qingStor()
         XCTAssertEqual(context.url.absoluteString, "https://qingstor.com:443/")
 
         context.readFrom(config: ["port": "80", "protocol": "http", "host": "example.com"])
@@ -42,14 +42,14 @@ class APITests: XCTestCase {
     func testSetupContext() {
         let api = Bucket(bucketName: "test-bucket", zone: "test-zone")
 
-        try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", objectKey: "test-object")
-        XCTAssertEqual(api.context.url.absoluteString, "https://test-zone.qingstor.com:443/test-bucket/test-object?test")
+        var context = try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", objectKey: "test-object")
+        XCTAssertEqual(context.url.absoluteString, "https://test-zone.qingstor.com:443/test-bucket/test-object?test")
 
-        try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", bucketName: "test-bucket-other", objectKey: "test-object-other", zone: "test-zone-other")
-        XCTAssertEqual(api.context.url.absoluteString, "https://test-zone-other.qingstor.com:443/test-bucket-other/test-object-other?test")
+        context = try! api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test", bucketName: "test-bucket-other", objectKey: "test-object-other", zone: "test-zone-other")
+        XCTAssertEqual(context.url.absoluteString, "https://test-zone-other.qingstor.com:443/test-bucket-other/test-object-other?test")
 
         do {
-            try api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test")
+            _ = try api.setupContext(uriFormat: "/<bucket-name>/<object-key>?test")
             XCTAssert(false, "must be throw APIError")
         } catch {
             XCTAssertTrue(error is APIError)
