@@ -1,5 +1,5 @@
 //
-// QingStor.swift
+// QingStorObjcBridge.swift
 //
 // +-------------------------------------------------------------------------
 // | Copyright (C) 2018 Yunify, Inc.

@@ -1,5 +1,5 @@
 //
-// ObjcBridge.swift
+// SignerObjcBridge.swift
 //
 // +-------------------------------------------------------------------------
 // | Copyright (C) 2018 Yunify, Inc.
