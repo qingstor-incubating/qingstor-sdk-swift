@@ -25,7 +25,7 @@ import QingStorSDK
 typealias Complete = () -> Void
 
 class QingStorTests: NSObject {
-    var timeout = 30.0
+    var timeout = 90.0
     var context: APIContext!
     var currentZone: String!
     var bucketName: String!
@@ -106,6 +106,8 @@ class QingStorTests: NSObject {
             if let response = response {
                 if response.output.errMessage == nil {
                     print("success: \(response.output.toJSON())")
+                } else {
+                    print("failure: \(response.output.errMessage!), statusCode: \(response.statusCode), code: \(response.output.code!)")
                 }
 
                 print("request-id: \(String(describing: response.output.requestId))")
