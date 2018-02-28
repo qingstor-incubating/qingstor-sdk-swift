@@ -22,8 +22,8 @@ import Foundation
 
 @objc(QSAPISenderResult)
 open class APISenderResult: NSObject {
-    public let sender: APISender?
-    public let error: Error?
+    @objc public let sender: APISender?
+    @objc public let error: Error?
 
     public init(sender: APISender?, error: Error?) {
         self.sender = sender
@@ -65,5 +65,106 @@ extension QingStorAPI {
 
     @objc public convenience init(context: APIContext, customizedSigner: CustomizedSigner) {
         self.init(context: context, signer: customizedSigner)
+    }
+}
+
+@objc(QSHTTPMethod)
+public enum HTTPMethodObjcBridge: Int {
+    case options
+    case get
+    case head
+    case post
+    case put
+    case patch
+    case delete
+    case trace
+    case connect
+
+    init(_ method: HTTPMethod) {
+        switch method {
+        case .options:
+            self = .options
+        case .get:
+            self = .get
+        case .head:
+            self = .head
+        case .post:
+            self = .post
+        case .put:
+            self = .put
+        case .patch:
+            self = .patch
+        case .delete:
+            self = .delete
+        case .trace:
+            self = .trace
+        case .connect:
+            self = .connect
+        }
+    }
+}
+
+extension HTTPMethod {
+    init(_ method: HTTPMethodObjcBridge) {
+        switch method {
+        case .options:
+            self = .options
+        case .get:
+            self = .get
+        case .head:
+            self = .head
+        case .post:
+            self = .post
+        case .put:
+            self = .put
+        case .patch:
+            self = .patch
+        case .delete:
+            self = .delete
+        case .trace:
+            self = .trace
+        case .connect:
+            self = .connect
+        }
+    }
+}
+
+extension RequestBuilder {
+    @objc(method)
+    public var methodObjcBridge: HTTPMethodObjcBridge {
+        get {
+            return HTTPMethodObjcBridge(method)
+        }
+        set {
+            method = HTTPMethod(newValue)
+        }
+    }
+
+    @objc public func setQingStorSigner(_ signer: QingStorSigner) {
+        self.signer = signer
+    }
+
+    @objc public func setCustomizedSigner(_ signer: CustomizedSigner) {
+        self.signer = signer
+    }
+}
+
+extension APISender {
+    @objc(method)
+    public var methodObjcBridge: HTTPMethodObjcBridge {
+        get {
+            return HTTPMethodObjcBridge(method)
+        }
+        set {
+            method = HTTPMethod(newValue)
+        }
+    }
+
+    @objc public func setQingStorSigner(_ signer: QingStorSigner) {
+        self.signer = signer
+    }
+
+    @objc public func setCustomizedSigner(_ signer: CustomizedSigner) {
+        self.signer = signer
     }
 }

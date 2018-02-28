@@ -190,7 +190,7 @@ public class ImageProcessor: NSObject {
     public init(processList: [ImageProcessCodeable] = []) {
         self.processList = processList
     }
-    
+
     @objc public override convenience init() {
         self.init(processList: [])
     }

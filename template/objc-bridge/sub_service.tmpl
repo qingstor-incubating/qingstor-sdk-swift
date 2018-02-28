@@ -118,7 +118,7 @@ extension Bucket {
         {{- else -}}
             {{$operation.ID | camelCase}}Input = {{$operation.ID | camelCase}}Input()
         {{- end -}}
-    , completion: @escaping (_ output: {{$operation.ID | camelCase}}Output?, _ response: HTTPURLResponse?, _ error: Error?) -> Void) {
+    , completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
     	self.
 
     	{{- if $isBucket -}}
@@ -130,11 +130,7 @@ extension Bucket {
 		{{- if $isObject -}}
             objectKey: objectKey,{{- " " -}}
         {{- end -}}input: input) { response, error in
-            if let response = response {
-                completion(response.output, response.rawResponse, error)
-            } else {
-                completion(nil, nil, error)
-            }
+            completion(response?.output, response?.rawResponse, error)
         }
     }
 
@@ -182,12 +178,32 @@ extension Bucket {
         {{- end -}}
 
         input: input)
-        
         return APISenderResult(sender: sender, error: error)
     }
     {{ end }}
 {{- end }}
 }
+
+extension APISender {
+{{- range $_, $subService := $subServices -}}
+    {{- $isBucket := eq $subService.Name "Bucket" -}}
+
+    {{- range $_, $operation := $subService.Operations}}
+    @objc public func{{- " send" -}}
+
+        {{- if $isBucket -}}
+            {{- (replace ($operation.ID | camelCase) "Bucket" "" -1) -}}
+        {{- else -}}
+            {{- $operation.ID | camelCase -}}
+        {{- end -}}API(completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
+        sendAPI { (response: Response<{{$operation.ID | camelCase}}Output>?, error: Error?) in
+            completion(response?.output, response?.rawResponse, error)
+        }
+    }
+    {{ end }}
+{{- end }} 
+}
+
 {{range $_, $subService := $subServices -}}
     {{range $_, $operation := $subService.Operations}}
         {{template "RenderExtensionInput" $operation}}
