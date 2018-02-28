@@ -143,6 +143,7 @@ public enum ImageProcess: ImageProcessCodeable {
     }
 }
 
+@objc(QSCropGravity)
 public enum CropGravity: Int, Formatable {
     case center    = 0
     case north     = 1
@@ -160,6 +161,7 @@ public enum CropGravity: Int, Formatable {
     }
 }
 
+@objc(QSResizeMode)
 public enum ResizeMode: Int, Formatable {
     case fixed     = 0
     case force     = 1
@@ -181,11 +183,16 @@ public enum FormatType: String, Formatable {
     }
 }
 
-public class ImageProcessor {
+@objc(QSImageProcessor)
+public class ImageProcessor: NSObject {
     public var processList: [ImageProcessCodeable] = []
 
     public init(processList: [ImageProcessCodeable] = []) {
         self.processList = processList
+    }
+    
+    @objc public override convenience init() {
+        self.init(processList: [])
     }
 
     public func process(_ process: ImageProcessCodeable) -> ImageProcessor {
@@ -197,7 +204,7 @@ public class ImageProcessor {
         return process(ImageProcess.crop(width: width, height: height, gravity: gravity))
     }
 
-    public func rotate(angle: Int) -> ImageProcessor {
+    @objc public func rotate(angle: Int) -> ImageProcessor {
         return process(ImageProcess.rotate(angle: angle))
     }
 
@@ -217,11 +224,11 @@ public class ImageProcessor {
         return process(ImageProcess.format(type: type))
     }
 
-    public func resetProcessing() {
+    @objc public func resetProcessing() {
         processList.removeAll()
     }
 
-    public func processingResult() -> String {
+    @objc public func processingResult() -> String {
         return processList
             .map { $0.processCode() }
             .filter { !$0.isEmpty }
