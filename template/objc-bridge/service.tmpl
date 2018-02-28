@@ -41,13 +41,9 @@ extension {{$service.Name | camelCase}} {
         {{$operation.ID | camelCase}}Input = {{$operation.ID | camelCase}}Input()
     {{- end -}}
 
-    , completion: @escaping (_ output: {{$operation.ID | camelCase}}Output?, _ response: HTTPURLResponse?, _ error: Error?) -> Void) {
+    , completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
     	self.{{$operation.ID | camelCase | lowerFirstWord}}(input: input) { response, error in
-            if let response = response {
-                completion(response.output, response.rawResponse, error)
-            } else {
-                completion(nil, nil, error)
-            }
+            completion(response?.output, response?.rawResponse, error)
         }
     }
 
@@ -62,11 +58,21 @@ extension {{$service.Name | camelCase}} {
 
     ) -> APISenderResult {
         let (sender, error) = self.{{$operation.ID | camelCase | lowerFirstWord}}Sender(input: input)
-        
         return APISenderResult(sender: sender, error: error)
     }
 {{- end}}
 }
+
+extension APISender {
+{{- range $_, $operation := $service.Operations }}
+    @objc public func send{{$operation.ID | camelCase}}API(completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
+        sendAPI { (response: Response<{{$operation.ID | camelCase}}Output>?, error: Error?) in
+            completion(response?.output, response?.rawResponse, error)
+        }
+    }
+{{- end}}
+}
+
 {{range $_, $operation := $service.Operations}}
     {{template "RenderExtensionInput" $operation}}
 {{end}}

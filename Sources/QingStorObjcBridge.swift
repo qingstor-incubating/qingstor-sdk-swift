@@ -23,21 +23,24 @@ import Foundation
 extension QingStor {
     // ListBuckets: Retrieve the bucket list.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
-    @objc public func listBuckets(input: ListBucketsInput, completion: @escaping (_ output: ListBucketsOutput?, _ response: HTTPURLResponse?, _ error: Error?) -> Void) {
+    @objc public func listBuckets(input: ListBucketsInput, completion: @escaping (ListBucketsOutput?, HTTPURLResponse?, Error?) -> Void) {
     	self.listBuckets(input: input) { response, error in
-            if let response = response {
-                completion(response.output, response.rawResponse, error)
-            } else {
-                completion(nil, nil, error)
-            }
+            completion(response?.output, response?.rawResponse, error)
         }
     }
 
     // listBucketsSender create sender of listBuckets.
     @objc public func listBucketsSender(input: ListBucketsInput) -> APISenderResult {
         let (sender, error) = self.listBucketsSender(input: input)
-
         return APISenderResult(sender: sender, error: error)
+    }
+}
+
+extension APISender {
+    @objc public func sendListBucketsAPI(completion: @escaping (ListBucketsOutput?, HTTPURLResponse?, Error?) -> Void) {
+        sendAPI { (response: Response<ListBucketsOutput>?, error: Error?) in
+            completion(response?.output, response?.rawResponse, error)
+        }
     }
 }
 

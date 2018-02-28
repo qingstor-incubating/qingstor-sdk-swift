@@ -39,7 +39,8 @@ public enum HTTPMethod: String {
     case connect = "CONNECT"
 }
 
-public enum ParameterEncodingType {
+@objc(QSParameterEncodingType)
+public enum ParameterEncodingType: Int {
     case query, json, binary
 }
 
@@ -67,19 +68,19 @@ open class Response<T: BaseMappable> {
 
 @objc(QSRequestBuilder)
 open class RequestBuilder: NSObject {
-    public var context: APIContext
+    @objc public var context: APIContext
     public var method: HTTPMethod
-    public var parameters: [String:Any]
+    @objc public var parameters: [String:Any]
     public var signer: Signer
-    public var headers: [String:String] = [:]
-    public var credential: URLCredential?
-    public var encoding: ParameterEncodingType
-    public var isDownload: Bool
-    public var downloadDestination: URL?
-    public var acceptableStatusCodes: [Int]?
-    public var writeHeadersToOutput: Bool
-    public var buildingQueue: DispatchQueue
-    public var callbackQueue: DispatchQueue
+    @objc public var headers: [String:String] = [:]
+    @objc public var credential: URLCredential?
+    @objc public var encoding: ParameterEncodingType
+    @objc public var isDownload: Bool
+    @objc public var downloadDestination: URL?
+    @objc public var acceptableStatusCodes: [Int]?
+    @objc public var writeHeadersToOutput: Bool
+    @objc public var buildingQueue: DispatchQueue
+    @objc public var callbackQueue: DispatchQueue
 
     public required init(context: APIContext,
                          method: HTTPMethod = .get,
@@ -113,7 +114,7 @@ open class RequestBuilder: NSObject {
         self.buildDefaultHeader()
     }
 
-    public func buildRequest(completion: @escaping BuildCompletion) { }
+    @objc public func buildRequest(completion: @escaping BuildCompletion) { }
 
     public func send<T>(completion: @escaping RequestCompletion<T>) { }
 
@@ -216,7 +217,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         return request
     }
 
-    public override func buildRequest(completion: @escaping BuildCompletion) {
+    @objc public override func buildRequest(completion: @escaping BuildCompletion) {
         self._buildRequest { request, error in
             self.callbackQueue.async {
                 completion(request?.request, error)

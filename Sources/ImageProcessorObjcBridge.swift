@@ -36,7 +36,7 @@ extension ImageProcessor {
     public func cropObjcBridge(width: NSNumber?, height: NSNumber?, gravity: CropGravity) -> ImageProcessor {
         return process(ImageProcess.crop(width: width?.intValue, height: height?.intValue, gravity: gravity))
     }
-    
+
     @objc(cropWithWidth:height:)
     public func cropObjcBridge(width: NSNumber?, height: NSNumber?) -> ImageProcessor {
         return process(ImageProcess.crop(width: width?.intValue, height: height?.intValue, gravity: nil))
@@ -46,12 +46,12 @@ extension ImageProcessor {
     public func resizeObjcBridge(width: NSNumber?, height: NSNumber?, mode: ResizeMode) -> ImageProcessor {
         return process(ImageProcess.resize(width: width?.intValue, height: height?.intValue, mode: mode))
     }
-    
+
     @objc(resizeWithWidth:height:)
     public func resizeObjcBridge(width: NSNumber?, height: NSNumber?) -> ImageProcessor {
         return process(ImageProcess.resize(width: width?.intValue, height: height?.intValue, mode: nil))
     }
-    
+
     @objc(watermarkWithText:color:opacity:dpi:)
     public func watermarkObjcBridge(text: String, color: String?, opacity: NSNumber?, dpi: NSNumber?) -> ImageProcessor {
         return process(ImageProcess.watermark(text: text, color: color, opacity: opacity?.floatValue, dpi: dpi?.intValue))
@@ -66,12 +66,12 @@ extension ImageProcessor {
     public func watermarkImageObjcBridge(url: String, left: NSNumber?, top: NSNumber?, opacity: NSNumber?) -> ImageProcessor {
         return process(ImageProcess.watermarkImage(url: url, left: left?.intValue, top: top?.intValue, opacity: opacity?.floatValue))
     }
-    
+
     @objc(watermarkImageWithURL:left:top:)
     public func watermarkImageObjcBridge(url: String, left: NSNumber?, top: NSNumber?) -> ImageProcessor {
         return process(ImageProcess.watermarkImage(url: url, left: left?.intValue, top: top?.intValue, opacity: nil))
     }
-    
+
     @objc(watermarkImageWithURL:)
     public func watermarkImageObjcBridge(url: String) -> ImageProcessor {
         return process(ImageProcess.watermarkImage(url: url, left: nil, top: nil, opacity: nil))

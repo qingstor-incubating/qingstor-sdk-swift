@@ -235,22 +235,22 @@ public protocol APIDownloadOutput {
 
 @objc(QSAPISender)
 public class APISender: NSObject {
-    public let context: APIContext
-    public var parameters: [String:Any]
+    @objc public let context: APIContext
+    @objc public var parameters: [String:Any]
     public var method: HTTPMethod
     public var signer: Signer
-    public var headers: [String:String]
-    public var credential: URLCredential?
-    public var encoding: ParameterEncodingType
-    public var isDownload: Bool
-    public var downloadDestination: URL?
-    public var acceptableStatusCodes: [Int]?
-    public var writeHeadersToOutput: Bool
-    public var buildingQueue: DispatchQueue
-    public var callbackQueue: DispatchQueue
+    @objc public var headers: [String:String]
+    @objc public var credential: URLCredential?
+    @objc public var encoding: ParameterEncodingType
+    @objc public var isDownload: Bool
+    @objc public var downloadDestination: URL?
+    @objc public var acceptableStatusCodes: [Int]?
+    @objc public var writeHeadersToOutput: Bool
+    @objc public var buildingQueue: DispatchQueue
+    @objc public var callbackQueue: DispatchQueue
     public var requestBuilderFactory: RequestBuilderFactory = DefaultRequestBuilderFactory()
 
-    public var requestBuilder: RequestBuilder {
+    @objc public var requestBuilder: RequestBuilder {
         let builder: RequestBuilder.Type = self.requestBuilderFactory.getBuilder()
         return builder.init(context: self.context,
                             method: self.method,
@@ -372,7 +372,7 @@ public class APISender: NSObject {
                   callbackQueue: callbackQueue)
     }
 
-    public func buildRequest(completion: @escaping BuildCompletion) {
+    @objc public func buildRequest(completion: @escaping BuildCompletion) {
         requestBuilder.buildRequest(completion: completion)
     }
 
