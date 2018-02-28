@@ -21,6 +21,68 @@
 import Foundation
 
 extension Bucket {
+    @objc public convenience init(context: APIContext,
+                                  bucketName: String,
+                                  zone: String) {
+        self.init(context: context,
+                  bucketName: bucketName,
+                  zone: zone,
+                  signer: QingStorSigner(),
+                  credential: nil,
+                  buildingQueue: DispatchQueue.global(),
+                  callbackQueue: DispatchQueue.main)
+    }
+
+    @objc public convenience init(context: APIContext,
+                                  bucketName: String,
+                                  zone: String,
+                                  credential: URLCredential?,
+                                  buildingQueue: DispatchQueue,
+                                  callbackQueue: DispatchQueue) {
+        self.init(context: context,
+                  bucketName: bucketName,
+                  zone: zone,
+                  signer: QingStorSigner(),
+                  credential: credential,
+                  buildingQueue: buildingQueue,
+                  callbackQueue: callbackQueue)
+    }
+
+    @objc public convenience init(bucketName: String,
+                                  zone: String,
+                                  qingStorSigner: QingStorSigner) {
+        self.init(bucketName: bucketName,
+                  zone: zone,
+                  signer: qingStorSigner)
+    }
+
+    @objc public convenience init(context: APIContext,
+                                  bucketName: String,
+                                  zone: String,
+                                  qingStorSigner: QingStorSigner) {
+        self.init(context: context,
+                  bucketName: bucketName,
+                  zone: zone,
+                  signer: qingStorSigner)
+    }
+
+    @objc public convenience init(bucketName: String,
+                                  zone: String,
+                                  customizedSigner: CustomizedSigner) {
+        self.init(bucketName: bucketName,
+                  zone: zone,
+                  signer: customizedSigner)
+    }
+
+    @objc public convenience init(context: APIContext,
+                                  bucketName: String,
+                                  zone: String,
+                                  customizedSigner: CustomizedSigner) {
+        self.init(context: context,
+                  bucketName: bucketName,
+                  zone: zone,
+                  signer: customizedSigner)
+    }
 
     // delete: Delete a bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/delete.html

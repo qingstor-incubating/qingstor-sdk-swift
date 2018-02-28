@@ -45,6 +45,7 @@
 		837EC0F62045381B00EB2664 /* BucketObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0F22045381A00EB2664 /* BucketObjcBridge.swift */; };
 		837EC0F72045381B00EB2664 /* QingStorTypesObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0F32045381B00EB2664 /* QingStorTypesObjcBridge.swift */; };
 		837EC0F92045385500EB2664 /* ObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0F82045385500EB2664 /* ObjcBridge.swift */; };
+		837EC0FB2045F30C00EB2664 /* SignerObjcBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837EC0FA2045F30C00EB2664 /* SignerObjcBridge.swift */; };
 		83E618111DE381F300CCFFDB /* QingStorSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83E618071DE381F300CCFFDB /* QingStorSDK.framework */; };
 		83E618181DE381F300CCFFDB /* QingStorSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 83E6180A1DE381F300CCFFDB /* QingStorSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83EF6F4B20076C2000098B15 /* CustomizedSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EF6F4A20076C2000098B15 /* CustomizedSigner.swift */; };
@@ -112,6 +113,7 @@
 		837EC0F22045381A00EB2664 /* BucketObjcBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BucketObjcBridge.swift; sourceTree = "<group>"; };
 		837EC0F32045381B00EB2664 /* QingStorTypesObjcBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QingStorTypesObjcBridge.swift; sourceTree = "<group>"; };
 		837EC0F82045385500EB2664 /* ObjcBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcBridge.swift; sourceTree = "<group>"; };
+		837EC0FA2045F30C00EB2664 /* SignerObjcBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignerObjcBridge.swift; sourceTree = "<group>"; };
 		83E618071DE381F300CCFFDB /* QingStorSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QingStorSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83E6180A1DE381F300CCFFDB /* QingStorSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QingStorSDK.h; sourceTree = "<group>"; };
 		83E6180B1DE381F300CCFFDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				837EC0F82045385500EB2664 /* ObjcBridge.swift */,
+				837EC0FA2045F30C00EB2664 /* SignerObjcBridge.swift */,
 				837EC0F22045381A00EB2664 /* BucketObjcBridge.swift */,
 				837EC0F12045381A00EB2664 /* QingStorObjcBridge.swift */,
 				837EC0F32045381B00EB2664 /* QingStorTypesObjcBridge.swift */,
@@ -627,6 +630,7 @@
 				83EF6F4B20076C2000098B15 /* CustomizedSigner.swift in Sources */,
 				836134141DF3470500FC5859 /* ResponseSerialization.swift in Sources */,
 				836134131DF3470500FC5859 /* RequestBuilder.swift in Sources */,
+				837EC0FB2045F30C00EB2664 /* SignerObjcBridge.swift in Sources */,
 				836134101DF3470500FC5859 /* QingStorAPIs.swift in Sources */,
 				837EC0F62045381B00EB2664 /* BucketObjcBridge.swift in Sources */,
 				837EC0F52045381B00EB2664 /* QingStorObjcBridge.swift in Sources */,

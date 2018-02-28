@@ -30,3 +30,40 @@ open class APISenderResult: NSObject {
         self.error = error
     }
 }
+
+extension QingStorAPI {
+    @objc public convenience init(context: APIContext) {
+        self.init(context: context,
+                  signer: QingStorSigner(),
+                  credential: nil,
+                  buildingQueue: DispatchQueue.global(),
+                  callbackQueue: DispatchQueue.main)
+    }
+
+    @objc public convenience init(context: APIContext,
+                credential: URLCredential?,
+                buildingQueue: DispatchQueue,
+                callbackQueue: DispatchQueue) {
+        self.init(context: context,
+                  signer: QingStorSigner(),
+                  credential: credential,
+                  buildingQueue: buildingQueue,
+                  callbackQueue: callbackQueue)
+    }
+
+    @objc public convenience init(qingStorSigner: QingStorSigner) {
+        self.init(signer: qingStorSigner)
+    }
+
+    @objc public convenience init(context: APIContext, qingStorSigner: QingStorSigner) {
+        self.init(context: context, signer: qingStorSigner)
+    }
+
+    @objc public convenience init(customizedSigner: CustomizedSigner) {
+        self.init(signer: customizedSigner)
+    }
+
+    @objc public convenience init(context: APIContext, customizedSigner: CustomizedSigner) {
+        self.init(context: context, signer: customizedSigner)
+    }
+}

@@ -20,6 +20,7 @@
 
 import Foundation
 
+@objc(QSQingStorSigner)
 final public class QingStorSigner: NSObject, Signer {
     public var signatureType: QingStorSignatureType
 
