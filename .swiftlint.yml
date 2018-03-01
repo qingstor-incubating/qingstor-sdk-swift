@@ -45,6 +45,3 @@ type_body_length:
 large_tuple:
   - 4 #warning
   - 6 #error
-
-allow_private_set:
- - allow_private_set: true
