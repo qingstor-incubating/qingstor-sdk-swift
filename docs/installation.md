@@ -30,6 +30,18 @@ target '<Your Target Name>' do
 end
 ```
 
+Or use compatible with objective-c version:
+
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
+use_frameworks!
+
+target '<Your Target Name>' do
+  pod 'QingStorSDK/ObjcBridge'
+end
+```
+
 Then, run the following command:
 
 ```bash

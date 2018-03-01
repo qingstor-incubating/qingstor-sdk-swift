@@ -15,7 +15,7 @@ Below is a table that shows which version of QingCloudSDK you should use for you
 
 | Swift Version | QingCloudSDK Version |
 | ------------- | -------------------- |
-| 3.X           | <= 2.4.0             |
+| 3.x           | <= 2.4.0             |
 | 4.x           | >= 2.4.1             |
 
 ### Installation
@@ -28,7 +28,7 @@ Before your start, please go to [QingCloud Console](https://console.qingcloud.co
 
 ___API AccessKey Example:___
 
-``` yaml
+```yaml
 access_key_id: 'ACCESS_KEY_ID_EXAMPLE'
 secret_access_key: 'SECRET_ACCESS_KEY_EXAMPLE'
 ```
@@ -45,7 +45,7 @@ Checkout our [releases](https://github.com/yunify/qingstor-sdk-swift/releases) a
 
 ___Quick Start Code Example:___
 
-``` swift
+```swift
 import QingStorSDK
 
 func main() {
@@ -63,6 +63,11 @@ func main() {
     }
 }
 ```
+
+## Demos
+
+- [qingstor-sdk-swift-demo](https://github.com/qychrisyang/qingstor-sdk-swift-demo)
+- [qingstor-sdk-objc-demo](https://github.com/qychrisyang/qingstor-sdk-objc-demo)
 
 ## Reference Documentations
 
