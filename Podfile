@@ -7,7 +7,7 @@ target 'QingStorSDK' do
 
   # Pods for QingStorSDK
   pod 'Alamofire', '~> 4.6'
-  pod 'CryptoSwift', '~> 0.7.2'
+  pod 'CryptoSwift', '~> 0.8.3'
   pod 'ObjectMapper', '~> 3.1'
 
   target 'QingStorSDKTests' do
