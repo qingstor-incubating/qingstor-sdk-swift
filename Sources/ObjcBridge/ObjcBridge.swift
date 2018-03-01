@@ -31,6 +31,21 @@ open class APISenderResult: NSObject {
     }
 }
 
+extension APIContext {
+    @objc public var portNumber: NSNumber? {
+        get {
+            return port as NSNumber?
+        }
+        set {
+            port = newValue?.intValue
+        }
+    }
+    
+    @objc public convenience init(urlString: String) {
+        self.init(urlString: urlString, accessKeyID: Registry.accessKeyID, secretAccessKey: Registry.secretAccessKey)
+    }
+}
+
 extension QingStorAPI {
     @objc public convenience init(context: APIContext) {
         self.init(context: context,
@@ -166,5 +181,17 @@ extension APISender {
 
     @objc public func setCustomizedSigner(_ signer: CustomizedSigner) {
         self.signer = signer
+    }
+}
+
+public extension NSURL {
+    @objc(qs_contentLength)
+    public var contentLength: Int {
+        return (self as URL).contentLength
+    }
+    
+    @objc(qs_mimeType)
+    public var mimeType: String {
+        return (self as URL).mimeType
     }
 }
