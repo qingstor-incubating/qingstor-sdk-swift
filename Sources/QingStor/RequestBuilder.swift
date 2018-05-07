@@ -22,10 +22,11 @@ import Foundation
 import Alamofire
 import ObjectMapper
 
-public typealias RequestCompletion<T: BaseMappable> = (_ response: Response<T>?, _ error: Error?) -> Void
-public typealias BuildCompletion = (_ request: URLRequest?, _ error: Error?) -> Void
+public typealias RequestProgress = (Progress) -> Void
+public typealias RequestCompletion<T: BaseMappable> = (Response<T>?, Error?) -> Void
+public typealias BuildCompletion = (URLRequest?, Error?) -> Void
 
-fileprivate typealias _BuildCompletion = (_ request: Request?, _ error: Error?) -> Void
+fileprivate typealias _BuildCompletion = (Request?, Error?) -> Void
 
 public enum HTTPMethod: String {
     case options = "OPTIONS"
@@ -116,7 +117,7 @@ open class RequestBuilder: NSObject {
 
     @objc public func buildRequest(completion: @escaping BuildCompletion) { }
 
-    public func send<T>(completion: @escaping RequestCompletion<T>) { }
+    public func send<T>(progress: RequestProgress? = nil, completion: @escaping RequestCompletion<T>) { }
 
     func addHeaders(_ aHeaders: [String:String]) {
         for (key, value) in aHeaders {
@@ -277,10 +278,10 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         }
     }
 
-    public override func send<T>(completion: @escaping RequestCompletion<T>) {
+    public override func send<T>(progress: RequestProgress? = nil, completion: @escaping RequestCompletion<T>) {
         self._buildRequest { request, error in
             if let request = request {
-                self.processRequest(request: request, completion: completion)
+                self.processRequest(request: request, progress: progress, completion: completion)
             } else {
                 self.callbackQueue.async {
                     completion(nil, error ?? APIError.buildingRequestError(info: "build request request"))
@@ -289,7 +290,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         }
     }
 
-    fileprivate func processRequest<T>(request: Request, completion: @escaping RequestCompletion<T>) {
+    fileprivate func processRequest<T>(request: Request, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<T>) {
         if let credential = self.credential {
             request.authenticate(usingCredential: credential)
         }
@@ -299,32 +300,51 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
             statusCode.append(contentsOf: self.acceptableStatusCodes!)
         }
 
+        if let progress = progress {
+            switch request {
+            case let downloadRequest as DownloadRequest:
+                downloadRequest.downloadProgress(closure: progress)
+
+            case let uploadRequest as UploadRequest:
+                uploadRequest.uploadProgress(closure: progress)
+
+            case let dataRequest as DataRequest:
+                dataRequest.downloadProgress(closure: progress)
+
+            default: break
+            }
+        }
+
         if let dataRequest = request as? DataRequest {
-            dataRequest.validate(statusCode: statusCode).responseOutput(queue: self.callbackQueue, writeHeaders: self.writeHeadersToOutput) { (response: DataResponse<T>) in
-                if response.result.isFailure {
-                    completion(nil, response.result.error)
-                    return
-                }
+            dataRequest
+                .validate(statusCode: statusCode)
+                .responseOutput(queue: self.callbackQueue, writeHeaders: self.writeHeadersToOutput) { (response: DataResponse<T>) in
+                    if response.result.isFailure {
+                        completion(nil, response.result.error)
+                        return
+                    }
 
-                if let output = response.result.value {
-                    completion(Response(rawResponse: response.response!, output: output), nil)
-                } else {
-                    completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
-                }
-            }.resume()
+                    if let output = response.result.value {
+                        completion(Response(rawResponse: response.response!, output: output), nil)
+                    } else {
+                        completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
+                    }
+                }.resume()
         } else if let downloadRequest = request as? DownloadRequest {
-            downloadRequest.validate(statusCode: statusCode).responseOutput(queue: self.callbackQueue, writeHeaders: self.writeHeadersToOutput) { (response: DownloadResponse<T>) in
-                if response.result.isFailure {
-                    completion(nil, response.result.error)
-                    return
-                }
+            downloadRequest
+                .validate(statusCode: statusCode)
+                .responseOutput(queue: self.callbackQueue, writeHeaders: self.writeHeadersToOutput) { (response: DownloadResponse<T>) in
+                    if response.result.isFailure {
+                        completion(nil, response.result.error)
+                        return
+                    }
 
-                if let output = response.result.value {
-                    completion(Response(rawResponse: response.response!, output: output), nil)
-                } else {
-                    completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
-                }
-            }.resume()
+                    if let output = response.result.value {
+                        completion(Response(rawResponse: response.response!, output: output), nil)
+                    } else {
+                        completion(nil, NSError(domain: "localhost", code: 500, userInfo: ["reason": "unreacheable code"]))
+                    }
+                }.resume()
         }
     }
 }

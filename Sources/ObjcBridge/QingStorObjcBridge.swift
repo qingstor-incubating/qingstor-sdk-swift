@@ -1,5 +1,5 @@
 //
-// QingStorObjcBridge.swift
+// QingStor.swift
 //
 // +-------------------------------------------------------------------------
 // | Copyright (C) 2018 Yunify, Inc.
@@ -21,12 +21,19 @@
 import Foundation
 
 extension QingStor {
+
+    // ListBuckets: Retrieve the bucket list.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
+    @objc public func listBuckets(input: ListBucketsInput, progress: RequestProgress? = nil, completion: @escaping (ListBucketsOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	self.listBuckets(input: input, progress: progress) { response, error in
+            completion(response?.output, response?.rawResponse, error)
+        }
+    }
+
     // ListBuckets: Retrieve the bucket list.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
     @objc public func listBuckets(input: ListBucketsInput, completion: @escaping (ListBucketsOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.listBuckets(input: input) { response, error in
-            completion(response?.output, response?.rawResponse, error)
-        }
+        self.listBuckets(input: input, progress: nil, completion: completion)
     }
 
     // listBucketsSender create sender of listBuckets.

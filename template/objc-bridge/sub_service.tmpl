@@ -118,20 +118,59 @@ extension Bucket {
         {{- else -}}
             {{$operation.ID | camelCase}}Input = {{$operation.ID | camelCase}}Input()
         {{- end -}}
-    , completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
-    	self.
+    , progress: RequestProgress?, completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.
 
-    	{{- if $isBucket -}}
+    	  {{- if $isBucket -}}
             {{- (replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord -}}
         {{- else -}}
             {{- $operation.ID | camelCase | lowerFirstWord -}}
         {{- end -}}(
 
-		{{- if $isObject -}}
+		    {{- if $isObject -}}
             objectKey: objectKey,{{- " " -}}
-        {{- end -}}input: input) { response, error in
+        {{- end -}}
+
+        input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+
+    {{- if $operation.Description -}}{{"\n    "}}// {{(replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord}}: {{$operation.Description}}{{- end -}}
+    {{"\n    "}}// Documentation URL: {{$operation.DocumentationURL}}
+    @objc public func{{- " " -}}
+
+        {{- if $isBucket -}}
+            {{- (replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord -}}
+        {{- else -}}
+            {{- $operation.ID | camelCase | lowerFirstWord -}}
+        {{- end -}}(
+
+        {{- if $isObject -}}
+            objectKey: String,{{- " " -}}
+        {{- end -}}
+
+        input:{{- " " -}}
+
+        {{- if $hasInput -}}
+            {{$operation.ID | camelCase}}Input
+        {{- else -}}
+            {{$operation.ID | camelCase}}Input = {{$operation.ID | camelCase}}Input()
+        {{- end -}}
+    , completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
+        self.
+
+        {{- if $isBucket -}}
+            {{- (replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord -}}
+        {{- else -}}
+            {{- $operation.ID | camelCase | lowerFirstWord -}}
+        {{- end -}}(
+
+        {{- if $isObject -}}
+            objectKey: objectKey,{{- " " -}}
+        {{- end -}}
+
+        input: input, progress: nil, completion: completion)
     }
 
     {{"// " -}}

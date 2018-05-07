@@ -91,7 +91,7 @@ public class Bucket: QingStorAPI {
 
     // delete: Delete a bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/delete.html
-    public func delete(input: DeleteBucketInput = DeleteBucketInput(), completion: @escaping RequestCompletion<DeleteBucketOutput>) {
+    public func delete(input: DeleteBucketInput = DeleteBucketInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<DeleteBucketOutput>) {
         let (sender, error) = self.deleteSender(input: input)
 
         if let error = error {
@@ -99,7 +99,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // deleteSender create sender of delete.
@@ -119,7 +119,7 @@ public class Bucket: QingStorAPI {
 
     // deleteCORS: Delete CORS information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/delete_cors.html
-    public func deleteCORS(input: DeleteBucketCORSInput = DeleteBucketCORSInput(), completion: @escaping RequestCompletion<DeleteBucketCORSOutput>) {
+    public func deleteCORS(input: DeleteBucketCORSInput = DeleteBucketCORSInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<DeleteBucketCORSOutput>) {
         let (sender, error) = self.deleteCORSSender(input: input)
 
         if let error = error {
@@ -127,7 +127,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // deleteCORSSender create sender of deleteCORS.
@@ -147,7 +147,7 @@ public class Bucket: QingStorAPI {
 
     // deleteExternalMirror: Delete external mirror of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/delete_external_mirror.html
-    public func deleteExternalMirror(input: DeleteBucketExternalMirrorInput = DeleteBucketExternalMirrorInput(), completion: @escaping RequestCompletion<DeleteBucketExternalMirrorOutput>) {
+    public func deleteExternalMirror(input: DeleteBucketExternalMirrorInput = DeleteBucketExternalMirrorInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<DeleteBucketExternalMirrorOutput>) {
         let (sender, error) = self.deleteExternalMirrorSender(input: input)
 
         if let error = error {
@@ -155,7 +155,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // deleteExternalMirrorSender create sender of deleteExternalMirror.
@@ -175,7 +175,7 @@ public class Bucket: QingStorAPI {
 
     // deletePolicy: Delete policy information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/policy/delete_policy.html
-    public func deletePolicy(input: DeleteBucketPolicyInput = DeleteBucketPolicyInput(), completion: @escaping RequestCompletion<DeleteBucketPolicyOutput>) {
+    public func deletePolicy(input: DeleteBucketPolicyInput = DeleteBucketPolicyInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<DeleteBucketPolicyOutput>) {
         let (sender, error) = self.deletePolicySender(input: input)
 
         if let error = error {
@@ -183,7 +183,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // deletePolicySender create sender of deletePolicy.
@@ -203,7 +203,7 @@ public class Bucket: QingStorAPI {
 
     // deleteMultipleObjects: Delete multiple objects from the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/delete_multiple.html
-    public func deleteMultipleObjects(input: DeleteMultipleObjectsInput, completion: @escaping RequestCompletion<DeleteMultipleObjectsOutput>) {
+    public func deleteMultipleObjects(input: DeleteMultipleObjectsInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<DeleteMultipleObjectsOutput>) {
         let (sender, error) = self.deleteMultipleObjectsSender(input: input)
 
         if let error = error {
@@ -211,7 +211,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // deleteMultipleObjectsSender create sender of deleteMultipleObjects.
@@ -231,7 +231,7 @@ public class Bucket: QingStorAPI {
 
     // getACL: Get ACL information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get_acl.html
-    public func getACL(input: GetBucketACLInput = GetBucketACLInput(), completion: @escaping RequestCompletion<GetBucketACLOutput>) {
+    public func getACL(input: GetBucketACLInput = GetBucketACLInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<GetBucketACLOutput>) {
         let (sender, error) = self.getACLSender(input: input)
 
         if let error = error {
@@ -239,7 +239,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // getACLSender create sender of getACL.
@@ -259,7 +259,7 @@ public class Bucket: QingStorAPI {
 
     // getCORS: Get CORS information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/get_cors.html
-    public func getCORS(input: GetBucketCORSInput = GetBucketCORSInput(), completion: @escaping RequestCompletion<GetBucketCORSOutput>) {
+    public func getCORS(input: GetBucketCORSInput = GetBucketCORSInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<GetBucketCORSOutput>) {
         let (sender, error) = self.getCORSSender(input: input)
 
         if let error = error {
@@ -267,7 +267,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // getCORSSender create sender of getCORS.
@@ -287,7 +287,7 @@ public class Bucket: QingStorAPI {
 
     // getExternalMirror: Get external mirror of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/get_external_mirror.html
-    public func getExternalMirror(input: GetBucketExternalMirrorInput = GetBucketExternalMirrorInput(), completion: @escaping RequestCompletion<GetBucketExternalMirrorOutput>) {
+    public func getExternalMirror(input: GetBucketExternalMirrorInput = GetBucketExternalMirrorInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<GetBucketExternalMirrorOutput>) {
         let (sender, error) = self.getExternalMirrorSender(input: input)
 
         if let error = error {
@@ -295,7 +295,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // getExternalMirrorSender create sender of getExternalMirror.
@@ -315,7 +315,7 @@ public class Bucket: QingStorAPI {
 
     // getPolicy: Get policy information of the bucket.
     // Documentation URL: https://https://docs.qingcloud.com/qingstor/api/bucket/policy/get_policy.html
-    public func getPolicy(input: GetBucketPolicyInput = GetBucketPolicyInput(), completion: @escaping RequestCompletion<GetBucketPolicyOutput>) {
+    public func getPolicy(input: GetBucketPolicyInput = GetBucketPolicyInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<GetBucketPolicyOutput>) {
         let (sender, error) = self.getPolicySender(input: input)
 
         if let error = error {
@@ -323,7 +323,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // getPolicySender create sender of getPolicy.
@@ -343,7 +343,7 @@ public class Bucket: QingStorAPI {
 
     // getStatistics: Get statistics information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get_stats.html
-    public func getStatistics(input: GetBucketStatisticsInput = GetBucketStatisticsInput(), completion: @escaping RequestCompletion<GetBucketStatisticsOutput>) {
+    public func getStatistics(input: GetBucketStatisticsInput = GetBucketStatisticsInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<GetBucketStatisticsOutput>) {
         let (sender, error) = self.getStatisticsSender(input: input)
 
         if let error = error {
@@ -351,7 +351,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // getStatisticsSender create sender of getStatistics.
@@ -371,7 +371,7 @@ public class Bucket: QingStorAPI {
 
     // head: Check whether the bucket exists and available.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/head.html
-    public func head(input: HeadBucketInput = HeadBucketInput(), completion: @escaping RequestCompletion<HeadBucketOutput>) {
+    public func head(input: HeadBucketInput = HeadBucketInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<HeadBucketOutput>) {
         let (sender, error) = self.headSender(input: input)
 
         if let error = error {
@@ -379,7 +379,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // headSender create sender of head.
@@ -399,7 +399,7 @@ public class Bucket: QingStorAPI {
 
     // listMultipartUploads: List multipart uploads in the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/list_multipart_uploads.html
-    public func listMultipartUploads(input: ListMultipartUploadsInput, completion: @escaping RequestCompletion<ListMultipartUploadsOutput>) {
+    public func listMultipartUploads(input: ListMultipartUploadsInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<ListMultipartUploadsOutput>) {
         let (sender, error) = self.listMultipartUploadsSender(input: input)
 
         if let error = error {
@@ -407,7 +407,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // listMultipartUploadsSender create sender of listMultipartUploads.
@@ -427,7 +427,7 @@ public class Bucket: QingStorAPI {
 
     // listObjects: Retrieve the object list in a bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get.html
-    public func listObjects(input: ListObjectsInput, completion: @escaping RequestCompletion<ListObjectsOutput>) {
+    public func listObjects(input: ListObjectsInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<ListObjectsOutput>) {
         let (sender, error) = self.listObjectsSender(input: input)
 
         if let error = error {
@@ -435,7 +435,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // listObjectsSender create sender of listObjects.
@@ -455,7 +455,7 @@ public class Bucket: QingStorAPI {
 
     // put: Create a new bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/put.html
-    public func put(input: PutBucketInput = PutBucketInput(), completion: @escaping RequestCompletion<PutBucketOutput>) {
+    public func put(input: PutBucketInput = PutBucketInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<PutBucketOutput>) {
         let (sender, error) = self.putSender(input: input)
 
         if let error = error {
@@ -463,7 +463,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // putSender create sender of put.
@@ -483,7 +483,7 @@ public class Bucket: QingStorAPI {
 
     // putACL: Set ACL information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/put_acl.html
-    public func putACL(input: PutBucketACLInput, completion: @escaping RequestCompletion<PutBucketACLOutput>) {
+    public func putACL(input: PutBucketACLInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<PutBucketACLOutput>) {
         let (sender, error) = self.putACLSender(input: input)
 
         if let error = error {
@@ -491,7 +491,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // putACLSender create sender of putACL.
@@ -511,7 +511,7 @@ public class Bucket: QingStorAPI {
 
     // putCORS: Set CORS information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/put_cors.html
-    public func putCORS(input: PutBucketCORSInput, completion: @escaping RequestCompletion<PutBucketCORSOutput>) {
+    public func putCORS(input: PutBucketCORSInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<PutBucketCORSOutput>) {
         let (sender, error) = self.putCORSSender(input: input)
 
         if let error = error {
@@ -519,7 +519,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // putCORSSender create sender of putCORS.
@@ -539,7 +539,7 @@ public class Bucket: QingStorAPI {
 
     // putExternalMirror: Set external mirror of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/put_external_mirror.html
-    public func putExternalMirror(input: PutBucketExternalMirrorInput, completion: @escaping RequestCompletion<PutBucketExternalMirrorOutput>) {
+    public func putExternalMirror(input: PutBucketExternalMirrorInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<PutBucketExternalMirrorOutput>) {
         let (sender, error) = self.putExternalMirrorSender(input: input)
 
         if let error = error {
@@ -547,7 +547,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // putExternalMirrorSender create sender of putExternalMirror.
@@ -567,7 +567,7 @@ public class Bucket: QingStorAPI {
 
     // putPolicy: Set policy information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/policy/put_policy.html
-    public func putPolicy(input: PutBucketPolicyInput, completion: @escaping RequestCompletion<PutBucketPolicyOutput>) {
+    public func putPolicy(input: PutBucketPolicyInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<PutBucketPolicyOutput>) {
         let (sender, error) = self.putPolicySender(input: input)
 
         if let error = error {
@@ -575,7 +575,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // putPolicySender create sender of putPolicy.
@@ -595,7 +595,7 @@ public class Bucket: QingStorAPI {
 
     // abortMultipartUpload: Abort multipart upload.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/abort_multipart_upload.html
-    public func abortMultipartUpload(objectKey: String, input: AbortMultipartUploadInput, completion: @escaping RequestCompletion<AbortMultipartUploadOutput>) {
+    public func abortMultipartUpload(objectKey: String, input: AbortMultipartUploadInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<AbortMultipartUploadOutput>) {
         let (sender, error) = self.abortMultipartUploadSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -603,7 +603,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // abortMultipartUploadSender create sender of abortMultipartUpload.
@@ -623,7 +623,7 @@ public class Bucket: QingStorAPI {
 
     // completeMultipartUpload: Complete multipart upload.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/complete_multipart_upload.html
-    public func completeMultipartUpload(objectKey: String, input: CompleteMultipartUploadInput, completion: @escaping RequestCompletion<CompleteMultipartUploadOutput>) {
+    public func completeMultipartUpload(objectKey: String, input: CompleteMultipartUploadInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<CompleteMultipartUploadOutput>) {
         let (sender, error) = self.completeMultipartUploadSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -631,7 +631,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // completeMultipartUploadSender create sender of completeMultipartUpload.
@@ -651,7 +651,7 @@ public class Bucket: QingStorAPI {
 
     // deleteObject: Delete the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/delete.html
-    public func deleteObject(objectKey: String, input: DeleteObjectInput = DeleteObjectInput(), completion: @escaping RequestCompletion<DeleteObjectOutput>) {
+    public func deleteObject(objectKey: String, input: DeleteObjectInput = DeleteObjectInput(), progress: RequestProgress? = nil, completion: @escaping RequestCompletion<DeleteObjectOutput>) {
         let (sender, error) = self.deleteObjectSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -659,7 +659,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // deleteObjectSender create sender of deleteObject.
@@ -679,7 +679,7 @@ public class Bucket: QingStorAPI {
 
     // getObject: Retrieve the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/get.html
-    public func getObject(objectKey: String, input: GetObjectInput, completion: @escaping RequestCompletion<GetObjectOutput>) {
+    public func getObject(objectKey: String, input: GetObjectInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<GetObjectOutput>) {
         let (sender, error) = self.getObjectSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -687,7 +687,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // getObjectSender create sender of getObject.
@@ -707,7 +707,7 @@ public class Bucket: QingStorAPI {
 
     // headObject: Check whether the object exists and available.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/head.html
-    public func headObject(objectKey: String, input: HeadObjectInput, completion: @escaping RequestCompletion<HeadObjectOutput>) {
+    public func headObject(objectKey: String, input: HeadObjectInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<HeadObjectOutput>) {
         let (sender, error) = self.headObjectSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -715,7 +715,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // headObjectSender create sender of headObject.
@@ -735,7 +735,7 @@ public class Bucket: QingStorAPI {
 
     // imageProcess: Image process with the action on the object
     // Documentation URL: https://docs.qingcloud.com/qingstor/data_process/image_process/index.html
-    public func imageProcess(objectKey: String, input: ImageProcessInput, completion: @escaping RequestCompletion<ImageProcessOutput>) {
+    public func imageProcess(objectKey: String, input: ImageProcessInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<ImageProcessOutput>) {
         let (sender, error) = self.imageProcessSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -743,7 +743,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // imageProcessSender create sender of imageProcess.
@@ -763,7 +763,7 @@ public class Bucket: QingStorAPI {
 
     // initiateMultipartUpload: Initial multipart upload on the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/initiate_multipart_upload.html
-    public func initiateMultipartUpload(objectKey: String, input: InitiateMultipartUploadInput, completion: @escaping RequestCompletion<InitiateMultipartUploadOutput>) {
+    public func initiateMultipartUpload(objectKey: String, input: InitiateMultipartUploadInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<InitiateMultipartUploadOutput>) {
         let (sender, error) = self.initiateMultipartUploadSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -771,7 +771,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // initiateMultipartUploadSender create sender of initiateMultipartUpload.
@@ -791,7 +791,7 @@ public class Bucket: QingStorAPI {
 
     // listMultipart: List object parts.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/list_multipart.html
-    public func listMultipart(objectKey: String, input: ListMultipartInput, completion: @escaping RequestCompletion<ListMultipartOutput>) {
+    public func listMultipart(objectKey: String, input: ListMultipartInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<ListMultipartOutput>) {
         let (sender, error) = self.listMultipartSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -799,7 +799,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // listMultipartSender create sender of listMultipart.
@@ -819,7 +819,7 @@ public class Bucket: QingStorAPI {
 
     // optionsObject: Check whether the object accepts a origin with method and header.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/options.html
-    public func optionsObject(objectKey: String, input: OptionsObjectInput, completion: @escaping RequestCompletion<OptionsObjectOutput>) {
+    public func optionsObject(objectKey: String, input: OptionsObjectInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<OptionsObjectOutput>) {
         let (sender, error) = self.optionsObjectSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -827,7 +827,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // optionsObjectSender create sender of optionsObject.
@@ -847,7 +847,7 @@ public class Bucket: QingStorAPI {
 
     // putObject: Upload the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/put.html
-    public func putObject(objectKey: String, input: PutObjectInput, completion: @escaping RequestCompletion<PutObjectOutput>) {
+    public func putObject(objectKey: String, input: PutObjectInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<PutObjectOutput>) {
         let (sender, error) = self.putObjectSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -855,7 +855,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // putObjectSender create sender of putObject.
@@ -875,7 +875,7 @@ public class Bucket: QingStorAPI {
 
     // uploadMultipart: Upload object multipart.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/multipart/upload_multipart.html
-    public func uploadMultipart(objectKey: String, input: UploadMultipartInput, completion: @escaping RequestCompletion<UploadMultipartOutput>) {
+    public func uploadMultipart(objectKey: String, input: UploadMultipartInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<UploadMultipartOutput>) {
         let (sender, error) = self.uploadMultipartSender(objectKey: objectKey, input: input)
 
         if let error = error {
@@ -883,7 +883,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // uploadMultipartSender create sender of uploadMultipart.

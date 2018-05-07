@@ -123,8 +123,8 @@ public class APIContext: NSObject {
     @objc public var urlComponents: URLComponents
 
     @objc public init(urlString: String,
-                accessKeyID: String = Registry.accessKeyID,
-                secretAccessKey: String = Registry.secretAccessKey) {
+                      accessKeyID: String = Registry.accessKeyID,
+                      secretAccessKey: String = Registry.secretAccessKey) {
         self.urlString = urlString
         self.urlComponents = URLComponents(string: urlString)!
         self.accessKeyID = accessKeyID
@@ -376,7 +376,7 @@ public class APISender: NSObject {
         requestBuilder.buildRequest(completion: completion)
     }
 
-    public func sendAPI<T>(completion: @escaping RequestCompletion<T>) {
-        requestBuilder.send(completion: completion)
+    public func sendAPI<T>(progress: RequestProgress? = nil, completion: @escaping RequestCompletion<T>) {
+        requestBuilder.send(progress: progress, completion: completion)
     }
 }

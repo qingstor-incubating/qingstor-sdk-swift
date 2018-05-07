@@ -40,7 +40,7 @@ extension APIContext {
             port = newValue?.intValue
         }
     }
-    
+
     @objc public convenience init(urlString: String) {
         self.init(urlString: urlString, accessKeyID: Registry.accessKeyID, secretAccessKey: Registry.secretAccessKey)
     }
@@ -189,7 +189,7 @@ public extension NSURL {
     public var contentLength: Int {
         return (self as URL).contentLength
     }
-    
+
     @objc(qs_mimeType)
     public var mimeType: String {
         return (self as URL).mimeType

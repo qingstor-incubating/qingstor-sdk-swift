@@ -123,7 +123,7 @@ public class Bucket: QingStorAPI {
         {{- else -}}
             {{$operation.ID | camelCase}}Input = {{$operation.ID | camelCase}}Input()
         {{- end -}}
-    , completion: @escaping RequestCompletion<{{$operation.ID | camelCase}}Output>) {
+    , progress: RequestProgress? = nil, completion: @escaping RequestCompletion<{{$operation.ID | camelCase}}Output>) {
         let (sender, error) = self.
 
         {{- if $isBucket -}}
@@ -143,7 +143,7 @@ public class Bucket: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     {{"// " -}}

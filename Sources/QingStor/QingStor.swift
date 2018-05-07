@@ -26,7 +26,7 @@ import ObjectMapper
 public class QingStor: QingStorAPI {
     // ListBuckets: Retrieve the bucket list.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
-    public func listBuckets(input: ListBucketsInput, completion: @escaping RequestCompletion<ListBucketsOutput>) {
+    public func listBuckets(input: ListBucketsInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<ListBucketsOutput>) {
         let (sender, error) = self.listBucketsSender(input: input)
 
         if let error = error {
@@ -34,7 +34,7 @@ public class QingStor: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // listBucketsSender create sender of listBuckets.
