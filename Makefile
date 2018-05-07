@@ -25,17 +25,17 @@ generate:
 		--service-api-version=latest \
 		--spec="./specs" \
 		--template="./template" \
-		--output="./Sources" || exit 1
+		--output="./Sources/QingStor" || exit 1
 
 	snips \
 		--service=qingstor \
 		--service-api-version=latest \
 		--spec="./specs" \
 		--template="./template/objc-bridge" \
-		--output="./Sources" || exit 1
+		--output="./Sources/ObjcBridge" || exit 1
 
-	rm ./Sources/Object.swift
-	rm ./Sources/ObjectObjcBridge.swift
+	rm ./Sources/QingStor/Object.swift
+	rm ./Sources/ObjcBridge/ObjectObjcBridge.swift
 
 	swiftlint autocorrect
 	@echo "ok"
