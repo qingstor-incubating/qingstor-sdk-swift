@@ -42,7 +42,7 @@ public class {{$service.Name | camelCase}}: QingStorAPI {
         {{$operation.ID | camelCase}}Input = {{$operation.ID | camelCase}}Input()
     {{- end -}}
 
-    , completion: @escaping RequestCompletion<{{$operation.ID | camelCase}}Output>) {
+    , progress: RequestProgress? = nil, completion: @escaping RequestCompletion<{{$operation.ID | camelCase}}Output>) {
         let (sender, error) = self.{{$operation.ID | camelCase | lowerFirstWord}}Sender(input: input)
 
         if let error = error {
@@ -50,7 +50,7 @@ public class {{$service.Name | camelCase}}: QingStorAPI {
             return
         }
 
-        sender!.sendAPI(completion: completion)
+        sender!.sendAPI(progress: progress, completion: completion)
     }
 
     // {{$operation.ID | camelCase | lowerFirstWord}}Sender create sender of {{$operation.ID | camelCase | lowerFirstWord}}.

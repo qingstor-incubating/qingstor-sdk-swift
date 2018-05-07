@@ -111,6 +111,8 @@ class QingStorTests: NSObject {
                 }
 
                 print("request-id: \(String(describing: response.output.requestId))")
+            } else {
+                print("error: \(error!)")
             }
 
             XCTAssertNotNil(response, "error: \(error!)")

@@ -86,10 +86,15 @@ extension Bucket {
 
     // delete: Delete a bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/delete.html
-    @objc public func delete(input: DeleteBucketInput = DeleteBucketInput(), completion: @escaping (DeleteBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.delete(input: input) { response, error in
+    @objc public func delete(input: DeleteBucketInput = DeleteBucketInput(), progress: RequestProgress?, completion: @escaping (DeleteBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.delete(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // delete: Delete a bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/delete.html
+    @objc public func delete(input: DeleteBucketInput = DeleteBucketInput(), completion: @escaping (DeleteBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.delete(input: input, progress: nil, completion: completion)
     }
 
     // deleteSender create sender of delete.
@@ -100,10 +105,15 @@ extension Bucket {
 
     // deleteCORS: Delete CORS information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/delete_cors.html
-    @objc public func deleteCORS(input: DeleteBucketCORSInput = DeleteBucketCORSInput(), completion: @escaping (DeleteBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.deleteCORS(input: input) { response, error in
+    @objc public func deleteCORS(input: DeleteBucketCORSInput = DeleteBucketCORSInput(), progress: RequestProgress?, completion: @escaping (DeleteBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.deleteCORS(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // deleteCORS: Delete CORS information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/delete_cors.html
+    @objc public func deleteCORS(input: DeleteBucketCORSInput = DeleteBucketCORSInput(), completion: @escaping (DeleteBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.deleteCORS(input: input, progress: nil, completion: completion)
     }
 
     // deleteCORSSender create sender of deleteCORS.
@@ -114,10 +124,15 @@ extension Bucket {
 
     // deleteExternalMirror: Delete external mirror of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/delete_external_mirror.html
-    @objc public func deleteExternalMirror(input: DeleteBucketExternalMirrorInput = DeleteBucketExternalMirrorInput(), completion: @escaping (DeleteBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.deleteExternalMirror(input: input) { response, error in
+    @objc public func deleteExternalMirror(input: DeleteBucketExternalMirrorInput = DeleteBucketExternalMirrorInput(), progress: RequestProgress?, completion: @escaping (DeleteBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.deleteExternalMirror(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // deleteExternalMirror: Delete external mirror of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/delete_external_mirror.html
+    @objc public func deleteExternalMirror(input: DeleteBucketExternalMirrorInput = DeleteBucketExternalMirrorInput(), completion: @escaping (DeleteBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.deleteExternalMirror(input: input, progress: nil, completion: completion)
     }
 
     // deleteExternalMirrorSender create sender of deleteExternalMirror.
@@ -128,10 +143,15 @@ extension Bucket {
 
     // deletePolicy: Delete policy information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/policy/delete_policy.html
-    @objc public func deletePolicy(input: DeleteBucketPolicyInput = DeleteBucketPolicyInput(), completion: @escaping (DeleteBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.deletePolicy(input: input) { response, error in
+    @objc public func deletePolicy(input: DeleteBucketPolicyInput = DeleteBucketPolicyInput(), progress: RequestProgress?, completion: @escaping (DeleteBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.deletePolicy(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // deletePolicy: Delete policy information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/policy/delete_policy.html
+    @objc public func deletePolicy(input: DeleteBucketPolicyInput = DeleteBucketPolicyInput(), completion: @escaping (DeleteBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.deletePolicy(input: input, progress: nil, completion: completion)
     }
 
     // deletePolicySender create sender of deletePolicy.
@@ -142,10 +162,15 @@ extension Bucket {
 
     // deleteMultipleObjects: Delete multiple objects from the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/delete_multiple.html
-    @objc public func deleteMultipleObjects(input: DeleteMultipleObjectsInput, completion: @escaping (DeleteMultipleObjectsOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.deleteMultipleObjects(input: input) { response, error in
+    @objc public func deleteMultipleObjects(input: DeleteMultipleObjectsInput, progress: RequestProgress?, completion: @escaping (DeleteMultipleObjectsOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.deleteMultipleObjects(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // deleteMultipleObjects: Delete multiple objects from the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/delete_multiple.html
+    @objc public func deleteMultipleObjects(input: DeleteMultipleObjectsInput, completion: @escaping (DeleteMultipleObjectsOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.deleteMultipleObjects(input: input, progress: nil, completion: completion)
     }
 
     // deleteMultipleObjectsSender create sender of deleteMultipleObjects.
@@ -156,10 +181,15 @@ extension Bucket {
 
     // getACL: Get ACL information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get_acl.html
-    @objc public func getACL(input: GetBucketACLInput = GetBucketACLInput(), completion: @escaping (GetBucketACLOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.getACL(input: input) { response, error in
+    @objc public func getACL(input: GetBucketACLInput = GetBucketACLInput(), progress: RequestProgress?, completion: @escaping (GetBucketACLOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.getACL(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // getACL: Get ACL information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get_acl.html
+    @objc public func getACL(input: GetBucketACLInput = GetBucketACLInput(), completion: @escaping (GetBucketACLOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.getACL(input: input, progress: nil, completion: completion)
     }
 
     // getACLSender create sender of getACL.
@@ -170,10 +200,15 @@ extension Bucket {
 
     // getCORS: Get CORS information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/get_cors.html
-    @objc public func getCORS(input: GetBucketCORSInput = GetBucketCORSInput(), completion: @escaping (GetBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.getCORS(input: input) { response, error in
+    @objc public func getCORS(input: GetBucketCORSInput = GetBucketCORSInput(), progress: RequestProgress?, completion: @escaping (GetBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.getCORS(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // getCORS: Get CORS information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/get_cors.html
+    @objc public func getCORS(input: GetBucketCORSInput = GetBucketCORSInput(), completion: @escaping (GetBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.getCORS(input: input, progress: nil, completion: completion)
     }
 
     // getCORSSender create sender of getCORS.
@@ -184,10 +219,15 @@ extension Bucket {
 
     // getExternalMirror: Get external mirror of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/get_external_mirror.html
-    @objc public func getExternalMirror(input: GetBucketExternalMirrorInput = GetBucketExternalMirrorInput(), completion: @escaping (GetBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.getExternalMirror(input: input) { response, error in
+    @objc public func getExternalMirror(input: GetBucketExternalMirrorInput = GetBucketExternalMirrorInput(), progress: RequestProgress?, completion: @escaping (GetBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.getExternalMirror(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // getExternalMirror: Get external mirror of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/get_external_mirror.html
+    @objc public func getExternalMirror(input: GetBucketExternalMirrorInput = GetBucketExternalMirrorInput(), completion: @escaping (GetBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.getExternalMirror(input: input, progress: nil, completion: completion)
     }
 
     // getExternalMirrorSender create sender of getExternalMirror.
@@ -198,10 +238,15 @@ extension Bucket {
 
     // getPolicy: Get policy information of the bucket.
     // Documentation URL: https://https://docs.qingcloud.com/qingstor/api/bucket/policy/get_policy.html
-    @objc public func getPolicy(input: GetBucketPolicyInput = GetBucketPolicyInput(), completion: @escaping (GetBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.getPolicy(input: input) { response, error in
+    @objc public func getPolicy(input: GetBucketPolicyInput = GetBucketPolicyInput(), progress: RequestProgress?, completion: @escaping (GetBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.getPolicy(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // getPolicy: Get policy information of the bucket.
+    // Documentation URL: https://https://docs.qingcloud.com/qingstor/api/bucket/policy/get_policy.html
+    @objc public func getPolicy(input: GetBucketPolicyInput = GetBucketPolicyInput(), completion: @escaping (GetBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.getPolicy(input: input, progress: nil, completion: completion)
     }
 
     // getPolicySender create sender of getPolicy.
@@ -212,10 +257,15 @@ extension Bucket {
 
     // getStatistics: Get statistics information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get_stats.html
-    @objc public func getStatistics(input: GetBucketStatisticsInput = GetBucketStatisticsInput(), completion: @escaping (GetBucketStatisticsOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.getStatistics(input: input) { response, error in
+    @objc public func getStatistics(input: GetBucketStatisticsInput = GetBucketStatisticsInput(), progress: RequestProgress?, completion: @escaping (GetBucketStatisticsOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.getStatistics(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // getStatistics: Get statistics information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get_stats.html
+    @objc public func getStatistics(input: GetBucketStatisticsInput = GetBucketStatisticsInput(), completion: @escaping (GetBucketStatisticsOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.getStatistics(input: input, progress: nil, completion: completion)
     }
 
     // getStatisticsSender create sender of getStatistics.
@@ -226,10 +276,15 @@ extension Bucket {
 
     // head: Check whether the bucket exists and available.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/head.html
-    @objc public func head(input: HeadBucketInput = HeadBucketInput(), completion: @escaping (HeadBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.head(input: input) { response, error in
+    @objc public func head(input: HeadBucketInput = HeadBucketInput(), progress: RequestProgress?, completion: @escaping (HeadBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.head(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // head: Check whether the bucket exists and available.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/head.html
+    @objc public func head(input: HeadBucketInput = HeadBucketInput(), completion: @escaping (HeadBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.head(input: input, progress: nil, completion: completion)
     }
 
     // headSender create sender of head.
@@ -240,10 +295,15 @@ extension Bucket {
 
     // listMultipartUploads: List multipart uploads in the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/list_multipart_uploads.html
-    @objc public func listMultipartUploads(input: ListMultipartUploadsInput, completion: @escaping (ListMultipartUploadsOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.listMultipartUploads(input: input) { response, error in
+    @objc public func listMultipartUploads(input: ListMultipartUploadsInput, progress: RequestProgress?, completion: @escaping (ListMultipartUploadsOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.listMultipartUploads(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // listMultipartUploads: List multipart uploads in the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/list_multipart_uploads.html
+    @objc public func listMultipartUploads(input: ListMultipartUploadsInput, completion: @escaping (ListMultipartUploadsOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.listMultipartUploads(input: input, progress: nil, completion: completion)
     }
 
     // listMultipartUploadsSender create sender of listMultipartUploads.
@@ -254,10 +314,15 @@ extension Bucket {
 
     // listObjects: Retrieve the object list in a bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get.html
-    @objc public func listObjects(input: ListObjectsInput, completion: @escaping (ListObjectsOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.listObjects(input: input) { response, error in
+    @objc public func listObjects(input: ListObjectsInput, progress: RequestProgress?, completion: @escaping (ListObjectsOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.listObjects(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // listObjects: Retrieve the object list in a bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/get.html
+    @objc public func listObjects(input: ListObjectsInput, completion: @escaping (ListObjectsOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.listObjects(input: input, progress: nil, completion: completion)
     }
 
     // listObjectsSender create sender of listObjects.
@@ -268,10 +333,15 @@ extension Bucket {
 
     // put: Create a new bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/put.html
-    @objc public func put(input: PutBucketInput = PutBucketInput(), completion: @escaping (PutBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.put(input: input) { response, error in
+    @objc public func put(input: PutBucketInput = PutBucketInput(), progress: RequestProgress?, completion: @escaping (PutBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.put(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // put: Create a new bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/put.html
+    @objc public func put(input: PutBucketInput = PutBucketInput(), completion: @escaping (PutBucketOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.put(input: input, progress: nil, completion: completion)
     }
 
     // putSender create sender of put.
@@ -282,10 +352,15 @@ extension Bucket {
 
     // putACL: Set ACL information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/put_acl.html
-    @objc public func putACL(input: PutBucketACLInput, completion: @escaping (PutBucketACLOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.putACL(input: input) { response, error in
+    @objc public func putACL(input: PutBucketACLInput, progress: RequestProgress?, completion: @escaping (PutBucketACLOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.putACL(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // putACL: Set ACL information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/put_acl.html
+    @objc public func putACL(input: PutBucketACLInput, completion: @escaping (PutBucketACLOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.putACL(input: input, progress: nil, completion: completion)
     }
 
     // putACLSender create sender of putACL.
@@ -296,10 +371,15 @@ extension Bucket {
 
     // putCORS: Set CORS information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/put_cors.html
-    @objc public func putCORS(input: PutBucketCORSInput, completion: @escaping (PutBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.putCORS(input: input) { response, error in
+    @objc public func putCORS(input: PutBucketCORSInput, progress: RequestProgress?, completion: @escaping (PutBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.putCORS(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // putCORS: Set CORS information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/cors/put_cors.html
+    @objc public func putCORS(input: PutBucketCORSInput, completion: @escaping (PutBucketCORSOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.putCORS(input: input, progress: nil, completion: completion)
     }
 
     // putCORSSender create sender of putCORS.
@@ -310,10 +390,15 @@ extension Bucket {
 
     // putExternalMirror: Set external mirror of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/put_external_mirror.html
-    @objc public func putExternalMirror(input: PutBucketExternalMirrorInput, completion: @escaping (PutBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.putExternalMirror(input: input) { response, error in
+    @objc public func putExternalMirror(input: PutBucketExternalMirrorInput, progress: RequestProgress?, completion: @escaping (PutBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.putExternalMirror(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // putExternalMirror: Set external mirror of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/external_mirror/put_external_mirror.html
+    @objc public func putExternalMirror(input: PutBucketExternalMirrorInput, completion: @escaping (PutBucketExternalMirrorOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.putExternalMirror(input: input, progress: nil, completion: completion)
     }
 
     // putExternalMirrorSender create sender of putExternalMirror.
@@ -324,10 +409,15 @@ extension Bucket {
 
     // putPolicy: Set policy information of the bucket.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/policy/put_policy.html
-    @objc public func putPolicy(input: PutBucketPolicyInput, completion: @escaping (PutBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.putPolicy(input: input) { response, error in
+    @objc public func putPolicy(input: PutBucketPolicyInput, progress: RequestProgress?, completion: @escaping (PutBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.putPolicy(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // putPolicy: Set policy information of the bucket.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/bucket/policy/put_policy.html
+    @objc public func putPolicy(input: PutBucketPolicyInput, completion: @escaping (PutBucketPolicyOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.putPolicy(input: input, progress: nil, completion: completion)
     }
 
     // putPolicySender create sender of putPolicy.
@@ -338,10 +428,15 @@ extension Bucket {
 
     // abortMultipartUpload: Abort multipart upload.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/abort_multipart_upload.html
-    @objc public func abortMultipartUpload(objectKey: String, input: AbortMultipartUploadInput, completion: @escaping (AbortMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.abortMultipartUpload(objectKey: objectKey, input: input) { response, error in
+    @objc public func abortMultipartUpload(objectKey: String, input: AbortMultipartUploadInput, progress: RequestProgress?, completion: @escaping (AbortMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.abortMultipartUpload(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // abortMultipartUpload: Abort multipart upload.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/abort_multipart_upload.html
+    @objc public func abortMultipartUpload(objectKey: String, input: AbortMultipartUploadInput, completion: @escaping (AbortMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.abortMultipartUpload(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // abortMultipartUploadSender create sender of abortMultipartUpload.
@@ -352,10 +447,15 @@ extension Bucket {
 
     // completeMultipartUpload: Complete multipart upload.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/complete_multipart_upload.html
-    @objc public func completeMultipartUpload(objectKey: String, input: CompleteMultipartUploadInput, completion: @escaping (CompleteMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.completeMultipartUpload(objectKey: objectKey, input: input) { response, error in
+    @objc public func completeMultipartUpload(objectKey: String, input: CompleteMultipartUploadInput, progress: RequestProgress?, completion: @escaping (CompleteMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.completeMultipartUpload(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // completeMultipartUpload: Complete multipart upload.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/complete_multipart_upload.html
+    @objc public func completeMultipartUpload(objectKey: String, input: CompleteMultipartUploadInput, completion: @escaping (CompleteMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.completeMultipartUpload(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // completeMultipartUploadSender create sender of completeMultipartUpload.
@@ -366,10 +466,15 @@ extension Bucket {
 
     // deleteObject: Delete the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/delete.html
-    @objc public func deleteObject(objectKey: String, input: DeleteObjectInput = DeleteObjectInput(), completion: @escaping (DeleteObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.deleteObject(objectKey: objectKey, input: input) { response, error in
+    @objc public func deleteObject(objectKey: String, input: DeleteObjectInput = DeleteObjectInput(), progress: RequestProgress?, completion: @escaping (DeleteObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.deleteObject(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // deleteObject: Delete the object.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/delete.html
+    @objc public func deleteObject(objectKey: String, input: DeleteObjectInput = DeleteObjectInput(), completion: @escaping (DeleteObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.deleteObject(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // deleteObjectSender create sender of deleteObject.
@@ -380,10 +485,15 @@ extension Bucket {
 
     // getObject: Retrieve the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/get.html
-    @objc public func getObject(objectKey: String, input: GetObjectInput, completion: @escaping (GetObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.getObject(objectKey: objectKey, input: input) { response, error in
+    @objc public func getObject(objectKey: String, input: GetObjectInput, progress: RequestProgress?, completion: @escaping (GetObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.getObject(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // getObject: Retrieve the object.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/get.html
+    @objc public func getObject(objectKey: String, input: GetObjectInput, completion: @escaping (GetObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.getObject(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // getObjectSender create sender of getObject.
@@ -394,10 +504,15 @@ extension Bucket {
 
     // headObject: Check whether the object exists and available.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/head.html
-    @objc public func headObject(objectKey: String, input: HeadObjectInput, completion: @escaping (HeadObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.headObject(objectKey: objectKey, input: input) { response, error in
+    @objc public func headObject(objectKey: String, input: HeadObjectInput, progress: RequestProgress?, completion: @escaping (HeadObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.headObject(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // headObject: Check whether the object exists and available.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/head.html
+    @objc public func headObject(objectKey: String, input: HeadObjectInput, completion: @escaping (HeadObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.headObject(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // headObjectSender create sender of headObject.
@@ -408,10 +523,15 @@ extension Bucket {
 
     // imageProcess: Image process with the action on the object
     // Documentation URL: https://docs.qingcloud.com/qingstor/data_process/image_process/index.html
-    @objc public func imageProcess(objectKey: String, input: ImageProcessInput, completion: @escaping (ImageProcessOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.imageProcess(objectKey: objectKey, input: input) { response, error in
+    @objc public func imageProcess(objectKey: String, input: ImageProcessInput, progress: RequestProgress?, completion: @escaping (ImageProcessOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.imageProcess(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // imageProcess: Image process with the action on the object
+    // Documentation URL: https://docs.qingcloud.com/qingstor/data_process/image_process/index.html
+    @objc public func imageProcess(objectKey: String, input: ImageProcessInput, completion: @escaping (ImageProcessOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.imageProcess(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // imageProcessSender create sender of imageProcess.
@@ -422,10 +542,15 @@ extension Bucket {
 
     // initiateMultipartUpload: Initial multipart upload on the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/initiate_multipart_upload.html
-    @objc public func initiateMultipartUpload(objectKey: String, input: InitiateMultipartUploadInput, completion: @escaping (InitiateMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.initiateMultipartUpload(objectKey: objectKey, input: input) { response, error in
+    @objc public func initiateMultipartUpload(objectKey: String, input: InitiateMultipartUploadInput, progress: RequestProgress?, completion: @escaping (InitiateMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.initiateMultipartUpload(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // initiateMultipartUpload: Initial multipart upload on the object.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/initiate_multipart_upload.html
+    @objc public func initiateMultipartUpload(objectKey: String, input: InitiateMultipartUploadInput, completion: @escaping (InitiateMultipartUploadOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.initiateMultipartUpload(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // initiateMultipartUploadSender create sender of initiateMultipartUpload.
@@ -436,10 +561,15 @@ extension Bucket {
 
     // listMultipart: List object parts.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/list_multipart.html
-    @objc public func listMultipart(objectKey: String, input: ListMultipartInput, completion: @escaping (ListMultipartOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.listMultipart(objectKey: objectKey, input: input) { response, error in
+    @objc public func listMultipart(objectKey: String, input: ListMultipartInput, progress: RequestProgress?, completion: @escaping (ListMultipartOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.listMultipart(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // listMultipart: List object parts.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/list_multipart.html
+    @objc public func listMultipart(objectKey: String, input: ListMultipartInput, completion: @escaping (ListMultipartOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.listMultipart(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // listMultipartSender create sender of listMultipart.
@@ -450,10 +580,15 @@ extension Bucket {
 
     // optionsObject: Check whether the object accepts a origin with method and header.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/options.html
-    @objc public func optionsObject(objectKey: String, input: OptionsObjectInput, completion: @escaping (OptionsObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.optionsObject(objectKey: objectKey, input: input) { response, error in
+    @objc public func optionsObject(objectKey: String, input: OptionsObjectInput, progress: RequestProgress?, completion: @escaping (OptionsObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.optionsObject(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // optionsObject: Check whether the object accepts a origin with method and header.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/options.html
+    @objc public func optionsObject(objectKey: String, input: OptionsObjectInput, completion: @escaping (OptionsObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.optionsObject(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // optionsObjectSender create sender of optionsObject.
@@ -464,10 +599,15 @@ extension Bucket {
 
     // putObject: Upload the object.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/put.html
-    @objc public func putObject(objectKey: String, input: PutObjectInput, completion: @escaping (PutObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.putObject(objectKey: objectKey, input: input) { response, error in
+    @objc public func putObject(objectKey: String, input: PutObjectInput, progress: RequestProgress?, completion: @escaping (PutObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.putObject(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // putObject: Upload the object.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/put.html
+    @objc public func putObject(objectKey: String, input: PutObjectInput, completion: @escaping (PutObjectOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.putObject(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // putObjectSender create sender of putObject.
@@ -478,10 +618,15 @@ extension Bucket {
 
     // uploadMultipart: Upload object multipart.
     // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/multipart/upload_multipart.html
-    @objc public func uploadMultipart(objectKey: String, input: UploadMultipartInput, completion: @escaping (UploadMultipartOutput?, HTTPURLResponse?, Error?) -> Void) {
-    	self.uploadMultipart(objectKey: objectKey, input: input) { response, error in
+    @objc public func uploadMultipart(objectKey: String, input: UploadMultipartInput, progress: RequestProgress?, completion: @escaping (UploadMultipartOutput?, HTTPURLResponse?, Error?) -> Void) {
+    	  self.uploadMultipart(objectKey: objectKey, input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
+    }
+    // uploadMultipart: Upload object multipart.
+    // Documentation URL: https://docs.qingcloud.com/qingstor/api/object/multipart/upload_multipart.html
+    @objc public func uploadMultipart(objectKey: String, input: UploadMultipartInput, completion: @escaping (UploadMultipartOutput?, HTTPURLResponse?, Error?) -> Void) {
+        self.uploadMultipart(objectKey: objectKey, input: input, progress: nil, completion: completion)
     }
 
     // uploadMultipartSender create sender of uploadMultipart.

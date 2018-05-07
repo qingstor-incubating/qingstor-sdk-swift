@@ -153,7 +153,9 @@ class ObjectTests: QingStorTests {
     func testPutObject(testCase: XCTestCase) {
         let request: (@escaping RequestCompletion<PutObjectOutput>) -> Void = { completion in
             let input = PutObjectInput(contentLength: self.contentLength, bodyInputStream: self.generateObjectContent())
-            self.bucket.putObject(objectKey: self.objectKey, input: input, completion: completion)
+            self.bucket.putObject(objectKey: self.objectKey, input: input, progress: {
+                print("put object: \(self.objectKey), progress: \($0)")
+            }, completion: completion)
         }
 
         self.assertReqeust(testCase: testCase, request: request) { response, _ in
@@ -190,7 +192,9 @@ class ObjectTests: QingStorTests {
         let request: (@escaping RequestCompletion<GetObjectOutput>) -> Void = { completion in
             let input = GetObjectInput()
             input.destinationURL = self.saveURL
-            self.bucket.getObject(objectKey: self.objectKey, input: input, completion: completion)
+            self.bucket.getObject(objectKey: self.objectKey, input: input, progress: {
+                print("get object: \(self.objectKey), progress: \($0)")
+            }, completion: completion)
         }
 
         self.assertReqeust(testCase: testCase, request: request) { response, _ in

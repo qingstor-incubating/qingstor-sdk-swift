@@ -31,6 +31,23 @@ extension {{$service.Name | camelCase}} {
     {{- $hasElements := gt (len $operation.Request.Elements.Properties) 0 -}}
     {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
     {{- $hasInput := or $hasParams $hasHeaders $hasElements $hasBody}}
+
+    {{if $operation.Description -}}// {{$operation.ID | camelCase}}: {{$operation.Description}}{{end}}
+    {{if $operation.DocumentationURL -}}// Documentation URL: {{$operation.DocumentationURL}}{{end}}
+    @objc public func {{$operation.ID | camelCase | lowerFirstWord}}(input:{{- " " -}}
+
+    {{- if $hasInput -}}
+        {{$operation.ID | camelCase}}Input
+    {{- else -}}
+        {{$operation.ID | camelCase}}Input = {{$operation.ID | camelCase}}Input()
+    {{- end -}}
+
+    , progress: RequestProgress? = nil, completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
+    	self.{{$operation.ID | camelCase | lowerFirstWord}}(input: input, progress: progress) { response, error in
+            completion(response?.output, response?.rawResponse, error)
+        }
+    }
+
     {{if $operation.Description -}}// {{$operation.ID | camelCase}}: {{$operation.Description}}{{end}}
     {{if $operation.DocumentationURL -}}// Documentation URL: {{$operation.DocumentationURL}}{{end}}
     @objc public func {{$operation.ID | camelCase | lowerFirstWord}}(input:{{- " " -}}
@@ -42,9 +59,7 @@ extension {{$service.Name | camelCase}} {
     {{- end -}}
 
     , completion: @escaping ({{$operation.ID | camelCase}}Output?, HTTPURLResponse?, Error?) -> Void) {
-    	self.{{$operation.ID | camelCase | lowerFirstWord}}(input: input) { response, error in
-            completion(response?.output, response?.rawResponse, error)
-        }
+        self.{{$operation.ID | camelCase | lowerFirstWord}}(input: input, progress: nil, completion: completion)
     }
 
     // {{$operation.ID | camelCase | lowerFirstWord}}Sender create sender of {{$operation.ID | camelCase | lowerFirstWord}}.
