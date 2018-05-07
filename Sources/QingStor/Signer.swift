@@ -150,6 +150,8 @@ public extension Signer {
                                 "stats",
                                 "upload_id",
                                 "uploads",
+                                "logging",
+                                "notification",
                                 "image",
                                 "response-expires",
                                 "response-cache-control",
