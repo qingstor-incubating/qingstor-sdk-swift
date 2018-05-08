@@ -24,8 +24,8 @@ import ObjectMapper
 @objc(QSRegistry)
 public class Registry: NSObject {
     @objc public static var baseURL: String?
-    @objc public static var accessKeyID: String!
-    @objc public static var secretAccessKey: String!
+    @objc public static var accessKeyID: String?
+    @objc public static var secretAccessKey: String?
 
     static var config: [String:String]!
 
@@ -34,7 +34,7 @@ public class Registry: NSObject {
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
     }
-    
+
     @objc public static func register(accessKeyID: String, secretAccessKey: String) {
         self.register(baseURL: nil, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
     }
@@ -51,7 +51,7 @@ public class Registry: NSObject {
         guard let secretAccessKey = config["secret_access_key"] else {
             throw APIError.registerError(info: "secret_access_key not defined")
         }
-        
+
         if let `protocol` = config["protocol"], let host = config["host"] {
             var baseURL = "\(`protocol`)://\(host)"
             if let port = config["port"] {
@@ -140,8 +140,8 @@ public class APIContext: NSObject {
     @objc public var urlComponents: URLComponents
 
     @objc public init(baseURL: String,
-                      accessKeyID: String = Registry.accessKeyID,
-                      secretAccessKey: String = Registry.secretAccessKey) {
+                      accessKeyID: String,
+                      secretAccessKey: String) {
         self.baseURL = baseURL
         self.urlComponents = URLComponents(string: baseURL)!
         self.accessKeyID = accessKeyID
@@ -152,6 +152,26 @@ public class APIContext: NSObject {
         if let config = Registry.config {
             self.readFrom(config: config)
         }
+    }
+
+    @objc public convenience init(baseURL: String) {
+        guard let accessKeyID = Registry.accessKeyID else {
+            fatalError("The access key should not be null")
+        }
+
+        guard let secretAccessKey = Registry.secretAccessKey else {
+            fatalError("The secret access key should not be null")
+        }
+
+        self.init(baseURL: baseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
+    }
+
+    @objc public convenience override init() {
+        guard let baseURL = Registry.baseURL else {
+            fatalError("The base url should not be null")
+        }
+
+        self.init(baseURL: baseURL)
     }
 
     @objc public init(plist: URL) throws {

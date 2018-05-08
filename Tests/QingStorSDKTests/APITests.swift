@@ -13,7 +13,7 @@ class APITests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        Registry.register(accessKeyID: "ACCESS_KEY_ID_EXAMPLE", secretAccessKey: "SECRET_ACCESS_KEY_EXAMPLE")
+        Registry.register(baseURL: "https://hostname", accessKeyID: "ACCESS_KEY_ID_EXAMPLE", secretAccessKey: "SECRET_ACCESS_KEY_EXAMPLE")
     }
 
     override func tearDown() {
@@ -21,18 +21,20 @@ class APITests: XCTestCase {
     }
 
     func testRegister() {
+        XCTAssertEqual(Registry.baseURL, "https://hostname")
         XCTAssertEqual(Registry.accessKeyID, "ACCESS_KEY_ID_EXAMPLE")
         XCTAssertEqual(Registry.secretAccessKey, "SECRET_ACCESS_KEY_EXAMPLE")
     }
 
     func testContextRegister() {
-        let context = APIContext.qingStor()
+        let context = APIContext()
+        XCTAssertEqual(context.baseURL, "https://hostname")
         XCTAssertEqual(context.accessKeyID, "ACCESS_KEY_ID_EXAMPLE")
         XCTAssertEqual(context.secretAccessKey, "SECRET_ACCESS_KEY_EXAMPLE")
     }
 
     func testContextReadConfig() {
-        let context = APIContext.qingStor()
+        let context = APIContext.qingstor()
         XCTAssertEqual(context.url.absoluteString, "https://qingstor.com:443/")
 
         context.readFrom(config: ["port": "80", "protocol": "http", "host": "example.com"])

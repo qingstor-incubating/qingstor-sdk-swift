@@ -41,7 +41,7 @@ public class Bucket: QingStorAPI {
     @objc public var zoneName: String
     @objc public var bucketName: String
     
-    public init(context: APIContext = APIContext.qingStor(),
+    public init(context: APIContext = APIContext.qingstor(),
                 bucketName: String,
                 zone: String,
                 signer: Signer = QingStorSigner(),
@@ -183,7 +183,7 @@ public class Bucket: QingStorAPI {
             {{- $uri := replace $uri "}" ">" -1 -}}
             {{- $uri := dashConnected $uri -}}
 
-            return APISender.qingStor(context: {{ "" -}}
+            return APISender.qingstor(context: {{ "" -}}
             try self.setupContext(uriFormat: "{{$uri}}"
                 {{- if $isObject -}}
                 , objectKey: objectKey

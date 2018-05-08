@@ -26,7 +26,7 @@ public typealias RequestProgress = (Progress) -> Void
 public typealias RequestCompletion<T: BaseMappable> = (Response<T>?, Error?) -> Void
 public typealias BuildCompletion = (URLRequest?, Error?) -> Void
 
-fileprivate typealias _BuildCompletion = (Request?, Error?) -> Void
+private typealias _BuildCompletion = (Request?, Error?) -> Void
 
 public enum HTTPMethod: String {
     case options = "OPTIONS"

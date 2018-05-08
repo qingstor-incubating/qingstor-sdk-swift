@@ -40,10 +40,6 @@ extension APIContext {
             port = newValue?.intValue
         }
     }
-
-    @objc public convenience init(baseURL: String) {
-        self.init(baseURL: baseURL, accessKeyID: Registry.accessKeyID, secretAccessKey: Registry.secretAccessKey)
-    }
 }
 
 extension QingStorAPI {

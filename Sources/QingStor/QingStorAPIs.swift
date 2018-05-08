@@ -23,16 +23,20 @@ import ObjectMapper
 
 let defaultIgnoreIntValue = Int.min
 
+private let qingstorBaseURL = "https://qingstor.com:443/"
+
 public extension APIContext {
-    @objc public static func qingStor(baseURL: String = "https://qingstor.com:443/",
-                                      accessKeyID: String = Registry.accessKeyID,
-                                      secretAccessKey: String = Registry.secretAccessKey) -> APIContext {
-        return APIContext(baseURL: baseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
+    @objc public static func qingstor() -> APIContext {
+        return APIContext(baseURL: qingstorBaseURL)
+    }
+
+    @objc public static func qingstor(accessKeyID: String, secretAccessKey: String) -> APIContext {
+        return APIContext(baseURL: qingstorBaseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
     }
 }
 
 public extension APISender {
-    public class func qingStor(context: APIContext = APIContext.qingStor(),
+    public class func qingstor(context: APIContext = APIContext.qingstor(),
                                input: QingStorInput,
                                method: HTTPMethod = .get,
                                signer: Signer = QingStorSigner(),
@@ -72,7 +76,7 @@ public class QingStorAPI: NSObject, BaseAPI {
     @objc public var buildingQueue: DispatchQueue
     @objc public var callbackQueue: DispatchQueue
 
-    public init(context: APIContext = APIContext.qingStor(),
+    public init(context: APIContext = APIContext.qingstor(),
                 signer: Signer = QingStorSigner(),
                 credential: URLCredential? = nil,
                 buildingQueue: DispatchQueue = DispatchQueue.global(),
@@ -85,7 +89,7 @@ public class QingStorAPI: NSObject, BaseAPI {
     }
 
     @objc public override convenience init() {
-        self.init(context: APIContext.qingStor(),
+        self.init(context: APIContext.qingstor(),
                   signer: QingStorSigner(),
                   credential: nil,
                   buildingQueue: DispatchQueue.global(),
