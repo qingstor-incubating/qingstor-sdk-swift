@@ -907,25 +907,49 @@ public class Bucket: QingStorAPI {
 public class DeleteBucketInput: QingStorInput { }
 
 @objc(QSDeleteBucketOutput)
-public class DeleteBucketOutput: QingStorOutput { }
+public class DeleteBucketOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSDeleteBucketCORSInput)
 public class DeleteBucketCORSInput: QingStorInput { }
 
 @objc(QSDeleteBucketCORSOutput)
-public class DeleteBucketCORSOutput: QingStorOutput { }
+public class DeleteBucketCORSOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSDeleteBucketExternalMirrorInput)
 public class DeleteBucketExternalMirrorInput: QingStorInput { }
 
 @objc(QSDeleteBucketExternalMirrorOutput)
-public class DeleteBucketExternalMirrorOutput: QingStorOutput { }
+public class DeleteBucketExternalMirrorOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSDeleteBucketPolicyInput)
 public class DeleteBucketPolicyInput: QingStorInput { }
 
 @objc(QSDeleteBucketPolicyOutput)
-public class DeleteBucketPolicyOutput: QingStorOutput { }
+public class DeleteBucketPolicyOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSDeleteMultipleObjectsInput)
 public class DeleteMultipleObjectsInput: QingStorInput {
@@ -1106,7 +1130,13 @@ public class GetBucketStatisticsOutput: QingStorOutput {
 public class HeadBucketInput: QingStorInput { }
 
 @objc(QSHeadBucketOutput)
-public class HeadBucketOutput: QingStorOutput { }
+public class HeadBucketOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSListMultipartUploadsInput)
 public class ListMultipartUploadsInput: QingStorInput {
@@ -1272,7 +1302,13 @@ public class ListObjectsOutput: QingStorOutput {
 public class PutBucketInput: QingStorInput { }
 
 @objc(QSPutBucketOutput)
-public class PutBucketOutput: QingStorOutput { }
+public class PutBucketOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSPutBucketACLInput)
 public class PutBucketACLInput: QingStorInput {
@@ -1323,7 +1359,13 @@ public class PutBucketACLInput: QingStorInput {
 }
 
 @objc(QSPutBucketACLOutput)
-public class PutBucketACLOutput: QingStorOutput { }
+public class PutBucketACLOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSPutBucketCORSInput)
 public class PutBucketCORSInput: QingStorInput {
@@ -1374,7 +1416,13 @@ public class PutBucketCORSInput: QingStorInput {
 }
 
 @objc(QSPutBucketCORSOutput)
-public class PutBucketCORSOutput: QingStorOutput { }
+public class PutBucketCORSOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSPutBucketExternalMirrorInput)
 public class PutBucketExternalMirrorInput: QingStorInput {
@@ -1411,7 +1459,13 @@ public class PutBucketExternalMirrorInput: QingStorInput {
 }
 
 @objc(QSPutBucketExternalMirrorOutput)
-public class PutBucketExternalMirrorOutput: QingStorOutput { }
+public class PutBucketExternalMirrorOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSPutBucketPolicyInput)
 public class PutBucketPolicyInput: QingStorInput {
@@ -1462,7 +1516,13 @@ public class PutBucketPolicyInput: QingStorInput {
 }
 
 @objc(QSPutBucketPolicyOutput)
-public class PutBucketPolicyOutput: QingStorOutput { }
+public class PutBucketPolicyOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSAbortMultipartUploadInput)
 public class AbortMultipartUploadInput: QingStorInput {
@@ -1499,7 +1559,13 @@ public class AbortMultipartUploadInput: QingStorInput {
 }
 
 @objc(QSAbortMultipartUploadOutput)
-public class AbortMultipartUploadOutput: QingStorOutput { }
+public class AbortMultipartUploadOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSCompleteMultipartUploadInput)
 public class CompleteMultipartUploadInput: QingStorInput {
@@ -1574,13 +1640,28 @@ public class CompleteMultipartUploadInput: QingStorInput {
 }
 
 @objc(QSCompleteMultipartUploadOutput)
-public class CompleteMultipartUploadOutput: QingStorOutput { }
+public class CompleteMultipartUploadOutput: QingStorOutput {
+    // Encryption algorithm of the object
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
+    }
+}
 
 @objc(QSDeleteObjectInput)
 public class DeleteObjectInput: QingStorInput { }
 
 @objc(QSDeleteObjectOutput)
-public class DeleteObjectOutput: QingStorOutput { }
+public class DeleteObjectOutput: QingStorOutput {
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+    }
+}
 
 @objc(QSGetObjectInput)
 public class GetObjectInput: QingStorDownloadInput {
@@ -2167,7 +2248,19 @@ public class PutObjectInput: QingStorInput {
 }
 
 @objc(QSPutObjectOutput)
-public class PutObjectOutput: QingStorOutput { }
+public class PutObjectOutput: QingStorOutput {
+    // MD5sum of the object
+    @objc public var etag: String?
+    // Encryption algorithm of the object
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        etag <- map["ETag"]
+        xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
+    }
+}
 
 @objc(QSUploadMultipartInput)
 public class UploadMultipartInput: QingStorInput {
@@ -2282,4 +2375,19 @@ public class UploadMultipartInput: QingStorInput {
 }
 
 @objc(QSUploadMultipartOutput)
-public class UploadMultipartOutput: QingStorOutput { }
+public class UploadMultipartOutput: QingStorOutput {
+    // MD5sum of the object
+    @objc public var etag: String?
+    // Range of response data content
+    @objc public var xQSContentCopyRange: String?
+    // Encryption algorithm of the object
+    @objc public var xQSEncryptionCustomerAlgorithm: String?
+
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+
+        etag <- map["ETag"]
+        xQSContentCopyRange <- map["X-QS-Content-Copy-Range"]
+        xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
+    }
+}

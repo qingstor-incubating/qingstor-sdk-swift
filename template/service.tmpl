@@ -27,7 +27,7 @@ import ObjectMapper
 @objc(QS{{$service.Name | camelCase}})
 public class {{$service.Name | camelCase}}: QingStorAPI {
 {{- range $_, $operation := $service.Operations -}}
-    {{- $hasParams := gt (len $operation.Request.Params.Properties) 0 -}}
+    {{- $hasParams := gt (len $operation.Request.Query.Properties) 0 -}}
     {{- $hasHeaders := gt (len $operation.Request.Headers.Properties) 0 -}}
     {{- $hasElements := gt (len $operation.Request.Elements.Properties) 0 -}}
     {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
