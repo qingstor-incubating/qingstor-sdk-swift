@@ -75,9 +75,9 @@ extension {{$customizedType.ID | camelCase}}Model {
 extension {{$operation.ID | camelCase}}Input {
     @objc public static func empty() -> {{$operation.ID | camelCase}}Input { 
         return {{$operation.ID | camelCase}}Input(
-            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Params $operation.Name true -}}
-            {{- if and (gt ($operation.Request.Params.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
-                {{- if or (ne ($operation.Request.Params.Properties | len) 1) (ne ($operation.Request.Params | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+            {{- template "RenderInitializationAssignment" passThrough $operation.Request.Query $operation.Name true -}}
+            {{- if and (gt ($operation.Request.Query.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
+                {{- if or (ne ($operation.Request.Query.Properties | len) 1) (ne ($operation.Request.Query | firstPropertyIDInCustomizedType) "Content-MD5") -}}
                     {{- ", " -}}
                 {{- end -}}
             {{- end -}}

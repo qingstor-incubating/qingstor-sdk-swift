@@ -96,7 +96,7 @@ public class Bucket: QingStorAPI {
     {{- $isObject := eq $subService.Name "Object" -}}
 
     {{- range $_, $operation := $subService.Operations}}
-        {{- $hasParams := gt (len $operation.Request.Params.Properties) 0 -}}
+        {{- $hasParams := gt (len $operation.Request.Query.Properties) 0 -}}
         {{- $hasHeaders := gt (len $operation.Request.Headers.Properties) 0 -}}
         {{- $hasElements := gt (len $operation.Request.Elements.Properties) 0 -}}
         {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
@@ -178,7 +178,7 @@ public class Bucket: QingStorAPI {
 
         ) -> (APISender?, Error?) {
         do {                
-            {{$uri := $operation.Request.URI -}}
+            {{$uri := $operation.Request.Path -}}
             {{- $uri := replace $uri "{" "<" -1 -}}
             {{- $uri := replace $uri "}" ">" -1 -}}
             {{- $uri := dashConnected $uri -}}

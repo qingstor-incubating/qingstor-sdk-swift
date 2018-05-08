@@ -20,19 +20,8 @@ generate:
 		echo "ERROR: Command \"snips\" not found."; \
 	fi
 
-	snips \
-		--service=qingstor \
-		--service-api-version=latest \
-		--spec="./specs" \
-		--template="./template" \
-		--output="./Sources/QingStor" || exit 1
-
-	snips \
-		--service=qingstor \
-		--service-api-version=latest \
-		--spec="./specs" \
-		--template="./template/objc-bridge" \
-		--output="./Sources/ObjcBridge" || exit 1
+	snips -f="./specs/qingstor/2016-01-06/swagger/api_v2.0.json" -t="./template" -o="./Sources/QingStor"
+	snips -f="./specs/qingstor/2016-01-06/swagger/api_v2.0.json" -t="./template/objc-bridge" -o="./Sources/ObjcBridge"
 
 	rm ./Sources/QingStor/Object.swift
 	rm ./Sources/ObjcBridge/ObjectObjcBridge.swift

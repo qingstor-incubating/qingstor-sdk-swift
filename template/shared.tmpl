@@ -177,9 +177,9 @@
 {{- define "RenderInitializationDeclarationRequest" -}}
     {{- $operation := . -}}
 
-    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Params 2 true $operation.Name true -}}
-    {{- if and (gt ($operation.Request.Params.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
-        {{- if or (ne ($operation.Request.Params.Properties | len) 1) (ne ($operation.Request.Params | firstPropertyIDInCustomizedType) "Content-MD5") -}}
+    {{- template "RenderInitializationDeclaration" passThrough $operation.Request.Query 2 true $operation.Name true -}}
+    {{- if and (gt ($operation.Request.Query.Properties | len) 0) (or (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) (eq $operation.Request.Body.Type "binary")) -}}
+        {{- if or (ne ($operation.Request.Query.Properties | len) 1) (ne ($operation.Request.Query | firstPropertyIDInCustomizedType) "Content-MD5") -}}
             {{- ", " -}}
         {{- end -}}
     {{- end -}}
@@ -368,6 +368,17 @@
 {{- end -}}
 
 
+{{- define "RenderDownloadText" -}}
+    {{- $operation := index . -}}
+    
+    {{- range $_, $response := $operation.Responses -}} 
+        {{- if eq $response.Body.Type "binary" -}}
+            Download
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
+
 {{- define "RenderModel" -}}
     {{- $customizedType := index . }}
 
@@ -394,7 +405,7 @@ public class {{$customizedType.ID | camelCase}}Model: BaseModel {
 {{- define "RenderInput" -}}
     {{- $operation := index . }}
 
-    {{- $hasParams := gt (len $operation.Request.Params.Properties) 0 -}}
+    {{- $hasParams := gt (len $operation.Request.Query.Properties) 0 -}}
     {{- $hasHeaders := gt (len $operation.Request.Headers.Properties) 0 -}}
     {{- $hasElements := gt (len $operation.Request.Elements.Properties) 0 -}}
     {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
@@ -402,11 +413,11 @@ public class {{$customizedType.ID | camelCase}}Model: BaseModel {
 
     {{- if not $hasInput}}
 @objc(QS{{$operation.ID | camelCase}}Input)
-public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input { }
+public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownloadText" $operation}}Input { }
     {{- else}}
 @objc(QS{{$operation.ID | camelCase}}Input)
-public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Input {
-    {{- template "RenderProperties" passThrough $operation.Request.Params false $operation.Name true -}}
+public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownloadText" $operation}}Input {
+    {{- template "RenderProperties" passThrough $operation.Request.Query false $operation.Name true -}}
     {{- template "RenderProperties" passThrough $operation.Request.Headers false $operation.Name true -}}
     {{- template "RenderProperties" passThrough $operation.Request.Elements false $operation.Name true -}}
 
@@ -417,9 +428,9 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     @objc public var bodyInputStream: {{template "PropertyType" passThrough $operation.Request.Body 3 false true true }}
     {{- end -}}
 
-    {{- if gt ($operation.Request.Params.Properties | len) 0}}{{"\n"}}
+    {{- if gt ($operation.Request.Query.Properties | len) 0}}{{"\n"}}
     override var queryProperties: [String] {
-        return [{{template "RenderLocationProperties" $operation.Request.Params}}]
+        return [{{template "RenderLocationProperties" $operation.Request.Query}}]
     }
     {{- end}}
 
@@ -443,7 +454,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     }
     {{- end}}
 
-    {{if or (gt ($operation.Request.Params.Properties | len) 0) (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) -}}
+    {{if or (gt ($operation.Request.Query.Properties | len) 0) (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) -}}
     public required init?(map: Map) {
         super.init(map: map)
     }
@@ -451,7 +462,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     @objc public init({{- template "RenderInitializationDeclarationRequest" $operation -}}) {
         super.init()
         {{- "\n" -}}
-        {{- template "RenderInitializationAssignment" passThrough $operation.Request.Params $operation.Name -}}
+        {{- template "RenderInitializationAssignment" passThrough $operation.Request.Query $operation.Name -}}
         {{- template "RenderInitializationAssignment" passThrough $operation.Request.Headers $operation.Name -}}
         {{- template "RenderInitializationAssignment" passThrough $operation.Request.Elements $operation.Name -}}
 
@@ -463,7 +474,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     public override func mapping(map: Map) {
         super.mapping(map: map)
         {{- "\n" -}}
-        {{- template "RenderMapping" passThrough $operation.Request.Params false $operation.Name -}}
+        {{- template "RenderMapping" passThrough $operation.Request.Query false $operation.Name -}}
         {{- template "RenderMapping" passThrough $operation.Request.Headers false $operation.Name -}}
         {{- template "RenderMapping" passThrough $operation.Request.Elements false $operation.Name}}
     }
@@ -471,7 +482,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     @objc public override func toParameters() -> [String: Any] {
         var parameters = super.toParameters()
 
-            {{- template "RenderToParameters" $operation.Request.Params -}}
+            {{- template "RenderToParameters" $operation.Request.Query -}}
             {{- template "RenderToParameters" $operation.Request.Headers -}}
             {{- template "RenderToParameters" $operation.Request.Elements -}}
 
@@ -487,7 +498,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
     }
         {{end}}
     @objc public override func validate() -> Error? {
-        {{- template "RenderValidate" passThrough $operation.Request.Params $operation.Name -}}
+        {{- template "RenderValidate" passThrough $operation.Request.Query $operation.Name -}}
         {{- template "RenderValidate" passThrough $operation.Request.Headers $operation.Name -}}
         {{- template "RenderValidate" passThrough $operation.Request.Elements $operation.Name}}
         return nil
@@ -499,31 +510,21 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{if eq $operation.Resp
 
 
 {{- define "RenderOutput" -}}
-    {{- $operation := index . -}}
+    {{- $operation := index . }}
 
-    {{- $hasHeaders := gt (len $operation.Response.Headers.Properties) 0 -}}
-    {{- $hasElements := gt (len $operation.Response.Elements.Properties) 0 -}}
-    {{- $hasBody := eq $operation.Response.Body.Type "binary" -}}
-    {{- $hasOutput := or $hasHeaders $hasElements $hasBody -}}
-
-    {{- if not $hasOutput}}
 @objc(QS{{$operation.ID | camelCase}}Output)
-public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Output { }
-    {{- else}}
-@objc(QS{{$operation.ID | camelCase}}Output)
-public class {{$operation.ID | camelCase}}Output: QingStor{{if eq $operation.Response.Body.Type "binary"}}Download{{end}}Output {
-    {{- template "RenderProperties" passThrough $operation.Response.Headers true "" false -}}
-    {{- template "RenderProperties" passThrough $operation.Response.Elements true "" false -}}
-
-    {{- if or (gt ($operation.Response.Headers.Properties | len) 0) (gt ($operation.Response.Elements.Properties | len) 0)}}
+public class {{$operation.ID | camelCase}}Output: QingStor{{template "RenderDownloadText" $operation}}Output {
+    {{- range $_, $response := $operation.Responses -}} 
+        {{- template "RenderProperties" passThrough $response.Headers true "" false -}}
+        {{- template "RenderProperties" passThrough $response.Elements true "" false -}}
+    {{- end }}
 
     public override func mapping(map: Map) {
         super.mapping(map: map)
-        {{- "\n" -}}
-        {{- template "RenderMapping" passThrough $operation.Response.Headers true "" -}}
-        {{- template "RenderMapping" passThrough $operation.Response.Elements true ""}}
+        {{ range $_, $response := $operation.Responses -}} 
+            {{- template "RenderMapping" passThrough $response.Headers true "" -}}
+            {{- template "RenderMapping" passThrough $response.Elements true ""}}
+        {{- end }}
     }
-    {{- end}}
 }
-    {{- end -}}
 {{- end -}}
