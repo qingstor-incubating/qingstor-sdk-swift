@@ -24,10 +24,10 @@ import ObjectMapper
 let defaultIgnoreIntValue = Int.min
 
 public extension APIContext {
-    @objc public static func qingStor(urlString: String = "https://qingstor.com:443/",
-                                accessKeyID: String = Registry.accessKeyID,
-                                secretAccessKey: String = Registry.secretAccessKey) -> APIContext {
-        return APIContext(urlString: urlString, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
+    @objc public static func qingStor(baseURL: String = "https://qingstor.com:443/",
+                                      accessKeyID: String = Registry.accessKeyID,
+                                      secretAccessKey: String = Registry.secretAccessKey) -> APIContext {
+        return APIContext(baseURL: baseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
     }
 }
 

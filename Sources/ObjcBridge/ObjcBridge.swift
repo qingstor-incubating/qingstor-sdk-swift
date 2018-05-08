@@ -41,8 +41,8 @@ extension APIContext {
         }
     }
 
-    @objc public convenience init(urlString: String) {
-        self.init(urlString: urlString, accessKeyID: Registry.accessKeyID, secretAccessKey: Registry.secretAccessKey)
+    @objc public convenience init(baseURL: String) {
+        self.init(baseURL: baseURL, accessKeyID: Registry.accessKeyID, secretAccessKey: Registry.secretAccessKey)
     }
 }
 
