@@ -50,20 +50,20 @@ extension Bucket {
 
     @objc public convenience init(bucketName: String,
                                   zone: String,
-                                  qingStorSigner: QingStorSigner) {
+                                  qingstorSigner: QingStorSigner) {
         self.init(bucketName: bucketName,
                   zone: zone,
-                  signer: qingStorSigner)
+                  signer: qingstorSigner)
     }
 
     @objc public convenience init(context: APIContext,
                                   bucketName: String,
                                   zone: String,
-                                  qingStorSigner: QingStorSigner) {
+                                  qingstorSigner: QingStorSigner) {
         self.init(context: context,
                   bucketName: bucketName,
                   zone: zone,
-                  signer: qingStorSigner)
+                  signer: qingstorSigner)
     }
 
     @objc public convenience init(bucketName: String,

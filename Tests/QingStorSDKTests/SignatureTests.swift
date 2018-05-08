@@ -24,7 +24,7 @@ class SignatureTests: XCTestCase {
     func testWriteHeaderSignature() throws {
         let expectation = self.expectation(description: "")
 
-        let context = APIContext.qingStor()
+        let context = APIContext.qingstor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc"
 
         let requestBuild = DefaultRequestBuilder(context: context, signer: QingStorSigner())
@@ -50,7 +50,7 @@ class SignatureTests: XCTestCase {
     func testWriteQuerySignature() throws {
         let expectation = self.expectation(description: "")
 
-        let context = APIContext.qingStor()
+        let context = APIContext.qingstor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc"
 
         let signer = QingStorSigner()
@@ -77,7 +77,7 @@ class SignatureTests: XCTestCase {
     func testWriteNonASCIIHeaderSignature() throws {
         let expectation = self.expectation(description: "")
 
-        let context = APIContext.qingStor()
+        let context = APIContext.qingstor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=测试中文"
 
         let requestBuild = DefaultRequestBuilder(context: context, signer: QingStorSigner())
@@ -103,7 +103,7 @@ class SignatureTests: XCTestCase {
     func testWriteNonASCIIQuerySignature() throws {
         let expectation = self.expectation(description: "")
 
-        let context = APIContext.qingStor()
+        let context = APIContext.qingstor()
         context.query = "acl&upload_id=fde133b5f6d932cd9c79bac3c7318da1&part_number=0&other=abc&response-content-disposition=测试中文"
 
         let signer = QingStorSigner()
@@ -137,7 +137,7 @@ class SignatureTests: XCTestCase {
         }
         signer.signatureType = .query(timeoutSeconds: 500)
 
-        let requestBuild = DefaultRequestBuilder(context: APIContext.qingStor(), signer: signer)
+        let requestBuild = DefaultRequestBuilder(context: APIContext.qingstor(), signer: signer)
         requestBuild.addHeaders(["Date": String.RFC822(date: Date(timeIntervalSince1970: 0))])
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
@@ -162,7 +162,7 @@ class SignatureTests: XCTestCase {
         }
         signer.signatureType = .query(timeoutSeconds: 500)
 
-        let requestBuild = DefaultRequestBuilder(context: APIContext.qingStor(), signer: signer)
+        let requestBuild = DefaultRequestBuilder(context: APIContext.qingstor(), signer: signer)
         requestBuild.addHeaders(["Date": String.RFC822(date: Date(timeIntervalSince1970: 0))])
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
@@ -187,7 +187,7 @@ class SignatureTests: XCTestCase {
         }
         signer.signatureType = .header
 
-        let requestBuild = DefaultRequestBuilder(context: APIContext.qingStor(), signer: signer)
+        let requestBuild = DefaultRequestBuilder(context: APIContext.qingstor(), signer: signer)
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
             print("request: \(String(describing: request))")
@@ -211,7 +211,7 @@ class SignatureTests: XCTestCase {
         }
         signer.signatureType = .header
 
-        let requestBuild = DefaultRequestBuilder(context: APIContext.qingStor(), signer: signer)
+        let requestBuild = DefaultRequestBuilder(context: APIContext.qingstor(), signer: signer)
         requestBuild.buildRequest { request, error in
             XCTAssertNil(error)
             print("request: \(String(describing: request))")
