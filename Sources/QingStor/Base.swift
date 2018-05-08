@@ -23,14 +23,20 @@ import ObjectMapper
 
 @objc(QSRegistry)
 public class Registry: NSObject {
+    @objc public static var baseURL: String?
     @objc public static var accessKeyID: String!
     @objc public static var secretAccessKey: String!
 
     static var config: [String:String]!
 
-    @objc public static func register(accessKeyID: String, secretAccessKey: String) {
+    @objc public static func register(baseURL: String?, accessKeyID: String, secretAccessKey: String) {
+        self.baseURL = baseURL
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
+    }
+    
+    @objc public static func register(accessKeyID: String, secretAccessKey: String) {
+        self.register(baseURL: nil, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
     }
 
     @objc public static func registerFrom(plist: URL) throws {
@@ -45,8 +51,19 @@ public class Registry: NSObject {
         guard let secretAccessKey = config["secret_access_key"] else {
             throw APIError.registerError(info: "secret_access_key not defined")
         }
+        
+        if let `protocol` = config["protocol"], let host = config["host"] {
+            var baseURL = "\(`protocol`)://\(host)"
+            if let port = config["port"] {
+                baseURL += ":\(port)/"
+            } else {
+                baseURL += "/"
+            }
+            register(baseURL: baseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
+        } else {
+            register(accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
+        }
 
-        register(accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
         self.config = config
     }
 }
@@ -119,14 +136,14 @@ public class APIContext: NSObject {
     @objc public private(set) var accessKeyID: String
     @objc public private(set) var secretAccessKey: String
 
-    @objc public let urlString: String
+    @objc public let baseURL: String
     @objc public var urlComponents: URLComponents
 
-    @objc public init(urlString: String,
+    @objc public init(baseURL: String,
                       accessKeyID: String = Registry.accessKeyID,
                       secretAccessKey: String = Registry.secretAccessKey) {
-        self.urlString = urlString
-        self.urlComponents = URLComponents(string: urlString)!
+        self.baseURL = baseURL
+        self.urlComponents = URLComponents(string: baseURL)!
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
 
@@ -161,16 +178,16 @@ public class APIContext: NSObject {
             throw APIError.contextError(info: "host not defined")
         }
 
-        var urlString = "\(`protocol`)://\(host)"
+        var baseURL = "\(`protocol`)://\(host)"
 
         if let port = config["port"] {
-            urlString += ":\(port)/"
+            baseURL += ":\(port)/"
         } else {
-            urlString += "/"
+            baseURL += "/"
         }
 
-        self.urlString = urlString
-        self.urlComponents = URLComponents(string: urlString)!
+        self.baseURL = baseURL
+        self.urlComponents = URLComponents(string: baseURL)!
     }
 
     @objc public func readFrom(config: [String:String]) {
@@ -190,7 +207,7 @@ public class APIContext: NSObject {
     }
 
     func rawCopy() -> APIContext {
-        return APIContext(urlString: self.urlString, accessKeyID: self.accessKeyID, secretAccessKey: self.secretAccessKey)
+        return APIContext(baseURL: self.baseURL, accessKeyID: self.accessKeyID, secretAccessKey: self.secretAccessKey)
     }
 }
 
