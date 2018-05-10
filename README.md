@@ -7,6 +7,8 @@
 
 The official QingStor SDK for the Swift programming language.
 
+The SDK documents can be found [here](https://yunify.github.io/qingstor-sdk-swift/).
+
 ## Getting Started
 
 ### Swift versions support

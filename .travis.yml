@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode9
+osx_image: xcode9.3
 env:
   global:
   - LC_CTYPE=en_US.UTF-8
@@ -7,7 +7,7 @@ env:
   - WORKSPACE=QingStorSDK.xcworkspace
   - FRAMEWORK_SCHEME="QingStorSDK"
   - FRAMEWORK_TEST_SCHEME="QingStorSDKTests"
-  - DESTINATION="OS=11.0,name=iPhone X"
+  - DESTINATION="OS=11.3,name=iPhone X"
   matrix:
     - SCHEME="$FRAMEWORK_SCHEME"  RUN_TESTS="NO"
     - SCHEME="$FRAMEWORK_TEST_SCHEME"  RUN_TESTS="YES"

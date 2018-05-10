@@ -180,6 +180,39 @@ input.bodyInputStream = [[NSInputStream alloc] initWithURL:objectFileURL];
 }];
 ```
 
+Put object with progress
+
+```swift
+// Swift
+let path = Bundle.main.path(forResource: "image", ofType: "jpeg")!
+let objectFileURL = URL(fileURLWithPath: path)
+let input = PutObjectInput(contentLength: objectFileURL.contentLength, 
+                           contentType: objectFileURL.mimeType,
+                           bodyInputStream: InputStream(url: objectFileURL))
+bucket.putObject(objectKey: "image.jpeg", input: input, progress: { progress in
+    print("progress: \(progress)")
+}, completion: { response, error in
+    if let response = response {
+        print("StatusCode: \(response.statusCode)")
+    }
+})
+```
+
+```objective-c
+// Objective-C
+NSString *path = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"jpeg"];
+NSURL *objectFileURL = [NSURL fileURLWithPath:path];
+QSPutObjectInput *input = [QSPutObjectInput empty];
+input.contentLength = [objectFileURL qs_contentLength];
+input.contentType = [objectFileURL qs_mimeType];
+input.bodyInputStream = [[NSInputStream alloc] initWithURL:objectFileURL];
+[bucket putObjectWithObjectKey:@"image.jpeg" input:input progress:^(NSProgress *progress) {
+    NSLog(@"progress: %@", progress);
+} completion:^(QSPutObjectOutput *output, NSHTTPURLResponse *response, NSError *error) {
+    NSLog(@"StatusCode: %ld", response.statusCode);
+}];
+```
+
 Delete object
 
 ```swift
