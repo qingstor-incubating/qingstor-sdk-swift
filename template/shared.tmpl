@@ -213,13 +213,12 @@
     {{- range $_, $property := $customizedType.Properties -}}
         {{- if and (or (not $needExcluded) (and (ne $property.ID "message") (ne $property.ID "code"))) (or (ne $operationName "Delete Multiple Objects") (ne $property.ID "Content-MD5")) -}}
             {{- if $property.Description}}
-    // {{$property.Description -}}
+    /// {{$property.Description -}}
             {{- end -}}
             {{- if $property.Enum}}
-    // {{ template "FormatPropertyID" $property -}}'s available values: {{$property.Enum | commaConnected -}}
-            {{- end}}
-    @objc public var {{template "FormatPropertyID" $property}}: {{template "PropertyType" passThrough $property 3 true false $ignoreIntValue }}
-            {{- if $property.IsRequired}} // Required {{- end -}}
+    /// {{ template "FormatPropertyID" $property -}}'s available values: {{$property.Enum | commaConnected -}}
+            {{- end }}
+    @objc public var {{template "FormatPropertyID" $property}}: {{template "PropertyType" passThrough $property 3 true false $ignoreIntValue }} {{- if $property.IsRequired}} // Required{{- end }}
         {{- end -}}
     {{- end -}}
 {{- end -}}
@@ -229,10 +228,12 @@
     {{- $customizedType := index . 0 -}}
     {{- $ignoreIntValue := index . 1 }}
 
+    /// Initialize `{{$customizedType.ID | camelCase}}Model` with the specified `map`.
     public required init?(map: Map) {
         super.init(map: map)
     }
 
+    /// Initialize `{{$customizedType.ID | camelCase}}Model` with the specified parameters.
     @objc public init({{- template "RenderInitializationDeclaration" passThrough $customizedType 2 true "" $ignoreIntValue -}}) {
         super.init()
         {{template "RenderInitializationAssignment" passThrough $customizedType "" }}
@@ -382,17 +383,20 @@
 {{- define "RenderModel" -}}
     {{- $customizedType := index . }}
 
+/// The {{$customizedType.ID | camelCase}}Model.
 @objc(QS{{$customizedType.ID | camelCase}}Model)
 public class {{$customizedType.ID | camelCase}}Model: BaseModel {
     {{- if gt ($customizedType.Properties | len) 0 -}}
         {{- template "RenderProperties" passThrough $customizedType false "" false -}}
         {{- template "RenderInitialization" passThrough $customizedType false }}
 
+    /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
         {{template "RenderMapping" passThrough $customizedType false ""}}
     }
 
+    /// Verify model data is valid.
     @objc public override func validate() -> Error? {
         {{- template "RenderValidate" passThrough $customizedType ""}}
         return nil
@@ -409,8 +413,8 @@ public class {{$customizedType.ID | camelCase}}Model: BaseModel {
     {{- $hasHeaders := gt (len $operation.Request.Headers.Properties) 0 -}}
     {{- $hasElements := gt (len $operation.Request.Elements.Properties) 0 -}}
     {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
-    {{- $hasInput := or $hasParams $hasHeaders $hasElements $hasBody -}}
-
+    {{- $hasInput := or $hasParams $hasHeaders $hasElements $hasBody }}
+/// The {{$operation.ID | camelCase}} api input.
     {{- if not $hasInput}}
 @objc(QS{{$operation.ID | camelCase}}Input)
 public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownloadText" $operation}}Input { }
@@ -423,24 +427,27 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownl
 
     {{- if eq $operation.Request.Body.Type "binary"}}
         {{- if $operation.Request.Body.Description}}
-    // {{$operation.Request.Body.Description -}}
+    /// {{$operation.Request.Body.Description -}}
         {{- end}}
     @objc public var bodyInputStream: {{template "PropertyType" passThrough $operation.Request.Body 3 false true true }}
     {{- end -}}
 
     {{- if gt ($operation.Request.Query.Properties | len) 0}}{{"\n"}}
+    /// The request query properties.
     override var queryProperties: [String] {
         return [{{template "RenderLocationProperties" $operation.Request.Query}}]
     }
     {{- end}}
 
     {{- if gt ($operation.Request.Headers.Properties | len) 0}}{{"\n"}}
+    /// The request header properties.
     override var headerProperties: [String] {
         return [{{template "RenderLocationProperties" $operation.Request.Headers}}]
     }
     {{- end}}
 
     {{- if or (eq $operation.Request.Body.Type "binary") (gt ($operation.Request.Elements.Properties | len) 0)}}{{"\n"}}
+    /// The request body properties.
     override var bodyProperties: [String] {
         return [
             {{- template "RenderLocationProperties" $operation.Request.Elements -}}
@@ -455,10 +462,12 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownl
     {{- end}}
 
     {{if or (gt ($operation.Request.Query.Properties | len) 0) (gt ($operation.Request.Headers.Properties | len) 0) (gt ($operation.Request.Elements.Properties | len) 0) -}}
+    /// Initialize `{{$operation.ID | camelCase}}Input` with the specified `map`.
     public required init?(map: Map) {
         super.init(map: map)
     }
 
+    /// Initialize `{{$operation.ID | camelCase}}Input` with the specified parameters.
     @objc public init({{- template "RenderInitializationDeclarationRequest" $operation -}}) {
         super.init()
         {{- "\n" -}}
@@ -471,6 +480,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownl
         {{- end}}
     }
 
+    /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
         {{- "\n" -}}
@@ -479,6 +489,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownl
         {{- template "RenderMapping" passThrough $operation.Request.Elements false $operation.Name}}
     }
         {{if or (eq $operation.Request.Body.Type "binary") (eq $operation.Name "Delete Multiple Objects")}}
+    /// Convert model data to dictionary.
     @objc public override func toParameters() -> [String: Any] {
         var parameters = super.toParameters()
 
@@ -497,6 +508,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownl
         return parameters
     }
         {{end}}
+    /// Verify input data is valid.
     @objc public override func validate() -> Error? {
         {{- template "RenderValidate" passThrough $operation.Request.Query $operation.Name -}}
         {{- template "RenderValidate" passThrough $operation.Request.Headers $operation.Name -}}
@@ -512,6 +524,7 @@ public class {{$operation.ID | camelCase}}Input: QingStor{{template "RenderDownl
 {{- define "RenderOutput" -}}
     {{- $operation := index . }}
 
+/// The {{$operation.ID | camelCase}} api output.
 @objc(QS{{$operation.ID | camelCase}}Output)
 public class {{$operation.ID | camelCase}}Output: QingStor{{template "RenderDownloadText" $operation}}Output {
     {{- range $_, $response := $operation.Responses -}} 
@@ -519,6 +532,7 @@ public class {{$operation.ID | camelCase}}Output: QingStor{{template "RenderDown
         {{- template "RenderProperties" passThrough $response.Elements true "" false -}}
     {{- end }}
 
+    /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
         {{ range $_, $response := $operation.Responses -}} 

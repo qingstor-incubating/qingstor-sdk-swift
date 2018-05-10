@@ -97,8 +97,8 @@ extension Bucket {
         {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
         {{- $hasInput := or $hasParams $hasHeaders $hasElements $hasBody -}}
 		
-		{{- if $operation.Description -}}{{"\n    "}}// {{(replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord}}: {{$operation.Description}}{{- end -}}
-		{{"\n    "}}// Documentation URL: {{$operation.DocumentationURL}}
+		{{- if $operation.Description -}}{{"\n    "}}/// {{(replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord}}: {{$operation.Description}}{{- end -}}
+		{{"\n    "}}/// Documentation URL: {{$operation.DocumentationURL}}
     @objc public func{{- " " -}}
 
         {{- if $isBucket -}}
@@ -136,8 +136,8 @@ extension Bucket {
         }
     }
 
-    {{- if $operation.Description -}}{{"\n    "}}// {{(replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord}}: {{$operation.Description}}{{- end -}}
-    {{"\n    "}}// Documentation URL: {{$operation.DocumentationURL}}
+    {{- if $operation.Description -}}{{"\n    "}}/// {{(replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord}}: {{$operation.Description}}{{- end -}}
+    {{"\n    "}}/// Documentation URL: {{$operation.DocumentationURL}}
     @objc public func{{- " " -}}
 
         {{- if $isBucket -}}
@@ -173,7 +173,7 @@ extension Bucket {
         input: input, progress: nil, completion: completion)
     }
 
-    {{"// " -}}
+    {{"/// " -}}
     {{- if $isBucket -}}
         {{- (replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord -}}Sender
         {{- " " -}}
@@ -228,6 +228,12 @@ extension APISender {
     {{- $isBucket := eq $subService.Name "Bucket" -}}
 
     {{- range $_, $operation := $subService.Operations}}
+    /// {{ "Send " -}}
+        {{- if $isBucket -}}
+            {{- (replace ($operation.ID | camelCase) "Bucket" "" -1) -}}
+        {{- else -}}
+            {{- $operation.ID | camelCase -}}
+        {{- end }} api.
     @objc public func{{- " send" -}}
 
         {{- if $isBucket -}}

@@ -23,7 +23,7 @@
 import Foundation
 import ObjectMapper
 
-{{if $service.Description -}}// {{$service.Name | camelCase}}: {{$service.Description}}{{- end}}
+{{if $service.Description -}}/// {{$service.Name | camelCase}}: {{$service.Description}}{{- end}}
 @objc(QS{{$service.Name | camelCase}})
 public class {{$service.Name | camelCase}}: QingStorAPI {
 {{- range $_, $operation := $service.Operations -}}
@@ -32,8 +32,8 @@ public class {{$service.Name | camelCase}}: QingStorAPI {
     {{- $hasElements := gt (len $operation.Request.Elements.Properties) 0 -}}
     {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
     {{- $hasInput := or $hasParams $hasHeaders $hasElements $hasBody}}
-    {{if $operation.Description -}}// {{$operation.ID | camelCase}}: {{$operation.Description}}{{end}}
-    {{if $operation.DocumentationURL -}}// Documentation URL: {{$operation.DocumentationURL}}{{end}}
+    {{if $operation.Description -}}/// {{$operation.ID | camelCase}}: {{$operation.Description}}{{end}}
+    {{if $operation.DocumentationURL -}}/// Documentation URL: {{$operation.DocumentationURL}}{{end}}
     public func {{$operation.ID | camelCase | lowerFirstWord}}(input:{{- " " -}}
 
     {{- if $hasInput -}}
@@ -53,7 +53,7 @@ public class {{$service.Name | camelCase}}: QingStorAPI {
         sender!.sendAPI(progress: progress, completion: completion)
     }
 
-    // {{$operation.ID | camelCase | lowerFirstWord}}Sender create sender of {{$operation.ID | camelCase | lowerFirstWord}}.
+    /// {{$operation.ID | camelCase | lowerFirstWord}}Sender create sender of {{$operation.ID | camelCase | lowerFirstWord}}.
     public func {{$operation.ID | camelCase | lowerFirstWord}}Sender(input:{{- " " -}}
 
     {{- if $hasInput -}}

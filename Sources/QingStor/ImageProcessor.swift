@@ -20,7 +20,11 @@
 
 import Foundation
 
+/// The protocol of image process format code.
 public protocol ImageProcessCodeable {
+    /// Calculate process code.
+    ///
+    /// - returns: The process code.
     func processCode() -> String
 }
 
@@ -47,12 +51,48 @@ extension String: Formatable {
     }
 }
 
+/// ImageProcess will convert the image process type to the format code.
 public enum ImageProcess: ImageProcessCodeable {
-    case crop(width: Int?, height: Int?, gravity: CropGravity?)
+    /// The process type of crop image.
+    ///
+    /// - parameter width:   The image crop width.
+    /// - parameter height:  The image crop height.
+    /// - parameter left:    The image crop left margin.
+    /// - parameter top:     The image crop top margin.
+    /// - parameter gravity: Defining how the image is displayed within an bounds rect.
+    case crop(width: Int?, height: Int?, left: Int?, top: Int?, gravity: CropGravity?)
+
+    /// The process type of rotate image.
+    ///
+    /// - parameter angle: The image rotation angle.
     case rotate(angle: Int)
+
+    /// The process type of resize image.
+    ///
+    /// - parameter width:  The image resize width.
+    /// - parameter height: The image resize height.
+    /// - parameter mode:   Defining how the image is displayed within an bounds rect.
     case resize(width: Int?, height: Int?, mode: ResizeMode?)
+
+    /// The process type of add watermark text to original image.
+    ///
+    /// - parameter text:    The watermark text.
+    /// - parameter color:   The watermark text color.
+    /// - parameter opacity: The watermark text opacity.
+    /// - parameter dpi:     The watermark text size in dpi.
     case watermark(text: String, color: String?, opacity: Float?, dpi: Int?)
+
+    /// The process type of add watermark image to original image.
+    ///
+    /// - parameter url:     The watermark image url.
+    /// - parameter left:    The watermark image left margin.
+    /// - parameter top:     The watermark image top margin.
+    /// - parameter opacity: The watermark iamge opacity.
     case watermarkImage(url: String, left: Int?, top: Int?, opacity: Float?)
+
+    /// The process type of to format image.
+    ///
+    /// - parameter type: The format type.
     case format(type: FormatType)
 
     fileprivate struct Code<T: Formatable>: Codeable {
@@ -88,16 +128,21 @@ public enum ImageProcess: ImageProcessCodeable {
         }
     }
 
+    /// Calculate process code.
+    ///
+    /// - returns: The process code.
     public func processCode() -> String {
         switch self {
 
-        case let .crop(width, height, gravity):
-            if width == nil && height == nil {
+        case let .crop(width, height, left, top, gravity):
+            if width == nil && height == nil && left == nil && top == nil {
                 return ""
             }
 
             let code = formatCodes([Code(prefix: "w", value: width),
                                     Code(prefix: "h", value: height),
+                                    Code(prefix: "l", value: left),
+                                    Code(prefix: "t", value: top),
                                     Code(prefix: "g", value: gravity)])
             return "crop:\(code)"
 
@@ -143,6 +188,7 @@ public enum ImageProcess: ImageProcessCodeable {
     }
 }
 
+/// The image crop gravity mode.
 @objc(QSCropGravity)
 public enum CropGravity: Int, Formatable {
     case center    = 0
@@ -161,6 +207,7 @@ public enum CropGravity: Int, Formatable {
     }
 }
 
+/// The image resize mode.
 @objc(QSResizeMode)
 public enum ResizeMode: Int, Formatable {
     case fixed     = 0
@@ -172,6 +219,7 @@ public enum ResizeMode: Int, Formatable {
     }
 }
 
+/// The image format type.
 public enum FormatType: String, Formatable {
     case jpeg = "jpeg"
     case png  = "png"
@@ -183,51 +231,122 @@ public enum FormatType: String, Formatable {
     }
 }
 
+/// A image process handler, ability to combine multiple image processes together using chained calls
 @objc(QSImageProcessor)
 public class ImageProcessor: NSObject {
+    /// The image process list.
     public var processList: [ImageProcessCodeable] = []
 
+    /// Initialize `ImageProcessor` with the specified `processList`
+    ///
+    /// - parameter processList: The image process list.
+    ///
+    /// - returns: The new `ImageProcessor` instance.
     public init(processList: [ImageProcessCodeable] = []) {
         self.processList = processList
     }
 
+    /// Initialize `ImageProcessor` with empty process list.
+    ///
+    /// - returns: The new `ImageProcessor` instance.
     @objc public override convenience init() {
         self.init(processList: [])
     }
 
+    /// Add the image process.
+    ///
+    /// - parameter process: The implementation of `ImageProcessCodeable`
+    ///
+    /// - returns: The image processor.
     public func process(_ process: ImageProcessCodeable) -> ImageProcessor {
         processList.append(process)
         return self
     }
 
-    public func crop(width: Int?, height: Int?, gravity: CropGravity?) -> ImageProcessor {
-        return process(ImageProcess.crop(width: width, height: height, gravity: gravity))
+    /// Add the process of crop image.
+    ///
+    /// - parameter width:   The image crop width.
+    /// - parameter height:  The image crop height.
+    /// - parameter left:    The image crop left margin.
+    /// - parameter top:     The image crop top margin.
+    ///
+    /// - returns: The image processor.
+    public func crop(width: Int? = nil, height: Int? = nil, left: Int? = nil, top: Int? = nil) -> ImageProcessor {
+        return process(ImageProcess.crop(width: width, height: height, left: left, top: top, gravity: nil))
+    }
+    
+    /// Add the process of crop image.
+    ///
+    /// - parameter width:   The image crop width.
+    /// - parameter height:  The image crop height.
+    /// - parameter gravity: Defining how the image is displayed within an bounds rect.
+    ///
+    /// - returns: The image processor.
+    public func crop(width: Int? = nil, height: Int? = nil, gravity: CropGravity? = nil) -> ImageProcessor {
+        return process(ImageProcess.crop(width: width, height: height, left: nil, top: nil, gravity: gravity))
     }
 
+    /// Add the process of rotate image.
+    ///
+    /// - parameter angle: The image rotation angle.
+    ///
+    /// - returns: The image processor.
     @objc public func rotate(angle: Int) -> ImageProcessor {
         return process(ImageProcess.rotate(angle: angle))
     }
 
-    public func resize(width: Int?, height: Int?, mode: ResizeMode?) -> ImageProcessor {
+    /// Add the process of resize image.
+    ///
+    /// - parameter width:  The image resize width.
+    /// - parameter height: The image resize height.
+    /// - parameter mode:   Defining how the image is displayed within an bounds rect.
+    ///
+    /// - returns: The image processor.
+    public func resize(width: Int? = nil, height: Int? = nil, mode: ResizeMode? = nil) -> ImageProcessor {
         return process(ImageProcess.resize(width: width, height: height, mode: mode))
     }
 
-    public func watermark(text: String, color: String?, opacity: Float?, dpi: Int?) -> ImageProcessor {
+    /// Add the process of add watermark text to original image.
+    ///
+    /// - parameter text:    The watermark text.
+    /// - parameter color:   The watermark text color.
+    /// - parameter opacity: The watermark text opacity.
+    /// - parameter dpi:     The watermark text size in dpi.
+    ///
+    /// - returns: The image processor.
+    public func watermark(text: String, color: String? = nil, opacity: Float? = nil, dpi: Int? = nil) -> ImageProcessor {
         return process(ImageProcess.watermark(text: text, color: color, opacity: opacity, dpi: dpi))
     }
 
-    public func watermarkImage(url: String, left: Int?, top: Int?, opacity: Float?) -> ImageProcessor {
+    /// Add the process of add watermark image to original image.
+    ///
+    /// - parameter url:     The watermark image url.
+    /// - parameter left:    The watermark image left margin.
+    /// - parameter top:     The watermark image top margin.
+    /// - parameter opacity: The watermark iamge opacity.
+    ///
+    /// - returns: The image processor.
+    public func watermarkImage(url: String, left: Int? = nil, top: Int? = nil, opacity: Float? = nil) -> ImageProcessor {
         return process(ImageProcess.watermarkImage(url: url, left: left, top: top, opacity: opacity))
     }
 
+    /// Add the process of format image.
+    ///
+    /// - parameter type: The format type.
+    ///
+    /// - returns: The image processor.
     public func format(type: FormatType) -> ImageProcessor {
         return process(ImageProcess.format(type: type))
     }
 
+    /// Reset image process.
     @objc public func resetProcessing() {
         processList.removeAll()
     }
 
+    /// Handle image process.
+    ///
+    /// - returns: The image process result.
     @objc public func processingResult() -> String {
         return processList
             .map { $0.processCode() }

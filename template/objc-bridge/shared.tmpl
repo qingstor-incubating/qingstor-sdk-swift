@@ -62,6 +62,9 @@
     {{- $customizedType := index . }}
 
 extension {{$customizedType.ID | camelCase}}Model {
+    /// Create empty `{{$customizedType.ID | camelCase}}Model` instance.
+    ///
+    /// - returns: The new `{{$customizedType.ID | camelCase}}Model` instance.
     @objc public static func empty() -> {{$customizedType.ID | camelCase}}Model { 
         return {{ $customizedType.ID | camelCase}}Model({{template "RenderInitializationAssignment" passThrough $customizedType "" false }})
     }
@@ -73,6 +76,9 @@ extension {{$customizedType.ID | camelCase}}Model {
     {{- $operation := index . }}
 
 extension {{$operation.ID | camelCase}}Input {
+    /// Create empty `{{$operation.ID | camelCase}}Input` instance.
+    ///
+    /// - returns: The new `{{$operation.ID | camelCase}}Input` instance.
     @objc public static func empty() -> {{$operation.ID | camelCase}}Input { 
         return {{$operation.ID | camelCase}}Input(
             {{- template "RenderInitializationAssignment" passThrough $operation.Request.Query $operation.Name true -}}

@@ -25,6 +25,12 @@ import Foundation
 import ObjectMapper
 
 public extension {{$service.Name | camelCase}} {
+    /// Create `Bucket` instance with the specified `bucketName` and `zone`.
+    ///
+    /// - parameter bucketName: The bucket name.
+    /// - parameter zone:       The zone in which the bucket is located.
+    ///
+    /// - returns: The new `Bucket` instance.
     @objc public func bucket(bucketName: String, zone: String) -> Bucket {
         return Bucket(context: self.context.rawCopy(),
                       bucketName: bucketName,
@@ -36,11 +42,26 @@ public extension {{$service.Name | camelCase}} {
     }
 }
 
+/// Using to process data in storage space of the bucket.
 @objc(QSBucket)
 public class Bucket: QingStorAPI {
+    /// The zone name.
     @objc public var zoneName: String
+
+    /// The bucket name.
     @objc public var bucketName: String
-    
+     
+    /// Initialize `Bucket` with the specified parameters.
+    ///
+    /// - parameter context:        The api context.
+    /// - parameter bucketName:     The bucket name.
+    /// - parameter zone:           The zone name.
+    /// - parameter signer:         The signer.
+    /// - parameter credential:     The url credential.
+    /// - parameter buildingQueue:  The building queue.
+    /// - parameter callbackQueue:  The callback queue.
+    ///
+    /// - returns: The new `Bucket` instance.
     public init(context: APIContext = APIContext.qingstor(),
                 bucketName: String,
                 zone: String,
@@ -102,8 +123,8 @@ public class Bucket: QingStorAPI {
         {{- $hasBody := eq $operation.Request.Body.Type "binary" -}}
         {{- $hasInput := or $hasParams $hasHeaders $hasElements $hasBody -}}
 
-        {{- if $operation.Description -}}{{"\n    "}}// {{(replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord}}: {{$operation.Description}}{{- end -}}
-        {{"\n    "}}// Documentation URL: {{$operation.DocumentationURL}}
+        {{- if $operation.Description -}}{{"\n    "}}/// {{(replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord}}: {{$operation.Description}}{{- end -}}
+        {{"\n    "}}/// Documentation URL: {{$operation.DocumentationURL}}
     public func{{- " " -}}
 
         {{- if $isBucket -}}
@@ -146,7 +167,7 @@ public class Bucket: QingStorAPI {
         sender!.sendAPI(progress: progress, completion: completion)
     }
 
-    {{"// " -}}
+    {{"/// " -}}
     {{- if $isBucket -}}
         {{- (replace ($operation.ID | camelCase) "Bucket" "" -1) | lowerFirstWord -}}Sender
         {{- " " -}}

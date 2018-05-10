@@ -18,31 +18,51 @@
 // +-------------------------------------------------------------------------
 //
 
+/// The objc bridge of the `QingStorSignatureType`.
 @objc(QSSignatureType)
 public enum SignatureTypeObjcBridge: Int {
     case query = 0
     case header
 }
 
+/// The objc bridge of the signature type model, contains the variable in the enumeration.
 @objc(QSSignatureTypeModel)
 public class SignatureTypeModelObjcBridge: NSObject {
+    /// The sinature type.
     @objc public let type: SignatureTypeObjcBridge
+
+    /// The timeout of the generated URL.
     @objc public let timeoutSeconds: Int
 
+    /// Initialize `SignatureTypeModelObjcBridge` with the specified `type` and `timeoutSeconds`.
+    ///
+    /// - parameter type:           The sinature type.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - returns: The new `SignatureTypeModelObjcBridge` instance.
     @objc public init(type: SignatureTypeObjcBridge, timeoutSeconds: Int) {
         self.type = type
         self.timeoutSeconds = timeoutSeconds
     }
 
+    /// Create `SignatureTypeModelObjcBridge` instance with query signature type and the specified `timeoutSeconds`.
+    ///
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - returns: The new `SignatureTypeModelObjcBridge` instance.
     @objc public static func query(timeoutSeconds: Int) -> SignatureTypeModelObjcBridge {
         return SignatureTypeModelObjcBridge(type: .query, timeoutSeconds: timeoutSeconds)
     }
 
+    /// Create `SignatureTypeModelObjcBridge` instance with header signature type.
+    ///
+    /// - returns: The new `SignatureTypeModelObjcBridge` instance.
     @objc public static func header() -> SignatureTypeModelObjcBridge {
         return SignatureTypeModelObjcBridge(type: .header, timeoutSeconds: 0)
     }
 }
 
+/// The objc bridge of the `SignatureResult`.
 @objc(QSSignatureResultType)
 public enum SignatureResultTypeObjcBridge: Int {
     case query = 0
@@ -50,14 +70,29 @@ public enum SignatureResultTypeObjcBridge: Int {
     case authorization
 }
 
+/// The objc bridge of the signature result model, contains the variable in the enumeration.
 @objc(QSSignatureResultModel)
 public class SignatureResultModelObjcBridge: NSObject {
+    /// The signature result type.
     @objc public let type: SignatureResultTypeObjcBridge
+
+    /// The signature string.
     @objc public let signature: String
 
+    /// The QingCloud API access key.
     @objc public let accessKey: String?
-    @objc public let expires: NSNumber? // Int value
 
+    /// The expiry time, is the int value.
+    @objc public let expires: NSNumber?
+
+    /// Initialize `SignatureResultModelObjcBridge` instance with the specified parameters.
+    ///
+    /// - parameter type:       The signature result type.
+    /// - parameter signature:  The signature string.
+    /// - parameter accessKey:  The QingCloud API access key.
+    /// - parameter expires:    The expiry time, is the int value.
+    ///
+    /// - returns: The new `SignatureResultModelObjcBridge` instance.
     @objc public init(type: SignatureResultTypeObjcBridge, signature: String, accessKey: String?, expires: NSNumber?) {
         self.type = type
         self.signature = signature
@@ -65,20 +100,39 @@ public class SignatureResultModelObjcBridge: NSObject {
         self.expires = expires
     }
 
+    /// Create `SignatureResultModelObjcBridge` instance with query signature type and the specified parameters.
+    ///
+    /// - parameter signature:  The signature string.
+    /// - parameter accessKey:  The QingCloud API access key.
+    /// - parameter expires:    The expiry time, is the int value.
+    ///
+    /// - returns: The new `SignatureResultModelObjcBridge` instance.
     @objc public static func query(signature: String, accessKey: String, expires: NSNumber?) -> SignatureResultModelObjcBridge {
         return SignatureResultModelObjcBridge(type: .query, signature: signature, accessKey: accessKey, expires: expires)
     }
 
+    /// Create `SignatureResultModelObjcBridge` instance with header signature type and the specified parameters.
+    ///
+    /// - parameter signature:  The signature string.
+    /// - parameter accessKey:  The QingCloud API access key.
+    ///
+    /// - returns: The new `SignatureResultModelObjcBridge` instance.
     @objc public static func header(signature: String, accessKey: String) -> SignatureResultModelObjcBridge {
         return SignatureResultModelObjcBridge(type: .header, signature: signature, accessKey: accessKey, expires: nil)
     }
 
+    /// Create `SignatureResultModelObjcBridge` instance with header signature type and the specified `signature`.
+    ///
+    /// - parameter signature:  The signature string.
+    ///
+    /// - returns: The new `SignatureResultModelObjcBridge` instance.
     @objc public static func authorization(signature: String) -> SignatureResultModelObjcBridge {
         return SignatureResultModelObjcBridge(type: .authorization, signature: signature, accessKey: nil, expires: nil)
     }
 }
 
 extension QingStorSigner {
+    /// The signature type model.
     @objc public var signatureTypeModel: SignatureTypeModelObjcBridge {
         get {
             switch signatureType {
@@ -98,6 +152,11 @@ extension QingStorSigner {
         }
     }
 
+    /// Initialize `QingStorSigner` instance with the specified `signatureType`.
+    ///
+    /// - parameter signatureType: The signature type model.
+    ///
+    /// - returns: The new `QingStorSigner` instance.
     @objc public convenience init(signatureType: SignatureTypeModelObjcBridge) {
         var actualSignatureType: QingStorSignatureType!
         switch signatureType.type {
@@ -110,6 +169,12 @@ extension QingStorSigner {
         self.init(signatureType: actualSignatureType)
     }
 
+    /// Calculate query signature string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - returns: The signature result model.
     @objc public func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) -> SignatureResultModelObjcBridge? {
         do {
             let result: SignatureResult = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
@@ -125,6 +190,11 @@ extension QingStorSigner {
         }
     }
 
+    /// Calculate header signature string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - returns: The signature result model.
     @objc public func headerSignatureString(from requestBuilder: RequestBuilder) -> SignatureResultModelObjcBridge? {
         do {
             let result: SignatureResult = try headerSignatureString(from: requestBuilder)
@@ -142,9 +212,13 @@ extension QingStorSigner {
 }
 
 extension CustomizedSigner {
+    /// The object bridge of the `SignatureHandlerCompletion`
     public typealias SignatureHandlerCompletionObjcBridge = (SignatureResultModelObjcBridge) -> Void
+
+    /// The object bridge of the `SignatureHandler`
     public typealias SignatureHandlerObjcBridge = (CustomizedSigner, String, RequestBuilder, @escaping SignatureHandlerCompletionObjcBridge) -> Void
 
+    /// The object bridge of the `QingStorSignatureType`
     @objc public var signatureTypeModel: SignatureTypeModelObjcBridge {
         get {
             switch signatureType {
@@ -164,6 +238,12 @@ extension CustomizedSigner {
         }
     }
 
+    /// Initialize `CustomizedSigner` with the specified `signatureType` and `handler`
+    ///
+    /// - parameter signatureType: The signature type model.
+    /// - parameter handler:       The signature handler.
+    ///
+    /// - returns: The new `CustomizedSigner` instance.
     @objc public convenience init(signatureType: SignatureTypeModelObjcBridge, handler: @escaping SignatureHandlerObjcBridge) {
         var actualSignatureType: QingStorSignatureType!
         switch signatureType.type {
@@ -200,6 +280,12 @@ extension CustomizedSigner {
         self.init(signatureType: actualSignatureType, handler: actualHandler)
     }
 
+    /// Calculate query signature string from request builder, will execute signature handler to Calculate signature result.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - returns: The signature result model.
     @objc public func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) -> SignatureResultModelObjcBridge? {
         do {
             let result: SignatureResult = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
@@ -215,6 +301,11 @@ extension CustomizedSigner {
         }
     }
 
+    /// Calculate header signature string from request builder, will execute signature handler to Calculate signature result.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - returns: The signature result model.
     @objc public func headerSignatureString(from requestBuilder: RequestBuilder) -> SignatureResultModelObjcBridge? {
         do {
             let result: SignatureResult = try headerSignatureString(from: requestBuilder)

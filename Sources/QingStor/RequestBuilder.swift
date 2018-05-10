@@ -22,12 +22,18 @@ import Foundation
 import Alamofire
 import ObjectMapper
 
+/// The request progress callback.
 public typealias RequestProgress = (Progress) -> Void
+
+/// The request completion callback.
 public typealias RequestCompletion<T: BaseMappable> = (Response<T>?, Error?) -> Void
+
+/// The request build completion callback.
 public typealias BuildCompletion = (URLRequest?, Error?) -> Void
 
 private typealias _BuildCompletion = (Request?, Error?) -> Void
 
+/// HTTP method definitions.
 public enum HTTPMethod: String {
     case options = "OPTIONS"
     case get     = "GET"
@@ -40,49 +46,111 @@ public enum HTTPMethod: String {
     case connect = "CONNECT"
 }
 
+/// Parameter encoding type definitions.
 @objc(QSParameterEncodingType)
 public enum ParameterEncodingType: Int {
-    case query, json, binary
+    /// The query encoding, will using url encode to handle parameters to the url query.
+    case query
+
+    // The json encoding, will using json encode to hanlde parameters to the request body.
+    case json
+
+    // The binary encoding, will put binary data to the request body.
+    case binary
 }
 
+/// Request builder factory protocol.
 public protocol RequestBuilderFactory {
+    /// Returned the builder type.
     func getBuilder() -> RequestBuilder.Type
 }
 
+/// Default request builder factory.
 open class DefaultRequestBuilderFactory: RequestBuilderFactory {
+    /// Returned default request builder type.
     public func getBuilder() -> RequestBuilder.Type {
         return DefaultRequestBuilder.self
     }
 }
 
+/// Store http response data, and map to api output.
 open class Response<T: BaseMappable> {
+    /// The api output.
     public let output: T
+
+    /// The server response.
     public let rawResponse: HTTPURLResponse
 
+    /// The response status code.
     open var statusCode: Int { return rawResponse.statusCode }
 
+    /// Initialize `Response` with the specified `rawResponse` and `output`.
+    ///
+    /// - parameter rawResponse: The server response.
+    /// - parameter output:      The api output.
     public init(rawResponse: HTTPURLResponse, output: T) {
         self.rawResponse = rawResponse
         self.output = output
     }
 }
 
+/// Build and send api request base class.
 @objc(QSRequestBuilder)
 open class RequestBuilder: NSObject {
+    /// The api context.
     @objc public var context: APIContext
+
+    /// The HTTP method.
     public var method: HTTPMethod
+
+    /// The api request parameters.
     @objc public var parameters: [String:Any]
+
+    /// The signer.
     public var signer: Signer
+
+    /// The HTTP headers.
     @objc public var headers: [String:String] = [:]
+
+    /// The url credential.
     @objc public var credential: URLCredential?
+
+    /// The parameter encoding type.
     @objc public var encoding: ParameterEncodingType
+
+    /// Whether the download file request.
     @objc public var isDownload: Bool
+
+    /// The url where the file should be saved.
     @objc public var downloadDestination: URL?
+
+    /// The acceptable status codes.
     @objc public var acceptableStatusCodes: [Int]?
+
+    /// Whether write headers to output data.
     @objc public var writeHeadersToOutput: Bool
+
+    /// The building queue.
     @objc public var buildingQueue: DispatchQueue
+
+    /// The callback queue.
     @objc public var callbackQueue: DispatchQueue
 
+    /// Initialize `RequestBuilder` with specified parameters.
+    ///
+    /// - parameter context:                The api context.
+    /// - parameter method:                 The HTTP method.
+    /// - parameter parameters:             The api request parameters.
+    /// - parameter signer:                 The signer.
+    /// - parameter headers:                The HTTP headers.
+    /// - parameter credential:             The url credential.
+    /// - parameter encoding:               The parameter encoding type.
+    /// - parameter isDownload:             Whether the download file request.
+    /// - parameter downloadDestination:    The url where the file should be saved.
+    /// - parameter acceptableStatusCodes:  The acceptable status codes.
+    /// - parameter writeHeadersToOutput:   Whether write headers to output data.
+    /// - parameter buildingQueue:          The building queue.
+    /// - parameter callbackQueue:          The callback queue.
     public required init(context: APIContext,
                          method: HTTPMethod = .get,
                          parameters: [String:Any] = [:],
@@ -115,12 +183,22 @@ open class RequestBuilder: NSObject {
         self.buildDefaultHeader()
     }
 
+    /// Build the request, default is do nothing, should implement it in child class.
+    ///
+    /// - parameter completion: Build completion callback.
     @objc public func buildRequest(completion: @escaping BuildCompletion) { }
 
+    /// Send request, default is do nothing, should implement it in child class.
+    ///
+    /// - parameter progress: Request progress callback.
+    /// - parameter completion: Request completion callback.
     public func send<T>(progress: RequestProgress? = nil, completion: @escaping RequestCompletion<T>) { }
 
-    func addHeaders(_ aHeaders: [String:String]) {
-        for (key, value) in aHeaders {
+    /// Add HTTP headers.
+    ///
+    /// - parameter headers: The HTTP headers.
+    @objc public func addHeaders(_ headers: [String:String]) {
+        for (key, value) in headers {
             self.headers[key] = value
         }
     }
@@ -186,6 +264,7 @@ open class RequestBuilder: NSObject {
     }
 }
 
+/// Default request builder.
 @objc(QSDefaultRequestBuilder)
 open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
     fileprivate var buildingRequestError: Error?
@@ -200,6 +279,7 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         return sessionManager
     }()
 
+    /// Implement `RequestAdapter` protocol.
     public func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
         var request = urlRequest
 
@@ -218,6 +298,9 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         return request
     }
 
+    /// Build request.
+    ///
+    /// - parameter completion: Build completion callback.
     @objc public override func buildRequest(completion: @escaping BuildCompletion) {
         self._buildRequest { request, error in
             self.callbackQueue.async {
@@ -278,6 +361,10 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
         }
     }
 
+    /// Send request.
+    ///
+    /// - parameter progress: Request progress callback.
+    /// - parameter completion: Request completion callback.
     public override func send<T>(progress: RequestProgress? = nil, completion: @escaping RequestCompletion<T>) {
         self._buildRequest { request, error in
             if let request = request {

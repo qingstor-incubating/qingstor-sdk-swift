@@ -26,16 +26,22 @@ let defaultIgnoreIntValue = Int.min
 private let qingstorBaseURL = "https://qingstor.com:443/"
 
 public extension APIContext {
+    /// Create `APIContext` instance of using QingStor server.
     @objc public static func qingstor() -> APIContext {
         return APIContext(baseURL: qingstorBaseURL)
     }
 
+    /// Create `APIContext` instance of using QingStor server.
+    ///
+    /// - parameter accessKeyID:      The QingCloud API access key.
+    /// - parameter secretAccessKey:  The QingCloud API secret access key.
     @objc public static func qingstor(accessKeyID: String, secretAccessKey: String) -> APIContext {
         return APIContext(baseURL: qingstorBaseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
     }
 }
 
 public extension APISender {
+    /// Create `APISender` instance of using QingStor server.
     public class func qingstor(context: APIContext = APIContext.qingstor(),
                                input: QingStorInput,
                                method: HTTPMethod = .get,
@@ -68,14 +74,33 @@ public extension APISender {
     }
 }
 
+/// QingStor API base class.
 @objc(QSQingStorAPI)
 public class QingStorAPI: NSObject, BaseAPI {
+    /// The api context.
     @objc public var context: APIContext
+
+    /// The signer.
     public var signer: Signer
+
+    /// The url credential.
     @objc public var credential: URLCredential?
+
+    /// The building queue.
     @objc public var buildingQueue: DispatchQueue
+
+    /// The callback queue.
     @objc public var callbackQueue: DispatchQueue
 
+    /// Initialize `QingStorAPI` with specified parameters.
+    ///
+    /// - parameter context:        The api context.
+    /// - parameter signer:         The signer.
+    /// - parameter credential:     The url credential.
+    /// - parameter buildingQueue:  The building queue.
+    /// - parameter callbackQueue:  The callback queue.
+    ///
+    /// - returns: The new `QingStorAPI` instance.
     public init(context: APIContext = APIContext.qingstor(),
                 signer: Signer = QingStorSigner(),
                 credential: URLCredential? = nil,
@@ -88,6 +113,9 @@ public class QingStorAPI: NSObject, BaseAPI {
         self.callbackQueue = callbackQueue
     }
 
+    /// Initialize `QingStorAPI` with using default datas.
+    ///
+    /// - returns: The new `QingStorAPI` instance.
     @objc public override convenience init() {
         self.init(context: APIContext.qingstor(),
                   signer: QingStorSigner(),
@@ -97,17 +125,26 @@ public class QingStorAPI: NSObject, BaseAPI {
     }
 }
 
+/// QingStor input base class
 @objc(QSQingStorInput)
 public class QingStorInput: APIInput {
+    /// The signature type
     public var signatureType: QingStorSignatureType?
 }
 
+/// QingStor output base class
 @objc(QSQingStorOutput)
 public class QingStorOutput: APIOutput {
+    /// The error code
     @objc public var code: String?
+
+    /// The error message
     @objc public var errMessage: String?
+
+    /// The request id
     @objc public var requestId: String?
 
+    /// Mapping response data
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
@@ -117,15 +154,20 @@ public class QingStorOutput: APIOutput {
     }
 }
 
+/// QingStor download input base class
 @objc(QSQingStorDownloadInput)
 public class QingStorDownloadInput: QingStorInput, APIDownloadInput {
+    /// The url where the file should be saved.
     @objc public var destinationURL: URL?
 }
 
+/// QingStor download output base class
 @objc(QSQingStorDownloadOutput)
 public class QingStorDownloadOutput: QingStorOutput, APIDownloadOutput {
+    /// The url where the file is saved.
     @objc public var destinationURL: URL?
 
+    /// Mapping response data
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
