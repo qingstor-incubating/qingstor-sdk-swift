@@ -43,3 +43,21 @@ unit:
 test:
 	pod install
 	xcodebuild -workspace QingStorSDK.xcworkspace -scheme "QingStorSDKFeatureTests" -destination 'platform=iOS Simulator,name=iPhone 7' test | xcpretty
+
+jazzy:
+	@if [[ ! -f "$$(which jazzy)" ]]; then \
+		echo "ERROR: Command \"jazzy\" not found."; \
+	fi
+
+	jazzy \
+	  --clean \
+	  --author QingStor \
+	  --author_url https://www.qingstor.com \
+	  --github_url https://github.com/yunify/qingstor-sdk-swift \
+	  --github-file-prefix https://github.com/yunify/qingstor-sdk-swift/tree/master \
+	  --module-version 2.7.0 \
+	  --xcodebuild-arguments -scheme,QingStorSDK \
+	  --module QingStorSDK \
+	  --root-url https://docs.qingcloud.com/qingstor/api/ \
+	  --output docs \
+	  --theme apple

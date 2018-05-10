@@ -1,10 +1,20 @@
 # Change Log
 All notable changes to QingStor SDK for Swift will be documented in this file.
 
+## [v2.7.0] - 2018-05-10
+
+### Added
+- Add progress callback of api request.
+- Add left and top parameters in crop image process.
+
+### BREAKING CHANGE
+- Rename the APIContext property name from urlString to baseURL
+- Rename the APIContext and APISender method names from qingStor to qingstor
+
 ## [v2.6.0] - 2018-01-12
 
 ### Added
-- Compatible with objective-c
+- Compatible with objective-c.
 
 ## [v2.5.0] - 2018-01-12
 
@@ -60,6 +70,7 @@ All notable changes to QingStor SDK for Swift will be documented in this file.
 ### Added
 - QingStor SDK for the Swift programming language.
 
+[v2.7.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.6.0...v2.7.0
 [v2.6.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.5.0...v2.6.0
 [v2.5.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.4.1...v2.5.0
 [v2.4.1]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.4.0...v2.4.1

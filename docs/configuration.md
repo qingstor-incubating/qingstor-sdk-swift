@@ -53,12 +53,12 @@ Registry.registerFrom(plist: configURL)
 
 ```swift
 // Swift
-let context = APIContext(urlString: "https://api.private.com:4433")
+let context = APIContext(baseURL: "https://api.private.com:4433")
 ```
 
 ```objective-c
 // Objective-C
-QSAPIContext *context = [[QSAPIContext alloc] initWithUrlString:@"https://api.private.com:4433"];
+QSAPIContext *context = [[QSAPIContext alloc] initWithBaseURL:@"https://api.private.com:4433"];
 ```
 
 Can also use the plist file to create:
