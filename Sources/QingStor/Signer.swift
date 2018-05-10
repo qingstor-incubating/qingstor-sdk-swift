@@ -18,26 +18,79 @@
 // +-------------------------------------------------------------------------
 //
 
+/// The api signer protocol.
 public protocol Signer: class {
+    /// The signature type.
     var signatureType: QingStorSignatureType { get set }
 
+    /// Calculate signature string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - throws: An `APIError.signatureError` if Calculate signature encounters an error.
+    ///
+    /// - returns: Signature string.
     func signatureString(from requestBuilder: RequestBuilder) throws -> String
+
+    /// Wtite signature string to request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - throws: An `APIError.signatureError` if write signature encounters an error.
     func writeSignature(to requestBuilder: RequestBuilder) throws
 
+    /// Calculate header signature string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - throws: An `APIError.signatureError` if calculate header signature encounters an error.
+    ///
+    /// - returns: Signature result.
     func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult
+
+    /// Calculate query signature string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - throws: An `APIError.signatureError` if calculate query signature encounters an error.
+    ///
+    /// - returns: Signature result.
     func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult
 
+    /// Using raw data to copy singer.
+    ///
+    /// - returns: New signer instance.
     func rawCopy() -> Self
 }
 
+/// QingStor signature type.
 public enum QingStorSignatureType {
+    /// The query signature type, will write the signature to url query.
+    ///
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
     case query(timeoutSeconds: Int)
+
+    /// The header signature type, will write the signature to http header.
     case header
 }
 
+/// Signature result.
 public enum SignatureResult {
+    /// Using query signature type to process data, and will write the signature to url query.
+    ///
+    /// - parameter signature: The signature string.
+    /// - parameter accessKey: The QingCloud api access key.
+    /// - parameter expires:   The expiry time.
     case query(signature: String, accessKey: String, expires: Int?)
+
+    /// Using header signature type to process data, and will write the signature to http header.
+    ///
+    /// - parameter signature: The signature string.
+    /// - parameter accessKey: The QingCloud api access key.
     case header(signature: String, accessKey: String)
+
+    /// Using customized signer to process data, and will write the signature to http header.
     case authorization(String)
 
     var signature: String {
@@ -71,6 +124,12 @@ public extension Signer {
         }
     }
 
+    /// Wtite query signature string to request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - throws: An `APIError.signatureError` if write signature encounters an error.
     public func writeQuerySignature(to requestBuilder: RequestBuilder, timeoutSeconds: Int) throws {
         let result = try querySignatureString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
         switch result {
@@ -86,6 +145,11 @@ public extension Signer {
         }
     }
 
+    /// Wtite header signature string to request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - throws: An `APIError.signatureError` if write signature encounters an error.
     public func writeHeaderSignature(to requestBuilder: RequestBuilder) throws {
         let result = try headerSignatureString(from: requestBuilder)
         switch result {
@@ -100,11 +164,23 @@ public extension Signer {
 }
 
 public extension Signer {
+    /// Calculate expiry time.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - returns: expiry time.
     public func expires(from requestBuilder: RequestBuilder, timeoutSeconds: Int) -> Int {
         let date = ((requestBuilder.headers["Date"] ?? String.RFC822()).toRFC822Date())!
         return Int(date.timeIntervalSince1970) + timeoutSeconds
     }
 
+    /// Calculate query signature plain string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - returns: Query signature plain string.
     public func querySignaturePlainString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) -> String {
         let expires = self.expires(from: requestBuilder, timeoutSeconds: timeoutSeconds)
         var plainString = "\(requestBuilder.method.rawValue)\n\n\n"
@@ -114,6 +190,11 @@ public extension Signer {
         return plainString
     }
 
+    /// Calculate header signature plain string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - returns: Header signature plain string.
     public func headerSignaturePlainString(from requestBuilder: RequestBuilder) -> String {
         let headers = requestBuilder.headers
         var plainString = "\(requestBuilder.method.rawValue)\n"
@@ -126,6 +207,11 @@ public extension Signer {
         return plainString
     }
 
+    /// Build canonicalized headers string to signing from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - returns: Canonicalized headers signing string.
     public func buildCanonicalizedHeaders(_ requestBuilder: RequestBuilder) -> String {
         var canonicalizedHeaders = ""
         for key in requestBuilder.headers.keys.sorted(by: <) {
@@ -140,6 +226,11 @@ public extension Signer {
         return canonicalizedHeaders
     }
 
+    /// Build canonicalized resource string to signing from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - returns: Canonicalized resource signing string.
     public func buildCanonicalizedResource(_ requestBuilder: RequestBuilder) -> String {
         let parametersToSign = ["acl",
                                 "cors",
@@ -192,6 +283,7 @@ public extension Signer {
 }
 
 public extension SignatureResult {
+    /// Is it a query signature result.
     public var isQuery: Bool {
         if case .query = self {
             return true
@@ -200,6 +292,7 @@ public extension SignatureResult {
         }
     }
 
+    /// Is it a header signature result.
     public var isHeader: Bool {
         if case .header = self {
             return true
@@ -208,6 +301,7 @@ public extension SignatureResult {
         }
     }
 
+    /// Is it an authorization signature result.
     public var isAuthorization: Bool {
         if case .authorization = self {
             return true

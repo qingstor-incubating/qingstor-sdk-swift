@@ -48,7 +48,14 @@ extension Request {
 }
 
 extension DataRequest {
-
+    /// Map output serializer.
+    ///
+    /// - parameter writeHeaders: Whether write headers to output data.
+    /// - parameter keyPath:      The response dictionary data keyPath.
+    /// - parameter mapToObject:  Map the data to exist output.
+    /// - parameter context:      The map context.
+    ///
+    /// - returns: The data response serializer.
     public class func outputMapperSerializer<T: BaseMappable>(writeHeaders: Bool = false,
                                              keyPath: String?,
                                              mapToObject object: T? = nil,
@@ -99,13 +106,23 @@ extension DataRequest {
         }
     }
 
+    /// Adds a output handler to be called once the request has finished.
+    ///
+    /// - parameter queue:              The queue on which the completion handler is dispatched.
+    /// - parameter writeHeaders:       Whether write headers to output data.
+    /// - parameter keyPath:            The response dictionary data keyPath.
+    /// - parameter mapToObject:        Map the data to exist output.
+    /// - parameter context:            The map context.
+    /// - parameter completionHandler:  The completion handler.
+    ///
+    /// - returns: The data request.
     @discardableResult
     public func responseOutput<T: BaseMappable>(queue: DispatchQueue? = nil,
-                               writeHeaders: Bool = false,
-                               keyPath: String? = nil,
-                               mapToObject object: T? = nil,
-                               context: MapContext? = nil,
-                               completionHandler: @escaping (DataResponse<T>) -> Void) -> Self {
+                                                writeHeaders: Bool = false,
+                                                keyPath: String? = nil,
+                                                mapToObject object: T? = nil,
+                                                context: MapContext? = nil,
+                                                completionHandler: @escaping (DataResponse<T>) -> Void) -> Self {
         let responseSerializer = DataRequest.outputMapperSerializer(writeHeaders: writeHeaders,
                                                                     keyPath: keyPath,
                                                                     mapToObject: object,
@@ -117,10 +134,18 @@ extension DataRequest {
 }
 
 extension DownloadRequest {
+    /// Map output serializer.
+    ///
+    /// - parameter writeHeaders: Whether write headers to output data.
+    /// - parameter keyPath:      The response dictionary data keyPath.
+    /// - parameter mapToObject:  Map the data to exist output.
+    /// - parameter context:      The map context.
+    ///
+    /// - returns: The download response serializer.
     public class func outputMapperSerializer<T: BaseMappable>(writeHeaders: Bool = false,
-                                             keyPath: String?,
-                                             mapToObject object: T? = nil,
-                                             context: MapContext? = nil) -> DownloadResponseSerializer<T> {
+                                                              keyPath: String?,
+                                                              mapToObject object: T? = nil,
+                                                              context: MapContext? = nil) -> DownloadResponseSerializer<T> {
         return DownloadResponseSerializer { request, response, fileURL, error in
             guard error == nil else {
                 return .failure(error!)
@@ -166,13 +191,23 @@ extension DownloadRequest {
         }
     }
 
+    /// Adds a output handler to be called once the request has finished.
+    ///
+    /// - parameter queue:              The queue on which the completion handler is dispatched.
+    /// - parameter writeHeaders:       Whether write headers to output data.
+    /// - parameter keyPath:            The response dictionary data keyPath.
+    /// - parameter mapToObject:        Map the data to exist output.
+    /// - parameter context:            The map context.
+    /// - parameter completionHandler:  The completion handler.
+    ///
+    /// - returns: The download request.
     @discardableResult
     public func responseOutput<T: BaseMappable>(queue: DispatchQueue? = nil,
-                               writeHeaders: Bool = false,
-                               keyPath: String? = nil,
-                               mapToObject object: T? = nil,
-                               context: MapContext? = nil,
-                               completionHandler: @escaping (DownloadResponse<T>) -> Void) -> Self {
+                                                writeHeaders: Bool = false,
+                                                keyPath: String? = nil,
+                                                mapToObject object: T? = nil,
+                                                context: MapContext? = nil,
+                                                completionHandler: @escaping (DownloadResponse<T>) -> Void) -> Self {
         let responseSerializer = DownloadRequest.outputMapperSerializer(writeHeaders: writeHeaders,
                                                                         keyPath: keyPath,
                                                                         mapToObject: object,

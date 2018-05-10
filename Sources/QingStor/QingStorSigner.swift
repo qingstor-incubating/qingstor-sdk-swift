@@ -20,14 +20,29 @@
 
 import Foundation
 
+/// The QingStor signer.
 @objc(QSQingStorSigner)
 final public class QingStorSigner: NSObject, Signer {
+    /// The signature type.
     public var signatureType: QingStorSignatureType
 
+    /// Initialize `QingStorSigner` with the specified `signatureType`
+    ///
+    /// - parameter signatureType: The signature type.
+    ///
+    /// - returns: The new `QingStorSigner` instance.
     public init(signatureType: QingStorSignatureType = .header) {
         self.signatureType = signatureType
     }
 
+    /// Calculate query signature string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - throws: An `APIError.signatureError` if calculate query signature encounters an error.
+    ///
+    /// - returns: Signature result.
     public func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult {
         let expires = self.expires(from: requestBuilder, timeoutSeconds: timeoutSeconds)
         let plainString = querySignaturePlainString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
@@ -35,12 +50,22 @@ final public class QingStorSigner: NSObject, Signer {
         return .query(signature: signatureString, accessKey: requestBuilder.context.accessKeyID, expires: expires)
     }
 
+    /// Calculate header signature string from request builder.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - throws: An `APIError.signatureError` if calculate header signature encounters an error.
+    ///
+    /// - returns: Signature result.
     public func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult {
         let plainString = headerSignaturePlainString(from: requestBuilder)
         let signatureString = try plainString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
         return .header(signature: signatureString, accessKey: requestBuilder.context.accessKeyID)
     }
 
+    /// Using raw data to copy singer.
+    ///
+    /// - returns: New signer instance.
     public func rawCopy() -> QingStorSigner {
         return QingStorSigner(signatureType: signatureType)
     }

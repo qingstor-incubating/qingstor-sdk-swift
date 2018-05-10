@@ -22,21 +22,21 @@ import Foundation
 
 extension QingStor {
 
-    // ListBuckets: Retrieve the bucket list.
-    // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
+    /// ListBuckets: Retrieve the bucket list.
+    /// Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
     @objc public func listBuckets(input: ListBucketsInput, progress: RequestProgress? = nil, completion: @escaping (ListBucketsOutput?, HTTPURLResponse?, Error?) -> Void) {
     	self.listBuckets(input: input, progress: progress) { response, error in
             completion(response?.output, response?.rawResponse, error)
         }
     }
 
-    // ListBuckets: Retrieve the bucket list.
-    // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
+    /// ListBuckets: Retrieve the bucket list.
+    /// Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
     @objc public func listBuckets(input: ListBucketsInput, completion: @escaping (ListBucketsOutput?, HTTPURLResponse?, Error?) -> Void) {
         self.listBuckets(input: input, progress: nil, completion: completion)
     }
 
-    // listBucketsSender create sender of listBuckets.
+    /// listBucketsSender create sender of listBuckets.
     @objc public func listBucketsSender(input: ListBucketsInput) -> APISenderResult {
         let (sender, error) = self.listBucketsSender(input: input)
         return APISenderResult(sender: sender, error: error)
@@ -44,6 +44,7 @@ extension QingStor {
 }
 
 extension APISender {
+    /// Send ListBuckets api.
     @objc public func sendListBucketsAPI(completion: @escaping (ListBucketsOutput?, HTTPURLResponse?, Error?) -> Void) {
         sendAPI { (response: Response<ListBucketsOutput>?, error: Error?) in
             completion(response?.output, response?.rawResponse, error)
@@ -52,6 +53,9 @@ extension APISender {
 }
 
 extension ListBucketsInput {
+    /// Create empty `ListBucketsInput` instance.
+    ///
+    /// - returns: The new `ListBucketsInput` instance.
     @objc public static func empty() -> ListBucketsInput {
         return ListBucketsInput(location: nil)
     }

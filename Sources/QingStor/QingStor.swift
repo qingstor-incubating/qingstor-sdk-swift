@@ -21,11 +21,11 @@
 import Foundation
 import ObjectMapper
 
-// QingStor: QingStor provides low-cost and reliable online storage service with unlimited storage space, high read and write performance, high reliability and data safety, fine-grained access control, and easy to use API.
+/// QingStor: QingStor provides low-cost and reliable online storage service with unlimited storage space, high read and write performance, high reliability and data safety, fine-grained access control, and easy to use API.
 @objc(QSQingStor)
 public class QingStor: QingStorAPI {
-    // ListBuckets: Retrieve the bucket list.
-    // Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
+    /// ListBuckets: Retrieve the bucket list.
+    /// Documentation URL: https://docs.qingcloud.com/qingstor/api/service/get.html
     public func listBuckets(input: ListBucketsInput, progress: RequestProgress? = nil, completion: @escaping RequestCompletion<ListBucketsOutput>) {
         let (sender, error) = self.listBucketsSender(input: input)
 
@@ -37,7 +37,7 @@ public class QingStor: QingStorAPI {
         sender!.sendAPI(progress: progress, completion: completion)
     }
 
-    // listBucketsSender create sender of listBuckets.
+    /// listBucketsSender create sender of listBuckets.
     public func listBucketsSender(input: ListBucketsInput) -> (APISender?, Error?) {
         return APISender.qingstor(context: self.context,
                                   input: input,
@@ -50,43 +50,51 @@ public class QingStor: QingStorAPI {
 
 }
 
+/// The ListBuckets api input.
 @objc(QSListBucketsInput)
 public class ListBucketsInput: QingStorInput {
-    // Limits results to buckets that in the location
+    /// Limits results to buckets that in the location
     @objc public var location: String?
 
+    /// The request header properties.
     override var headerProperties: [String] {
         return ["Location"]
     }
 
+    /// Initialize `ListBucketsInput` with the specified `map`.
     public required init?(map: Map) {
         super.init(map: map)
     }
 
+    /// Initialize `ListBucketsInput` with the specified parameters.
     @objc public init(location: String? = nil) {
         super.init()
 
         self.location = location
     }
 
+    /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
 
         location <- map["Location"]
     }
 
+    /// Verify input data is valid.
     @objc public override func validate() -> Error? {
         return nil
     }
 }
 
+/// The ListBuckets api output.
 @objc(QSListBucketsOutput)
 public class ListBucketsOutput: QingStorOutput {
-    // Buckets information
+    /// Buckets information
     @objc public var buckets: [BucketModel]?
-    // Bucket count
+    /// Bucket count
     @objc public var count: Int = 0
 
+    /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
 

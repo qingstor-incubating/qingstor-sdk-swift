@@ -180,6 +180,7 @@ extension String {
 }
 
 public extension URL {
+    /// The size of file in bytes.
     public var contentLength: Int {
         var length = 0
 
@@ -197,6 +198,7 @@ public extension URL {
         return length
     }
 
+    /// The MIME type to associate with the data in the `Content-Type` HTTP header.
     public var mimeType: String {
         return APIHelper.mimeType(forPathExtension: self.pathExtension)
     }

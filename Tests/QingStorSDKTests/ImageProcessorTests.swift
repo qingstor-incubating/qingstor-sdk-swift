@@ -86,15 +86,16 @@ class ImageProcessorTests: XCTestCase {
     }
 
     func testCombinationProcess() {
-        let result = "rotate:a_180|watermark_image:u_aHR0cHM6Ly9wZWszYS5xaW5nc3Rvci5jb20vaW1nLWRvYy1lZy9xaW5jbG91ZC5wbmc,l_20,t_80,p_0.1|crop:w_850|watermark:t_5paH5pysdGV4dA|resize:h_1024,m_1|format:t_png"
+        let result = "rotate:a_180|crop:l_100,t_20|watermark_image:u_aHR0cHM6Ly9wZWszYS5xaW5nc3Rvci5jb20vaW1nLWRvYy1lZy9xaW5jbG91ZC5wbmc,l_20,t_80,p_0.1|crop:w_850|watermark:t_5paH5pysdGV4dA|resize:h_1024,m_1|format:t_png"
         let target = ImageProcessor()
             .rotate(angle: 180)
-            .resize(width: nil, height: nil, mode: nil)  // invalid operate, will ignore
+            .crop(left: 100, top: 20)
+            .resize()  // invalid operate, will ignore
             .watermarkImage(url: "https://pek3a.qingstor.com/img-doc-eg/qincloud.png", left: 20, top: 80, opacity: 0.1)
-            .crop(width: 850, height: nil, gravity: nil)
-            .watermark(text: "文本text", color: nil, opacity: nil, dpi: nil)
-            .resize(width: nil, height: 1024, mode: .force)
-            .crop(width: nil, height: nil, gravity: nil) // invalid operate, will ignore
+            .crop(width: 850)
+            .watermark(text: "文本text")
+            .resize(height: 1024, mode: .force)
+            .crop() // invalid operate, will ignore
             .format(type: .png)
             .processingResult()
 
@@ -110,5 +111,22 @@ class ImageProcessorTests: XCTestCase {
 
         imageProcessor.resetProcessing()
         XCTAssertEqual("", imageProcessor.processingResult())
+    }
+    
+    func testCombinationProcessObjcBridge() {
+        let result = "rotate:a_180|crop:l_100,t_20|watermark_image:u_aHR0cHM6Ly9wZWszYS5xaW5nc3Rvci5jb20vaW1nLWRvYy1lZy9xaW5jbG91ZC5wbmc,l_20,t_80,p_0.1|crop:w_850|watermark:t_5paH5pysdGV4dA|resize:h_1024,m_1|format:t_png"
+        let target = ImageProcessor()
+            .rotate(angle: 180)
+            .cropObjcBridge(left: 100, top: 20)
+            .resizeObjcBridge(width: nil, height: nil) // invalid operate, will ignore
+            .watermarkImageObjcBridge(url: "https://pek3a.qingstor.com/img-doc-eg/qincloud.png", left: 20, top: 80, opacity: 0.1)
+            .cropObjcBridge(width: 850, height: nil)
+            .watermarkObjcBridge(text: "文本text", color: nil)
+            .resizeObjcBridge(width: nil, height: 1024, mode: .force)
+            .cropObjcBridge(width: nil, height: nil) // invalid operate, will ignore
+            .formatObjcBridge(type: .png)
+            .processingResult()
+        
+        XCTAssertEqual(target, result)
     }
 }

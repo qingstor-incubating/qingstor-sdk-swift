@@ -18,19 +18,40 @@
 // +-------------------------------------------------------------------------
 //
 
+/// The customized signer.
 @objc(QSCustomizedSigner)
 final public class CustomizedSigner: NSObject, Signer {
+    /// Handle signature completion callback
     public typealias SignatureHandlerCompletion = (SignatureResult) -> Void
+
+    /// A closure used to Calculate signature string.
     public typealias SignatureHandler = (CustomizedSigner, String, RequestBuilder, @escaping SignatureHandlerCompletion) throws -> Void
 
+    /// The signature type.
     public var signatureType: QingStorSignatureType
+
+    /// The signature handler
     public var handler: SignatureHandler
 
+    /// Initialize `CustomizedSigner` with the specified `signatureType` and `handler`
+    ///
+    /// - parameter signatureType: The signature type.
+    /// - parameter handler:       The signature handler.
+    ///
+    /// - returns: The new `CustomizedSigner` instance.
     public init(signatureType: QingStorSignatureType = .header, handler: @escaping SignatureHandler) {
         self.signatureType = signatureType
         self.handler = handler
     }
 
+    /// Calculate query signature string from request builder, will execute signature handler to Calculate signature result.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    /// - parameter timeoutSeconds: The timeout of the generated URL.
+    ///
+    /// - throws: An `APIError.signatureError` if calculate query signature encounters an error.
+    ///
+    /// - returns: Signature result.
     public func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult {
         let semaphoreSignal = DispatchSemaphore(value: 0)
         let plainString = querySignaturePlainString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
@@ -45,6 +66,13 @@ final public class CustomizedSigner: NSObject, Signer {
         return result
     }
 
+    /// Calculate header signature string from request builder, will execute signature handler to Calculate signature result.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - throws: An `APIError.signatureError` if calculate header signature encounters an error.
+    ///
+    /// - returns: Signature result.
     public func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult {
         let semaphoreSignal = DispatchSemaphore(value: 0)
         let plainString = headerSignaturePlainString(from: requestBuilder)
@@ -59,6 +87,9 @@ final public class CustomizedSigner: NSObject, Signer {
         return result
     }
 
+    /// Using raw data to copy singer.
+    ///
+    /// - returns: New signer instance.
     public func rawCopy() -> CustomizedSigner {
         return CustomizedSigner(signatureType: signatureType, handler: handler)
     }

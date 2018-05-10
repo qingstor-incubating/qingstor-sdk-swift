@@ -21,8 +21,9 @@
 import Foundation
 import ObjectMapper
 
+/// The ISO8601 type date transform
 public class ISO8601DateTransform: DateFormatterTransform {
-
+    /// Initialize `ISO8601DateTransform`
     public init() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
@@ -33,8 +34,9 @@ public class ISO8601DateTransform: DateFormatterTransform {
     }
 }
 
+/// The RFC822 type date transform
 public class RFC822DateTransform: DateFormatterTransform {
-
+    /// Initialize `RFC822DateTransform`
     public init() {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss z"
