@@ -1,0 +1,439 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/BucketObjcBridge.swift",
+      "line": 24,
+      "symbol": "Bucket.init(context:bucketName:zone:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/BucketObjcBridge.swift",
+      "line": 36,
+      "symbol": "Bucket.init(context:bucketName:zone:credential:buildingQueue:callbackQueue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/BucketObjcBridge.swift",
+      "line": 51,
+      "symbol": "Bucket.init(bucketName:zone:qingstorSigner:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/BucketObjcBridge.swift",
+      "line": 59,
+      "symbol": "Bucket.init(context:bucketName:zone:qingstorSigner:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/BucketObjcBridge.swift",
+      "line": 69,
+      "symbol": "Bucket.init(bucketName:zone:customizedSigner:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/BucketObjcBridge.swift",
+      "line": 77,
+      "symbol": "Bucket.init(context:bucketName:zone:customizedSigner:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ImageProcessorObjcBridge.swift",
+      "line": 26,
+      "symbol": "FormatTypeObjcBridge.jpeg",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ImageProcessorObjcBridge.swift",
+      "line": 27,
+      "symbol": "FormatTypeObjcBridge.png",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ImageProcessorObjcBridge.swift",
+      "line": 28,
+      "symbol": "FormatTypeObjcBridge.webp",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ImageProcessorObjcBridge.swift",
+      "line": 29,
+      "symbol": "FormatTypeObjcBridge.tiff",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 131,
+      "symbol": "HTTPMethodObjcBridge.options",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 132,
+      "symbol": "HTTPMethodObjcBridge.get",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 133,
+      "symbol": "HTTPMethodObjcBridge.head",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 134,
+      "symbol": "HTTPMethodObjcBridge.post",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 135,
+      "symbol": "HTTPMethodObjcBridge.put",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 136,
+      "symbol": "HTTPMethodObjcBridge.patch",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 137,
+      "symbol": "HTTPMethodObjcBridge.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 138,
+      "symbol": "HTTPMethodObjcBridge.trace",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/ObjcBridge.swift",
+      "line": 139,
+      "symbol": "HTTPMethodObjcBridge.connect",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/SignerObjcBridge.swift",
+      "line": 24,
+      "symbol": "SignatureTypeObjcBridge.query",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/SignerObjcBridge.swift",
+      "line": 25,
+      "symbol": "SignatureTypeObjcBridge.header",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/SignerObjcBridge.swift",
+      "line": 68,
+      "symbol": "SignatureResultTypeObjcBridge.query",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/SignerObjcBridge.swift",
+      "line": 69,
+      "symbol": "SignatureResultTypeObjcBridge.header",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/ObjcBridge/SignerObjcBridge.swift",
+      "line": 70,
+      "symbol": "SignatureResultTypeObjcBridge.authorization",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/Base.swift",
+      "line": 103,
+      "symbol": "BaseAPI.context",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/Bucket.swift",
+      "line": 1913,
+      "symbol": "GetObjectOutput.lastModified",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/Bucket.swift",
+      "line": 2004,
+      "symbol": "HeadObjectOutput.lastModified",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 194,
+      "symbol": "CropGravity.center",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 195,
+      "symbol": "CropGravity.north",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 196,
+      "symbol": "CropGravity.east",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 197,
+      "symbol": "CropGravity.south",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 198,
+      "symbol": "CropGravity.west",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 199,
+      "symbol": "CropGravity.northWest",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 200,
+      "symbol": "CropGravity.northEast",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 201,
+      "symbol": "CropGravity.southWest",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 202,
+      "symbol": "CropGravity.southEast",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 203,
+      "symbol": "CropGravity.auto",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 213,
+      "symbol": "ResizeMode.fixed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 214,
+      "symbol": "ResizeMode.force",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 215,
+      "symbol": "ResizeMode.thumbnail",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 224,
+      "symbol": "FormatType.jpeg",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 225,
+      "symbol": "FormatType.png",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 226,
+      "symbol": "FormatType.webp",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/ImageProcessor.swift",
+      "line": 227,
+      "symbol": "FormatType.tiff",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/QingStorTypes.swift",
+      "line": 27,
+      "symbol": "ACLModel.grantee",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/QingStorTypes.swift",
+      "line": 134,
+      "symbol": "ConditionModel.ipAddress",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/QingStorTypes.swift",
+      "line": 135,
+      "symbol": "ConditionModel.isNull",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/QingStorTypes.swift",
+      "line": 136,
+      "symbol": "ConditionModel.notIPAddress",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/QingStorTypes.swift",
+      "line": 137,
+      "symbol": "ConditionModel.stringLike",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/QingStorTypes.swift",
+      "line": 138,
+      "symbol": "ConditionModel.stringNotLike",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/QingStorTypes.swift",
+      "line": 591,
+      "symbol": "StatementModel.condition",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 38,
+      "symbol": "HTTPMethod.options",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 39,
+      "symbol": "HTTPMethod.get",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 40,
+      "symbol": "HTTPMethod.head",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 41,
+      "symbol": "HTTPMethod.post",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 42,
+      "symbol": "HTTPMethod.put",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 43,
+      "symbol": "HTTPMethod.patch",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 44,
+      "symbol": "HTTPMethod.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 45,
+      "symbol": "HTTPMethod.trace",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 46,
+      "symbol": "HTTPMethod.connect",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 56,
+      "symbol": "ParameterEncodingType.json",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/RequestBuilder.swift",
+      "line": 59,
+      "symbol": "ParameterEncodingType.binary",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift"
+}

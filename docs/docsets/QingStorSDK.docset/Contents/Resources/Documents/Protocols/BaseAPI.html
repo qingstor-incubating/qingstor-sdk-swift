@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BaseAPI Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/BaseAPI" class="dashAnchor"></a>
+    <a title="BaseAPI Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">QingStorSDK Docs</a> (94% documented)</p>
+        <p class="header-right"><a href="https://github.com/yunify/qingstor-sdk-swift"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fdocs%2Eqingcloud%2Ecom%2Fqingstor%2Fapi%2Fdocsets%2FQingStorSDK%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">QingStorSDK Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        BaseAPI Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ACLModel.html">ACLModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/APIContext.html">APIContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:@M@QingStorSDK@objc(cs)QSAPIInput">APIInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:@M@QingStorSDK@objc(cs)QSAPIOutput">APIOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/APISender.html">APISender</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/APISenderResult.html">APISenderResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AbortMultipartUploadInput.html">AbortMultipartUploadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AbortMultipartUploadOutput.html">AbortMultipartUploadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BaseModel.html">BaseModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Bucket.html">Bucket</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BucketModel.html">BucketModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CORSRuleModel.html">CORSRuleModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CompleteMultipartUploadInput.html">CompleteMultipartUploadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CompleteMultipartUploadOutput.html">CompleteMultipartUploadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ConditionModel.html">ConditionModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CustomizedSigner.html">CustomizedSigner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultRequestBuilder.html">DefaultRequestBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultRequestBuilderFactory.html">DefaultRequestBuilderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketCORSInput.html">DeleteBucketCORSInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketCORSOutput.html">DeleteBucketCORSOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketExternalMirrorInput.html">DeleteBucketExternalMirrorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketExternalMirrorOutput.html">DeleteBucketExternalMirrorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketInput.html">DeleteBucketInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketOutput.html">DeleteBucketOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketPolicyInput.html">DeleteBucketPolicyInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketPolicyOutput.html">DeleteBucketPolicyOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteMultipleObjectsInput.html">DeleteMultipleObjectsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteMultipleObjectsOutput.html">DeleteMultipleObjectsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteObjectInput.html">DeleteObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteObjectOutput.html">DeleteObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketACLInput.html">GetBucketACLInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketACLOutput.html">GetBucketACLOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketCORSInput.html">GetBucketCORSInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketCORSOutput.html">GetBucketCORSOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketExternalMirrorInput.html">GetBucketExternalMirrorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketExternalMirrorOutput.html">GetBucketExternalMirrorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketPolicyInput.html">GetBucketPolicyInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketPolicyOutput.html">GetBucketPolicyOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketStatisticsInput.html">GetBucketStatisticsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketStatisticsOutput.html">GetBucketStatisticsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetObjectInput.html">GetObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetObjectOutput.html">GetObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GranteeModel.html">GranteeModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadBucketInput.html">HeadBucketInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadBucketOutput.html">HeadBucketOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadObjectInput.html">HeadObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadObjectOutput.html">HeadObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IPAddressModel.html">IPAddressModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ISO8601DateTransform.html">ISO8601DateTransform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageProcessInput.html">ImageProcessInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageProcessOutput.html">ImageProcessOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageProcessor.html">ImageProcessor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InitiateMultipartUploadInput.html">InitiateMultipartUploadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InitiateMultipartUploadOutput.html">InitiateMultipartUploadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IsNullModel.html">IsNullModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyDeleteErrorModel.html">KeyDeleteErrorModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyModel.html">KeyModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListBucketsInput.html">ListBucketsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListBucketsOutput.html">ListBucketsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartInput.html">ListMultipartInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartOutput.html">ListMultipartOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartUploadsInput.html">ListMultipartUploadsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartUploadsOutput.html">ListMultipartUploadsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListObjectsInput.html">ListObjectsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListObjectsOutput.html">ListObjectsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NotIPAddressModel.html">NotIPAddressModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ObjectPartModel.html">ObjectPartModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OptionsObjectInput.html">OptionsObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OptionsObjectOutput.html">OptionsObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OwnerModel.html">OwnerModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketACLInput.html">PutBucketACLInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketACLOutput.html">PutBucketACLOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketCORSInput.html">PutBucketCORSInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketCORSOutput.html">PutBucketCORSOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketExternalMirrorInput.html">PutBucketExternalMirrorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketExternalMirrorOutput.html">PutBucketExternalMirrorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketInput.html">PutBucketInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketOutput.html">PutBucketOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketPolicyInput.html">PutBucketPolicyInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketPolicyOutput.html">PutBucketPolicyOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutObjectInput.html">PutObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutObjectOutput.html">PutObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStor.html">QingStor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorAPI.html">QingStorAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorDownloadInput.html">QingStorDownloadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorDownloadOutput.html">QingStorDownloadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorInput.html">QingStorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorOutput.html">QingStorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorSigner.html">QingStorSigner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RFC822DateTransform.html">RFC822DateTransform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Registry.html">Registry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RequestBuilder.html">RequestBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Response.html">Response</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SignatureResultModelObjcBridge.html">SignatureResultModelObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SignatureTypeModelObjcBridge.html">SignatureTypeModelObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StatementModel.html">StatementModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StringLikeModel.html">StringLikeModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StringNotLikeModel.html">StringNotLikeModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UploadMultipartInput.html">UploadMultipartInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UploadMultipartOutput.html">UploadMultipartOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UploadsModel.html">UploadsModel</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/APIError.html">APIError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/CropGravity.html">CropGravity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FormatType.html">FormatType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FormatTypeObjcBridge.html">FormatTypeObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HTTPMethod.html">HTTPMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HTTPMethodObjcBridge.html">HTTPMethodObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ImageProcess.html">ImageProcess</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ParameterEncodingType.html">ParameterEncodingType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QingStorSignatureType.html">QingStorSignatureType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResizeMode.html">ResizeMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SignatureResult.html">SignatureResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SignatureResultTypeObjcBridge.html">SignatureResultTypeObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SignatureTypeObjcBridge.html">SignatureTypeObjcBridge</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/DataRequest.html">DataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/DownloadRequest.html">DownloadRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSURL.html">NSURL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URL.html">URL</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/APIDownloadInput.html">APIDownloadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/APIDownloadOutput.html">APIDownloadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/BaseAPI.html">BaseAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ImageProcessCodeable.html">ImageProcessCodeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RequestBuilderFactory.html">RequestBuilderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Signer.html">Signer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:11QingStorSDK15BuildCompletiona">BuildCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:11QingStorSDK17RequestCompletiona">RequestCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:11QingStorSDK15RequestProgressa">RequestProgress</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>BaseAPI</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">BaseAPI</span></code></pre>
+
+                </div>
+              </div>
+            <p>QingStor API protocol</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK7BaseAPIP7contextAA10APIContextCvp"></a>
+                    <a name="//apple_ref/swift/Property/context" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK7BaseAPIP7contextAA10APIContextCvp">context</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">context</span><span class="p">:</span> <span class="kt"><a href="../Classes/APIContext.html">APIContext</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/Base.swift#L">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="https://www.qingstor.com" target="_blank" rel="external">QingStor</a>. All rights reserved. (Last updated: 2018-05-10)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

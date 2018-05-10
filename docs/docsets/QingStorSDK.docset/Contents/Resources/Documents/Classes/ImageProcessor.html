@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ImageProcessor Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/ImageProcessor" class="dashAnchor"></a>
+    <a title="ImageProcessor Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">QingStorSDK Docs</a> (94% documented)</p>
+        <p class="header-right"><a href="https://github.com/yunify/qingstor-sdk-swift"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="dash-feed://https%3A%2F%2Fdocs%2Eqingcloud%2Ecom%2Fqingstor%2Fapi%2Fdocsets%2FQingStorSDK%2Exml"><img src="../img/dash.png"/>Install in Dash</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">QingStorSDK Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        ImageProcessor Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ACLModel.html">ACLModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/APIContext.html">APIContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:@M@QingStorSDK@objc(cs)QSAPIInput">APIInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:@M@QingStorSDK@objc(cs)QSAPIOutput">APIOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/APISender.html">APISender</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/APISenderResult.html">APISenderResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AbortMultipartUploadInput.html">AbortMultipartUploadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AbortMultipartUploadOutput.html">AbortMultipartUploadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BaseModel.html">BaseModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Bucket.html">Bucket</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BucketModel.html">BucketModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CORSRuleModel.html">CORSRuleModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CompleteMultipartUploadInput.html">CompleteMultipartUploadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CompleteMultipartUploadOutput.html">CompleteMultipartUploadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ConditionModel.html">ConditionModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CustomizedSigner.html">CustomizedSigner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultRequestBuilder.html">DefaultRequestBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultRequestBuilderFactory.html">DefaultRequestBuilderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketCORSInput.html">DeleteBucketCORSInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketCORSOutput.html">DeleteBucketCORSOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketExternalMirrorInput.html">DeleteBucketExternalMirrorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketExternalMirrorOutput.html">DeleteBucketExternalMirrorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketInput.html">DeleteBucketInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketOutput.html">DeleteBucketOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketPolicyInput.html">DeleteBucketPolicyInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteBucketPolicyOutput.html">DeleteBucketPolicyOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteMultipleObjectsInput.html">DeleteMultipleObjectsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteMultipleObjectsOutput.html">DeleteMultipleObjectsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteObjectInput.html">DeleteObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DeleteObjectOutput.html">DeleteObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketACLInput.html">GetBucketACLInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketACLOutput.html">GetBucketACLOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketCORSInput.html">GetBucketCORSInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketCORSOutput.html">GetBucketCORSOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketExternalMirrorInput.html">GetBucketExternalMirrorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketExternalMirrorOutput.html">GetBucketExternalMirrorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketPolicyInput.html">GetBucketPolicyInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketPolicyOutput.html">GetBucketPolicyOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketStatisticsInput.html">GetBucketStatisticsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetBucketStatisticsOutput.html">GetBucketStatisticsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetObjectInput.html">GetObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GetObjectOutput.html">GetObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GranteeModel.html">GranteeModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadBucketInput.html">HeadBucketInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadBucketOutput.html">HeadBucketOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadObjectInput.html">HeadObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeadObjectOutput.html">HeadObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IPAddressModel.html">IPAddressModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ISO8601DateTransform.html">ISO8601DateTransform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageProcessInput.html">ImageProcessInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageProcessOutput.html">ImageProcessOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ImageProcessor.html">ImageProcessor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InitiateMultipartUploadInput.html">InitiateMultipartUploadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InitiateMultipartUploadOutput.html">InitiateMultipartUploadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IsNullModel.html">IsNullModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyDeleteErrorModel.html">KeyDeleteErrorModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyModel.html">KeyModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListBucketsInput.html">ListBucketsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListBucketsOutput.html">ListBucketsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartInput.html">ListMultipartInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartOutput.html">ListMultipartOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartUploadsInput.html">ListMultipartUploadsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListMultipartUploadsOutput.html">ListMultipartUploadsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListObjectsInput.html">ListObjectsInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ListObjectsOutput.html">ListObjectsOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NotIPAddressModel.html">NotIPAddressModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ObjectPartModel.html">ObjectPartModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OptionsObjectInput.html">OptionsObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OptionsObjectOutput.html">OptionsObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OwnerModel.html">OwnerModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketACLInput.html">PutBucketACLInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketACLOutput.html">PutBucketACLOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketCORSInput.html">PutBucketCORSInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketCORSOutput.html">PutBucketCORSOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketExternalMirrorInput.html">PutBucketExternalMirrorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketExternalMirrorOutput.html">PutBucketExternalMirrorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketInput.html">PutBucketInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketOutput.html">PutBucketOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketPolicyInput.html">PutBucketPolicyInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutBucketPolicyOutput.html">PutBucketPolicyOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutObjectInput.html">PutObjectInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PutObjectOutput.html">PutObjectOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStor.html">QingStor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorAPI.html">QingStorAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorDownloadInput.html">QingStorDownloadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorDownloadOutput.html">QingStorDownloadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorInput.html">QingStorInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorOutput.html">QingStorOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/QingStorSigner.html">QingStorSigner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RFC822DateTransform.html">RFC822DateTransform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Registry.html">Registry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RequestBuilder.html">RequestBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Response.html">Response</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SignatureResultModelObjcBridge.html">SignatureResultModelObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SignatureTypeModelObjcBridge.html">SignatureTypeModelObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StatementModel.html">StatementModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StringLikeModel.html">StringLikeModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StringNotLikeModel.html">StringNotLikeModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UploadMultipartInput.html">UploadMultipartInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UploadMultipartOutput.html">UploadMultipartOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UploadsModel.html">UploadsModel</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/APIError.html">APIError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/CropGravity.html">CropGravity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FormatType.html">FormatType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FormatTypeObjcBridge.html">FormatTypeObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HTTPMethod.html">HTTPMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/HTTPMethodObjcBridge.html">HTTPMethodObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ImageProcess.html">ImageProcess</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ParameterEncodingType.html">ParameterEncodingType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QingStorSignatureType.html">QingStorSignatureType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResizeMode.html">ResizeMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SignatureResult.html">SignatureResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SignatureResultTypeObjcBridge.html">SignatureResultTypeObjcBridge</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SignatureTypeObjcBridge.html">SignatureTypeObjcBridge</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/DataRequest.html">DataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/DownloadRequest.html">DownloadRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSURL.html">NSURL</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URL.html">URL</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/APIDownloadInput.html">APIDownloadInput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/APIDownloadOutput.html">APIDownloadOutput</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/BaseAPI.html">BaseAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ImageProcessCodeable.html">ImageProcessCodeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RequestBuilderFactory.html">RequestBuilderFactory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Signer.html">Signer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:11QingStorSDK15BuildCompletiona">BuildCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:11QingStorSDK17RequestCompletiona">RequestCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:11QingStorSDK15RequestProgressa">RequestProgress</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>ImageProcessor</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">@objc(QSImageProcessor)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ImageProcessor</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>A image process handler, ability to combine multiple image processes together using chained calls</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC11processListSayAA0D15ProcessCodeable_pGvp"></a>
+                    <a name="//apple_ref/swift/Property/processList" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC11processListSayAA0D15ProcessCodeable_pGvp">processList</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The image process list.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">processList</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/ImageProcessCodeable.html">ImageProcessCodeable</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L238">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorCACSayAA0D15ProcessCodeable_pG11processList_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(processList:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorCACSayAA0D15ProcessCodeable_pG11processList_tcfc">init(processList:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize <code>ImageProcessor</code> with the specified <code><a href="../Classes/ImageProcessor.html#/s:11QingStorSDK14ImageProcessorC11processListSayAA0D15ProcessCodeable_pGvp">processList</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">processList</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/ImageProcessCodeable.html">ImageProcessCodeable</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>processList</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image process list.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The new <code>ImageProcessor</code> instance.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L245-L247">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)init"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)init">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize <code>ImageProcessor</code> with empty process list.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">override</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The new <code>ImageProcessor</code> instance.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L252-L254">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC7processAcA0D15ProcessCodeable_pF"></a>
+                    <a name="//apple_ref/swift/Method/process(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC7processAcA0D15ProcessCodeable_pF">process(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">process</span><span class="p">(</span><span class="n">_</span> <span class="nv">process</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ImageProcessCodeable.html">ImageProcessCodeable</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>process</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The implementation of <code><a href="../Protocols/ImageProcessCodeable.html">ImageProcessCodeable</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L261-L264">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC4cropACSiSg5width_AE6heightAE4leftAE3toptF"></a>
+                    <a name="//apple_ref/swift/Method/crop(width:height:left:top:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC4cropACSiSg5width_AE6heightAE4leftAE3toptF">crop(width:height:left:top:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the process of crop image.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">crop</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">left</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">top</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>left</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop left margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>top</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop top margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L274-L276">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC4cropACSiSg5width_AE6heightAA11CropGravityOSg7gravitytF"></a>
+                    <a name="//apple_ref/swift/Method/crop(width:height:gravity:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC4cropACSiSg5width_AE6heightAA11CropGravityOSg7gravitytF">crop(width:height:gravity:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the process of crop image.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">crop</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">gravity</span><span class="p">:</span> <span class="kt"><a href="../Enums/CropGravity.html">CropGravity</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>gravity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Defining how the image is displayed within an bounds rect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L285-L287">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)rotateWithAngle:"></a>
+                    <a name="//apple_ref/swift/Method/rotate(angle:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)rotateWithAngle:">rotate(angle:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the process of rotate image.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">rotate</span><span class="p">(</span><span class="nv">angle</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>angle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image rotation angle.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L294-L296">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC6resizeACSiSg5width_AE6heightAA10ResizeModeOSg4modetF"></a>
+                    <a name="//apple_ref/swift/Method/resize(width:height:mode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC6resizeACSiSg5width_AE6heightAA10ResizeModeOSg4modetF">resize(width:height:mode:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the process of resize image.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resize</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">mode</span><span class="p">:</span> <span class="kt"><a href="../Enums/ResizeMode.html">ResizeMode</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image resize width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image resize height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>mode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Defining how the image is displayed within an bounds rect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L305-L307">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC9watermarkACSS4text_SSSg5colorSfSg7opacitySiSg3dpitF"></a>
+                    <a name="//apple_ref/swift/Method/watermark(text:color:opacity:dpi:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC9watermarkACSS4text_SSSg5colorSfSg7opacitySiSg3dpitF">watermark(text:color:opacity:dpi:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the process of add watermark text to original image.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">watermark</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">color</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">opacity</span><span class="p">:</span> <span class="kt">Float</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">dpi</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>text</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>color</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text color.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>opacity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text opacity.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dpi</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text size in dpi.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L317-L319">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC09watermarkD0ACSS3url_SiSg4leftAF3topSfSg7opacitytF"></a>
+                    <a name="//apple_ref/swift/Method/watermarkImage(url:left:top:opacity:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC09watermarkD0ACSS3url_SiSg4leftAF3topSfSg7opacitytF">watermarkImage(url:left:top:opacity:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the process of add watermark image to original image.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">watermarkImage</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">left</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">top</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">opacity</span><span class="p">:</span> <span class="kt">Float</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image url.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>left</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image left margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>top</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image top margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>opacity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark iamge opacity.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L329-L331">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:11QingStorSDK14ImageProcessorC6formatAcA10FormatTypeO4type_tF"></a>
+                    <a name="//apple_ref/swift/Method/format(type:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:11QingStorSDK14ImageProcessorC6formatAcA10FormatTypeO4type_tF">format(type:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Add the process of format image.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">format</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Enums/FormatType.html">FormatType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The format type.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L338-L340">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)resetProcessing"></a>
+                    <a name="//apple_ref/swift/Method/resetProcessing()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)resetProcessing">resetProcessing()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reset image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetProcessing</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L343-L345">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)processingResult"></a>
+                    <a name="//apple_ref/swift/Method/processingResult()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@QingStorSDK@objc(cs)QSImageProcessor(im)processingResult">processingResult()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handle image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">processingResult</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image process result.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/QingStor/ImageProcessor.swift#L350-L355">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithWidth:height:left:top:"></a>
+                    <a name="//apple_ref/swift/Method/cropObjcBridge(width:height:left:top:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithWidth:height:left:top:">cropObjcBridge(width:height:left:top:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add the crop image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(cropWithWidth:height:left:top:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">cropObjcBridge</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">left</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">top</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>left</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop left margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>top</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop top margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L57-L59">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithWidth:height:gravity:"></a>
+                    <a name="//apple_ref/swift/Method/cropObjcBridge(width:height:gravity:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithWidth:height:gravity:">cropObjcBridge(width:height:gravity:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add the crop image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(cropWithWidth:height:gravity:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">cropObjcBridge</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">gravity</span><span class="p">:</span> <span class="kt"><a href="../Enums/CropGravity.html">CropGravity</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>gravity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Defining how the image is displayed within an bounds rect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L69-L71">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithWidth:height:"></a>
+                    <a name="//apple_ref/swift/Method/cropObjcBridge(width:height:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithWidth:height:">cropObjcBridge(width:height:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add the crop image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(cropWithWidth:height:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">cropObjcBridge</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L80-L82">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithLeft:top:"></a>
+                    <a name="//apple_ref/swift/Method/cropObjcBridge(left:top:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)cropWithLeft:top:">cropObjcBridge(left:top:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add the crop image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(cropWithLeft:top:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">cropObjcBridge</span><span class="p">(</span><span class="nv">left</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">top</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>left</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop left margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>top</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image crop top margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L91-L93">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)resizeWithWidth:height:mode:"></a>
+                    <a name="//apple_ref/swift/Method/resizeObjcBridge(width:height:mode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)resizeWithWidth:height:mode:">resizeObjcBridge(width:height:mode:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add the resize image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(resizeWithWidth:height:mode:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">resizeObjcBridge</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">mode</span><span class="p">:</span> <span class="kt"><a href="../Enums/ResizeMode.html">ResizeMode</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image resize width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image resize height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>mode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Defining how the image is displayed within an bounds rect.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L103-L105">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)resizeWithWidth:height:"></a>
+                    <a name="//apple_ref/swift/Method/resizeObjcBridge(width:height:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)resizeWithWidth:height:">resizeObjcBridge(width:height:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add the resize image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(resizeWithWidth:height:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">resizeObjcBridge</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>width</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image resize width.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>height</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The image resize height.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L114-L116">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkWithText:color:opacity:dpi:"></a>
+                    <a name="//apple_ref/swift/Method/watermarkObjcBridge(text:color:opacity:dpi:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkWithText:color:opacity:dpi:">watermarkObjcBridge(text:color:opacity:dpi:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add watermark text to original image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(watermarkWithText:color:opacity:dpi:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">watermarkObjcBridge</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">color</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">opacity</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">dpi</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>text</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>color</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text color.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>opacity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text opacity.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dpi</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text size in dpi.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L127-L129">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkWithText:color:"></a>
+                    <a name="//apple_ref/swift/Method/watermarkObjcBridge(text:color:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkWithText:color:">watermarkObjcBridge(text:color:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add watermark text to original image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(watermarkWithText:color:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">watermarkObjcBridge</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">color</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>text</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>color</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark text color.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L138-L140">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkImageWithURL:left:top:opacity:"></a>
+                    <a name="//apple_ref/swift/Method/watermarkImageObjcBridge(url:left:top:opacity:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkImageWithURL:left:top:opacity:">watermarkImageObjcBridge(url:left:top:opacity:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add watermark image to original image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(watermarkImageWithURL:left:top:opacity:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">watermarkImageObjcBridge</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">left</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">top</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">opacity</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image url.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>left</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image let margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>top</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image top margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>opacity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark iamge opacity.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L151-L153">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkImageWithURL:left:top:"></a>
+                    <a name="//apple_ref/swift/Method/watermarkImageObjcBridge(url:left:top:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkImageWithURL:left:top:">watermarkImageObjcBridge(url:left:top:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add watermark image to original image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(watermarkImageWithURL:left:top:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">watermarkImageObjcBridge</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">left</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?,</span> <span class="nv">top</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image url.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>left</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image let margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>top</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image top margin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L163-L165">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkImageWithURL:"></a>
+                    <a name="//apple_ref/swift/Method/watermarkImageObjcBridge(url:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)watermarkImageWithURL:">watermarkImageObjcBridge(url:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add watermark image to original image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(watermarkImageWithURL:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">watermarkImageObjcBridge</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The watermark image url.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L173-L175">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)formatWithType:"></a>
+                    <a name="//apple_ref/swift/Method/formatObjcBridge(type:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@QingStorSDK@objc(cs)QSImageProcessor(im)formatWithType:">formatObjcBridge(type:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The objc bridge of add format image process.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc(formatWithType:)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">formatObjcBridge</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Enums/FormatTypeObjcBridge.html">FormatTypeObjcBridge</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ImageProcessor</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The format type.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The image processor.</p>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/yunify/qingstor-sdk-swift/tree/master/Sources/ObjcBridge/ImageProcessorObjcBridge.swift#L183-L185">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="https://www.qingstor.com" target="_blank" rel="external">QingStor</a>. All rights reserved. (Last updated: 2018-05-10)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
