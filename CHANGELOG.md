@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to QingStor SDK for Swift will be documented in this file.
 
+## [v2.8.0] - 2018-05-16
+
+### Added
+- Add storage class support.
+
+### BREAKING CHANGE
+- Make `objectParts` variable required of `CompleteMultipartUploadInput`.
+
 ## [v2.7.0] - 2018-05-10
 
 ### Added
@@ -70,6 +78,7 @@ All notable changes to QingStor SDK for Swift will be documented in this file.
 ### Added
 - QingStor SDK for the Swift programming language.
 
+[v2.8.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.7.0...v2.8.0
 [v2.7.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.6.0...v2.7.0
 [v2.6.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.5.0...v2.6.0
 [v2.5.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.4.1...v2.5.0
