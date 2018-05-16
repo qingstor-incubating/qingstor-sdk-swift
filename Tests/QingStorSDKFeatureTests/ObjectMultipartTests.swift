@@ -182,7 +182,7 @@ class ObjectMultipartTests: QingStorTests {
     func testCompleteMultipartUpload(testCase: XCTestCase) {
         let request: (@escaping RequestCompletion<CompleteMultipartUploadOutput>) -> Void = { completion in
             let input = CompleteMultipartUploadInput(uploadID: self.initiateMultipartUploadResponse.output.uploadID!,
-                                                     objectParts: self.listMultipartResponse.output.objectParts)
+                                                     objectParts: self.listMultipartResponse.output.objectParts ?? [])
             self.bucket.completeMultipartUpload(objectKey: self.objectKey, input: input, completion: completion)
         }
 
