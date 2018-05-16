@@ -177,14 +177,14 @@
     },
     {
       "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/Bucket.swift",
-      "line": 1913,
+      "line": 1921,
       "symbol": "GetObjectOutput.lastModified",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/Bucket.swift",
-      "line": 2004,
+      "line": 2015,
       "symbol": "HeadObjectOutput.lastModified",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
