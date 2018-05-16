@@ -1701,7 +1701,7 @@ public class CompleteMultipartUploadInput: QingStorInput {
     /// MD5sum of encryption key
     @objc public var xQSEncryptionCustomerKeyMD5: String?
     /// Object parts
-    @objc public var objectParts: [ObjectPartModel]?
+    @objc public var objectParts: [ObjectPartModel]! // Required
 
     /// The request query properties.
     override var queryProperties: [String] {
@@ -1724,7 +1724,7 @@ public class CompleteMultipartUploadInput: QingStorInput {
     }
 
     /// Initialize `CompleteMultipartUploadInput` with the specified parameters.
-    @objc public init(uploadID: String, etag: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, objectParts: [ObjectPartModel]? = nil) {
+    @objc public init(uploadID: String, etag: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, objectParts: [ObjectPartModel]) {
         super.init()
 
         self.uploadID = uploadID
@@ -1751,6 +1751,14 @@ public class CompleteMultipartUploadInput: QingStorInput {
     @objc public override func validate() -> Error? {
         if self.uploadID == nil {
             return APIError.parameterRequiredError(name: "uploadID", parentName: "CompleteMultipartUploadInput")
+        }
+
+        if self.objectParts == nil {
+            return APIError.parameterRequiredError(name: "objectParts", parentName: "CompleteMultipartUploadInput")
+        }
+
+        if self.objectParts.count == 0 {
+            return APIError.parameterRequiredError(name: "objectParts", parentName: "CompleteMultipartUploadInput")
         }
 
         if let objectParts = self.objectParts {
@@ -1913,6 +1921,8 @@ public class GetObjectOutput: QingStorDownloadOutput {
     @objc public var lastModified: Date?
     /// Encryption algorithm of the object
     @objc public var xQSEncryptionCustomerAlgorithm: String?
+    /// Storage class of the object
+    @objc public var xQSStorageClass: String?
 
     /// Mapping process.
     public override func mapping(map: Map) {
@@ -1929,6 +1939,7 @@ public class GetObjectOutput: QingStorDownloadOutput {
         expires <- map["Expires"]
         lastModified <- (map["Last-Modified"], RFC822DateTransform())
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
+        xQSStorageClass <- map["X-QS-Storage-Class"]
     }
 }
 
@@ -2004,6 +2015,8 @@ public class HeadObjectOutput: QingStorOutput {
     @objc public var lastModified: Date?
     /// Encryption algorithm of the object
     @objc public var xQSEncryptionCustomerAlgorithm: String?
+    /// Storage class of the object
+    @objc public var xQSStorageClass: String?
 
     /// Mapping process.
     public override func mapping(map: Map) {
@@ -2014,6 +2027,7 @@ public class HeadObjectOutput: QingStorOutput {
         etag <- map["ETag"]
         lastModified <- (map["Last-Modified"], RFC822DateTransform())
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
+        xQSStorageClass <- map["X-QS-Storage-Class"]
     }
 }
 
@@ -2115,10 +2129,13 @@ public class InitiateMultipartUploadInput: QingStorInput {
     @objc public var xQSEncryptionCustomerKey: String?
     /// MD5sum of encryption key
     @objc public var xQSEncryptionCustomerKeyMD5: String?
+    /// Specify the storage class for object
+    /// xQSStorageClass's available values: STANDARD, STANDARD_IA
+    @objc public var xQSStorageClass: String?
 
     /// The request header properties.
     override var headerProperties: [String] {
-        return ["Content-Type", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5"]
+        return ["Content-Type", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5", "X-QS-Storage-Class"]
     }
 
     /// Initialize `InitiateMultipartUploadInput` with the specified `map`.
@@ -2127,13 +2144,14 @@ public class InitiateMultipartUploadInput: QingStorInput {
     }
 
     /// Initialize `InitiateMultipartUploadInput` with the specified parameters.
-    @objc public init(contentType: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil) {
+    @objc public init(contentType: String? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSStorageClass: String? = nil) {
         super.init()
 
         self.contentType = contentType
         self.xQSEncryptionCustomerAlgorithm = xQSEncryptionCustomerAlgorithm
         self.xQSEncryptionCustomerKey = xQSEncryptionCustomerKey
         self.xQSEncryptionCustomerKeyMD5 = xQSEncryptionCustomerKeyMD5
+        self.xQSStorageClass = xQSStorageClass
     }
 
     /// Mapping process.
@@ -2144,10 +2162,26 @@ public class InitiateMultipartUploadInput: QingStorInput {
         xQSEncryptionCustomerAlgorithm <- map["X-QS-Encryption-Customer-Algorithm"]
         xQSEncryptionCustomerKey <- map["X-QS-Encryption-Customer-Key"]
         xQSEncryptionCustomerKeyMD5 <- map["X-QS-Encryption-Customer-Key-MD5"]
+        xQSStorageClass <- map["X-QS-Storage-Class"]
     }
 
     /// Verify input data is valid.
     @objc public override func validate() -> Error? {
+        if let xQSStorageClass = self.xQSStorageClass {
+            let xQSStorageClassValidValues: [String] = ["STANDARD", "STANDARD_IA"]
+            let xQSStorageClassParameterValue = "\(xQSStorageClass)"
+            var xQSStorageClassIsValid = false
+            for value in xQSStorageClassValidValues {
+                if value == xQSStorageClassParameterValue {
+                    xQSStorageClassIsValid = true
+                    break
+                }
+            }
+            if !xQSStorageClassIsValid {
+                return APIError.parameterValueNotAllowedError(name: "xQSStorageClass", value: xQSStorageClassParameterValue, allowedValues: xQSStorageClassValidValues)
+            }
+        }
+
         return nil
     }
 }
@@ -2357,12 +2391,15 @@ public class PutObjectInput: QingStorInput {
     @objc public var xQSFetchSource: String?
     /// Move source, format (/<bucket-name>/<object-key>)
     @objc public var xQSMoveSource: String?
+    /// Specify the storage class for object
+    /// xQSStorageClass's available values: STANDARD, STANDARD_IA
+    @objc public var xQSStorageClass: String?
     /// The request body
     @objc public var bodyInputStream: InputStream?
 
     /// The request header properties.
     override var headerProperties: [String] {
-        return ["Content-Length", "Content-MD5", "Content-Type", "Expect", "X-QS-Copy-Source", "X-QS-Copy-Source-Encryption-Customer-Algorithm", "X-QS-Copy-Source-Encryption-Customer-Key", "X-QS-Copy-Source-Encryption-Customer-Key-MD5", "X-QS-Copy-Source-If-Match", "X-QS-Copy-Source-If-Modified-Since", "X-QS-Copy-Source-If-None-Match", "X-QS-Copy-Source-If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5", "X-QS-Fetch-If-Unmodified-Since", "X-QS-Fetch-Source", "X-QS-Move-Source"]
+        return ["Content-Length", "Content-MD5", "Content-Type", "Expect", "X-QS-Copy-Source", "X-QS-Copy-Source-Encryption-Customer-Algorithm", "X-QS-Copy-Source-Encryption-Customer-Key", "X-QS-Copy-Source-Encryption-Customer-Key-MD5", "X-QS-Copy-Source-If-Match", "X-QS-Copy-Source-If-Modified-Since", "X-QS-Copy-Source-If-None-Match", "X-QS-Copy-Source-If-Unmodified-Since", "X-QS-Encryption-Customer-Algorithm", "X-QS-Encryption-Customer-Key", "X-QS-Encryption-Customer-Key-MD5", "X-QS-Fetch-If-Unmodified-Since", "X-QS-Fetch-Source", "X-QS-Move-Source", "X-QS-Storage-Class"]
     }
 
     /// The request body properties.
@@ -2376,7 +2413,7 @@ public class PutObjectInput: QingStorInput {
     }
 
     /// Initialize `PutObjectInput` with the specified parameters.
-    @objc public init(contentLength: Int = Int.min, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchIfUnmodifiedSince: Date? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, bodyInputStream: InputStream? = nil) {
+    @objc public init(contentLength: Int = Int.min, contentMD5: String? = nil, contentType: String? = nil, expect: String? = nil, xQSCopySource: String? = nil, xQSCopySourceEncryptionCustomerAlgorithm: String? = nil, xQSCopySourceEncryptionCustomerKey: String? = nil, xQSCopySourceEncryptionCustomerKeyMD5: String? = nil, xQSCopySourceIfMatch: String? = nil, xQSCopySourceIfModifiedSince: Date? = nil, xQSCopySourceIfNoneMatch: String? = nil, xQSCopySourceIfUnmodifiedSince: Date? = nil, xQSEncryptionCustomerAlgorithm: String? = nil, xQSEncryptionCustomerKey: String? = nil, xQSEncryptionCustomerKeyMD5: String? = nil, xQSFetchIfUnmodifiedSince: Date? = nil, xQSFetchSource: String? = nil, xQSMoveSource: String? = nil, xQSStorageClass: String? = nil, bodyInputStream: InputStream? = nil) {
         super.init()
 
         self.contentLength = contentLength
@@ -2397,6 +2434,7 @@ public class PutObjectInput: QingStorInput {
         self.xQSFetchIfUnmodifiedSince = xQSFetchIfUnmodifiedSince
         self.xQSFetchSource = xQSFetchSource
         self.xQSMoveSource = xQSMoveSource
+        self.xQSStorageClass = xQSStorageClass
         self.bodyInputStream = bodyInputStream
     }
 
@@ -2422,6 +2460,7 @@ public class PutObjectInput: QingStorInput {
         xQSFetchIfUnmodifiedSince <- (map["X-QS-Fetch-If-Unmodified-Since"], RFC822DateTransform())
         xQSFetchSource <- map["X-QS-Fetch-Source"]
         xQSMoveSource <- map["X-QS-Move-Source"]
+        xQSStorageClass <- map["X-QS-Storage-Class"]
     }
 
     /// Convert model data to dictionary.
@@ -2434,6 +2473,21 @@ public class PutObjectInput: QingStorInput {
 
     /// Verify input data is valid.
     @objc public override func validate() -> Error? {
+        if let xQSStorageClass = self.xQSStorageClass {
+            let xQSStorageClassValidValues: [String] = ["STANDARD", "STANDARD_IA"]
+            let xQSStorageClassParameterValue = "\(xQSStorageClass)"
+            var xQSStorageClassIsValid = false
+            for value in xQSStorageClassValidValues {
+                if value == xQSStorageClassParameterValue {
+                    xQSStorageClassIsValid = true
+                    break
+                }
+            }
+            if !xQSStorageClassIsValid {
+                return APIError.parameterValueNotAllowedError(name: "xQSStorageClass", value: xQSStorageClassParameterValue, allowedValues: xQSStorageClassValidValues)
+            }
+        }
+
         return nil
     }
 }

@@ -1019,7 +1019,7 @@ extension CompleteMultipartUploadInput {
     ///
     /// - returns: The new `CompleteMultipartUploadInput` instance.
     @objc public static func empty() -> CompleteMultipartUploadInput {
-        return CompleteMultipartUploadInput(uploadID: "", etag: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, objectParts: nil)
+        return CompleteMultipartUploadInput(uploadID: "", etag: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, objectParts: [])
     }
 }
 
@@ -1064,7 +1064,7 @@ extension InitiateMultipartUploadInput {
     ///
     /// - returns: The new `InitiateMultipartUploadInput` instance.
     @objc public static func empty() -> InitiateMultipartUploadInput {
-        return InitiateMultipartUploadInput(contentType: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil)
+        return InitiateMultipartUploadInput(contentType: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, xQSStorageClass: nil)
     }
 }
 
@@ -1091,7 +1091,7 @@ extension PutObjectInput {
     ///
     /// - returns: The new `PutObjectInput` instance.
     @objc public static func empty() -> PutObjectInput {
-        return PutObjectInput(contentLength: Int.min, contentMD5: nil, contentType: nil, expect: nil, xQSCopySource: nil, xQSCopySourceEncryptionCustomerAlgorithm: nil, xQSCopySourceEncryptionCustomerKey: nil, xQSCopySourceEncryptionCustomerKeyMD5: nil, xQSCopySourceIfMatch: nil, xQSCopySourceIfModifiedSince: nil, xQSCopySourceIfNoneMatch: nil, xQSCopySourceIfUnmodifiedSince: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, xQSFetchIfUnmodifiedSince: nil, xQSFetchSource: nil, xQSMoveSource: nil, bodyInputStream: nil)
+        return PutObjectInput(contentLength: Int.min, contentMD5: nil, contentType: nil, expect: nil, xQSCopySource: nil, xQSCopySourceEncryptionCustomerAlgorithm: nil, xQSCopySourceEncryptionCustomerKey: nil, xQSCopySourceEncryptionCustomerKeyMD5: nil, xQSCopySourceIfMatch: nil, xQSCopySourceIfModifiedSince: nil, xQSCopySourceIfNoneMatch: nil, xQSCopySourceIfUnmodifiedSince: nil, xQSEncryptionCustomerAlgorithm: nil, xQSEncryptionCustomerKey: nil, xQSEncryptionCustomerKeyMD5: nil, xQSFetchIfUnmodifiedSince: nil, xQSFetchSource: nil, xQSMoveSource: nil, xQSStorageClass: nil, bodyInputStream: nil)
     }
 }
 

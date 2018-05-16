@@ -112,7 +112,7 @@ class ImageProcessorTests: XCTestCase {
         imageProcessor.resetProcessing()
         XCTAssertEqual("", imageProcessor.processingResult())
     }
-    
+
     func testCombinationProcessObjcBridge() {
         let result = "rotate:a_180|crop:l_100,t_20|watermark_image:u_aHR0cHM6Ly9wZWszYS5xaW5nc3Rvci5jb20vaW1nLWRvYy1lZy9xaW5jbG91ZC5wbmc,l_20,t_80,p_0.1|crop:w_850|watermark:t_5paH5pysdGV4dA|resize:h_1024,m_1|format:t_png"
         let target = ImageProcessor()
@@ -126,7 +126,7 @@ class ImageProcessorTests: XCTestCase {
             .cropObjcBridge(width: nil, height: nil) // invalid operate, will ignore
             .formatObjcBridge(type: .png)
             .processingResult()
-        
+
         XCTAssertEqual(target, result)
     }
 }

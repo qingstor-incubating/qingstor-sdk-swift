@@ -57,7 +57,7 @@ extension ImageProcessor {
     public func cropObjcBridge(width: NSNumber?, height: NSNumber?, left: NSNumber?, top: NSNumber?) -> ImageProcessor {
         return crop(width: width?.intValue, height: height?.intValue, left: left?.intValue, top: top?.intValue)
     }
-    
+
     /// The objc bridge of add the crop image process.
     ///
     /// - parameter width:   The image crop width.
@@ -80,7 +80,7 @@ extension ImageProcessor {
     public func cropObjcBridge(width: NSNumber?, height: NSNumber?) -> ImageProcessor {
         return crop(width: width?.intValue, height: height?.intValue)
     }
-    
+
     /// The objc bridge of add the crop image process.
     ///
     /// - parameter left:    The image crop left margin.

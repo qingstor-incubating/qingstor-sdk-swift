@@ -274,7 +274,7 @@ public class ImageProcessor: NSObject {
     public func crop(width: Int? = nil, height: Int? = nil, left: Int? = nil, top: Int? = nil) -> ImageProcessor {
         return process(ImageProcess.crop(width: width, height: height, left: left, top: top, gravity: nil))
     }
-    
+
     /// Add the process of crop image.
     ///
     /// - parameter width:   The image crop width.
