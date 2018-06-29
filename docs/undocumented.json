@@ -170,7 +170,7 @@
     },
     {
       "file": "/Users/qingcloud/Desktop/Project/JoinedProject/qingstor-sdk-swift/Sources/QingStor/Base.swift",
-      "line": 103,
+      "line": 98,
       "symbol": "BaseAPI.context",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
