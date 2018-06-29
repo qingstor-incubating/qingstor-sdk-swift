@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to QingStor SDK for Swift will be documented in this file.
 
+## [v2.8.1] - 2018-06-29
+
+### Changed
+- Make `accessKeyID` and `secretAccessKey` to be optional.
+- If the request contains signature data, the `RequestBuilder` will not execute signing operation.
+
 ## [v2.8.0] - 2018-05-16
 
 ### Added
@@ -78,6 +84,7 @@ All notable changes to QingStor SDK for Swift will be documented in this file.
 ### Added
 - QingStor SDK for the Swift programming language.
 
+[v2.8.1]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.8.0...v2.8.1
 [v2.8.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.7.0...v2.8.0
 [v2.7.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.6.0...v2.7.0
 [v2.6.0]: https://github.com/yunify/qingstor-sdk-swift/compare/v2.5.0...v2.6.0
