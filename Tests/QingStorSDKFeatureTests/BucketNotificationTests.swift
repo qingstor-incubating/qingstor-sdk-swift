@@ -31,9 +31,20 @@ class BucketNotificationTests: QingStorTests {
         }
 
         Then("^get bucket notification status code is (\\d+)$") { (args, _) -> Void in
-            self.assertEqual(value: "\(self.getNotificationResponse.statusCode)", shouldBe: "\(args![0])")
+            self.assertEqual(value: "\(self.notifications .statusCode)", shouldBe: "\(args![0])")
         }
+        
+        And("^get bucket notification should have cloudfunc \"([^\"]*)\"$") { (args, _) -> Void in
+            let cloudfunc = args![0]
+            for notification in self.getCORSResponse.output.notifications ! {
+                if notification.cloudfunc == cloudfunc {
+                    return
+                }
+            }
 
+            XCTAssert(false, "cloudfunc \"\(cloudfunc)\" not found in bucket notifications")
+        }
+        
         When("^delete bucket notification") { (_, userInfo) -> Void in
             self.testDeleteNotification(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
         }
