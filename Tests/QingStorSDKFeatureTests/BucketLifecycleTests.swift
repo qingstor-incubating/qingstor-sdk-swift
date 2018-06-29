@@ -33,6 +33,17 @@ class BucketLifecycleTests: QingStorTests {
         Then("^get bucket lifecycle status code is (\\d+)$") { (args, _) -> Void in
             self.assertEqual(value: "\(self.getLifecycleResponse.statusCode)", shouldBe: "\(args![0])")
         }
+        
+        And("^get bucket lifecycle should have filter prefix \"([^\"]*)\"$") { (args, _) -> Void in
+            let filterPrefix = args![0]
+            for rule in self.getLifecycleResponse.output.rule! {
+                if rule.filter.prefix == filterPrefix {
+                    return
+                }
+            }
+
+            XCTAssert(false, "filter prefix \"\(filterPrefix)\" not found in bucket lifecycle")
+        }
 
         When("^delete bucket lifecycle") { (_, userInfo) -> Void in
             self.testDeleteLifecycle(testCase: userInfo?[kXCTestCaseKey] as! XCTestCase)
