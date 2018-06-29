@@ -23,7 +23,7 @@ import ObjectMapper
 
 let defaultIgnoreIntValue = Int.min
 
-private let qingstorBaseURL = "https://qingstor.com:443/"
+internal let qingstorBaseURL = "https://qingstor.com:443/"
 
 public extension APIContext {
     /// Create `APIContext` instance of using QingStor server.
@@ -35,7 +35,7 @@ public extension APIContext {
     ///
     /// - parameter accessKeyID:      The QingCloud API access key.
     /// - parameter secretAccessKey:  The QingCloud API secret access key.
-    @objc public static func qingstor(accessKeyID: String, secretAccessKey: String) -> APIContext {
+    @objc public static func qingstor(accessKeyID: String?, secretAccessKey: String?) -> APIContext {
         return APIContext(baseURL: qingstorBaseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
     }
 }
