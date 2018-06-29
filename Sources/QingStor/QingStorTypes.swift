@@ -21,6 +21,38 @@
 import Foundation
 import ObjectMapper
 
+/// The AbortIncompleteMultipartUploadModel.
+@objc(QSAbortIncompleteMultipartUploadModel)
+public class AbortIncompleteMultipartUploadModel: BaseModel {
+    /// days after initiation
+    @objc public var daysAfterInitiation: Int = 0 // Required
+
+    /// Initialize `AbortIncompleteMultipartUploadModel` with the specified `map`.
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    /// Initialize `AbortIncompleteMultipartUploadModel` with the specified parameters.
+    @objc public init(daysAfterInitiation: Int = 0) {
+        super.init()
+        
+        self.daysAfterInitiation = daysAfterInitiation
+    }
+
+    /// Mapping process.
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        daysAfterInitiation <- map["days_after_initiation"]
+    }
+
+    /// Verify model data is valid.
+    @objc public override func validate() -> Error? {
+        return nil
+    }
+}
+
+
 /// The ACLModel.
 @objc(QSACLModel)
 public class ACLModel: BaseModel {
@@ -37,7 +69,7 @@ public class ACLModel: BaseModel {
     /// Initialize `ACLModel` with the specified parameters.
     @objc public init(grantee: GranteeModel, permission: String) {
         super.init()
-
+        
         self.grantee = grantee
         self.permission = permission
     }
@@ -45,7 +77,7 @@ public class ACLModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         grantee <- map["grantee"]
         permission <- map["permission"]
     }
@@ -55,17 +87,17 @@ public class ACLModel: BaseModel {
         if self.grantee == nil {
             return APIError.parameterRequiredError(name: "grantee", parentName: "ACL")
         }
-
+        
         if let grantee = self.grantee {
             if let error = grantee.validate() {
                 return error
             }
         }
-
+        
         if self.permission == nil {
             return APIError.parameterRequiredError(name: "permission", parentName: "ACL")
         }
-
+        
         if let permission = self.permission {
             let permissionValidValues: [String] = ["READ", "WRITE", "FULL_CONTROL"]
             let permissionParameterValue = "\(permission)"
@@ -80,22 +112,23 @@ public class ACLModel: BaseModel {
                 return APIError.parameterValueNotAllowedError(name: "permission", value: permissionParameterValue, allowedValues: permissionValidValues)
             }
         }
-
+                
         return nil
     }
 }
+
 
 /// The BucketModel.
 @objc(QSBucketModel)
 public class BucketModel: BaseModel {
     /// Created time of the bucket
-    @objc public var created: Date?
+    @objc public var created: Date? = nil
     /// QingCloud Zone ID
-    @objc public var location: String?
+    @objc public var location: String? = nil
     /// Bucket name
-    @objc public var name: String?
+    @objc public var name: String? = nil
     /// URL to access the bucket
-    @objc public var url: String?
+    @objc public var url: String? = nil
 
     /// Initialize `BucketModel` with the specified `map`.
     public required init?(map: Map) {
@@ -105,7 +138,7 @@ public class BucketModel: BaseModel {
     /// Initialize `BucketModel` with the specified parameters.
     @objc public init(created: Date? = nil, location: String? = nil, name: String? = nil, url: String? = nil) {
         super.init()
-
+        
         self.created = created
         self.location = location
         self.name = name
@@ -115,7 +148,7 @@ public class BucketModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         created <- (map["created"], ISO8601DateTransform())
         location <- map["location"]
         name <- map["name"]
@@ -128,14 +161,59 @@ public class BucketModel: BaseModel {
     }
 }
 
+
+/// The CloudfuncArgsModel.
+@objc(QSCloudfuncArgsModel)
+public class CloudfuncArgsModel: BaseModel {
+    @objc public var action: String! // Required
+    @objc public var keyPrefix: String = "gen"
+    @objc public var keySeprate: String = "_"
+    @objc public var saveBucket: String? = nil
+
+    /// Initialize `CloudfuncArgsModel` with the specified `map`.
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    /// Initialize `CloudfuncArgsModel` with the specified parameters.
+    @objc public init(action: String, keyPrefix: String = "gen", keySeprate: String = "_", saveBucket: String? = nil) {
+        super.init()
+        
+        self.action = action
+        self.keyPrefix = keyPrefix
+        self.keySeprate = keySeprate
+        self.saveBucket = saveBucket
+    }
+
+    /// Mapping process.
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        action <- map["action"]
+        keyPrefix <- map["key_prefix"]
+        keySeprate <- map["key_seprate"]
+        saveBucket <- map["save_bucket"]
+    }
+
+    /// Verify model data is valid.
+    @objc public override func validate() -> Error? {
+        if self.action == nil {
+            return APIError.parameterRequiredError(name: "action", parentName: "CloudfuncArgs")
+        }
+        
+        return nil
+    }
+}
+
+
 /// The ConditionModel.
 @objc(QSConditionModel)
 public class ConditionModel: BaseModel {
-    @objc public var ipAddress: IPAddressModel?
-    @objc public var isNull: IsNullModel?
-    @objc public var notIPAddress: NotIPAddressModel?
-    @objc public var stringLike: StringLikeModel?
-    @objc public var stringNotLike: StringNotLikeModel?
+    @objc public var ipAddress: IPAddressModel? = nil
+    @objc public var isNull: IsNullModel? = nil
+    @objc public var notIPAddress: NotIPAddressModel? = nil
+    @objc public var stringLike: StringLikeModel? = nil
+    @objc public var stringNotLike: StringNotLikeModel? = nil
 
     /// Initialize `ConditionModel` with the specified `map`.
     public required init?(map: Map) {
@@ -145,7 +223,7 @@ public class ConditionModel: BaseModel {
     /// Initialize `ConditionModel` with the specified parameters.
     @objc public init(ipAddress: IPAddressModel? = nil, isNull: IsNullModel? = nil, notIPAddress: NotIPAddressModel? = nil, stringLike: StringLikeModel? = nil, stringNotLike: StringNotLikeModel? = nil) {
         super.init()
-
+        
         self.ipAddress = ipAddress
         self.isNull = isNull
         self.notIPAddress = notIPAddress
@@ -156,7 +234,7 @@ public class ConditionModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         ipAddress <- map["ip_address"]
         isNull <- map["is_null"]
         notIPAddress <- map["not_ip_address"]
@@ -171,46 +249,47 @@ public class ConditionModel: BaseModel {
                 return error
             }
         }
-
+        
         if let isNull = self.isNull {
             if let error = isNull.validate() {
                 return error
             }
         }
-
+        
         if let notIPAddress = self.notIPAddress {
             if let error = notIPAddress.validate() {
                 return error
             }
         }
-
+        
         if let stringLike = self.stringLike {
             if let error = stringLike.validate() {
                 return error
             }
         }
-
+        
         if let stringNotLike = self.stringNotLike {
             if let error = stringNotLike.validate() {
                 return error
             }
         }
-
+        
         return nil
     }
 }
+
 
 /// The CORSRuleModel.
 @objc(QSCORSRuleModel)
 public class CORSRuleModel: BaseModel {
     /// Allowed headers
-    @objc public var allowedHeaders: [String]?
+    @objc public var allowedHeaders: [String]? = nil
     /// Allowed methods
     @objc public var allowedMethods: [String]! // Required
     /// Allowed origin
     @objc public var allowedOrigin: String! // Required
     /// Expose headers
-    @objc public var exposeHeaders: [String]?
+    @objc public var exposeHeaders: [String]? = nil
     /// Max age seconds
     @objc public var maxAgeSeconds: Int = 0
 
@@ -222,7 +301,7 @@ public class CORSRuleModel: BaseModel {
     /// Initialize `CORSRuleModel` with the specified parameters.
     @objc public init(allowedHeaders: [String]? = nil, allowedMethods: [String], allowedOrigin: String, exposeHeaders: [String]? = nil, maxAgeSeconds: Int = 0) {
         super.init()
-
+        
         self.allowedHeaders = allowedHeaders
         self.allowedMethods = allowedMethods
         self.allowedOrigin = allowedOrigin
@@ -233,7 +312,7 @@ public class CORSRuleModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         allowedHeaders <- map["allowed_headers"]
         allowedMethods <- map["allowed_methods"]
         allowedOrigin <- map["allowed_origin"]
@@ -246,26 +325,95 @@ public class CORSRuleModel: BaseModel {
         if self.allowedMethods == nil {
             return APIError.parameterRequiredError(name: "allowedMethods", parentName: "CORSRule")
         }
-
+        
         if self.allowedMethods.count == 0 {
             return APIError.parameterRequiredError(name: "allowedMethods", parentName: "CORSRule")
         }
-
+            
         if self.allowedOrigin == nil {
             return APIError.parameterRequiredError(name: "allowedOrigin", parentName: "CORSRule")
         }
-
+        
         return nil
     }
 }
+
+
+/// The ExpirationModel.
+@objc(QSExpirationModel)
+public class ExpirationModel: BaseModel {
+    /// days
+    @objc public var days: Int = 0
+
+    /// Initialize `ExpirationModel` with the specified `map`.
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    /// Initialize `ExpirationModel` with the specified parameters.
+    @objc public init(days: Int = 0) {
+        super.init()
+        
+        self.days = days
+    }
+
+    /// Mapping process.
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        days <- map["days"]
+    }
+
+    /// Verify model data is valid.
+    @objc public override func validate() -> Error? {
+        return nil
+    }
+}
+
+
+/// The FilterModel.
+@objc(QSFilterModel)
+public class FilterModel: BaseModel {
+    /// Prefix matching
+    @objc public var prefix: String! // Required
+
+    /// Initialize `FilterModel` with the specified `map`.
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    /// Initialize `FilterModel` with the specified parameters.
+    @objc public init(prefix: String) {
+        super.init()
+        
+        self.prefix = prefix
+    }
+
+    /// Mapping process.
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        prefix <- map["prefix"]
+    }
+
+    /// Verify model data is valid.
+    @objc public override func validate() -> Error? {
+        if self.prefix == nil {
+            return APIError.parameterRequiredError(name: "prefix", parentName: "Filter")
+        }
+        
+        return nil
+    }
+}
+
 
 /// The GranteeModel.
 @objc(QSGranteeModel)
 public class GranteeModel: BaseModel {
     /// Grantee user ID
-    @objc public var id: String?
+    @objc public var id: String? = nil
     /// Grantee group name
-    @objc public var name: String?
+    @objc public var name: String? = nil
     /// Grantee type
     /// type's available values: user, group
     @objc public var type: String! // Required
@@ -278,7 +426,7 @@ public class GranteeModel: BaseModel {
     /// Initialize `GranteeModel` with the specified parameters.
     @objc public init(id: String? = nil, name: String? = nil, type: String) {
         super.init()
-
+        
         self.id = id
         self.name = name
         self.type = type
@@ -287,7 +435,7 @@ public class GranteeModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         id <- map["id"]
         name <- map["name"]
         type <- map["type"]
@@ -298,7 +446,7 @@ public class GranteeModel: BaseModel {
         if self.type == nil {
             return APIError.parameterRequiredError(name: "type", parentName: "Grantee")
         }
-
+        
         if let type = self.type {
             let typeValidValues: [String] = ["user", "group"]
             let typeParameterValue = "\(type)"
@@ -313,16 +461,17 @@ public class GranteeModel: BaseModel {
                 return APIError.parameterValueNotAllowedError(name: "type", value: typeParameterValue, allowedValues: typeValidValues)
             }
         }
-
+                
         return nil
     }
 }
+
 
 /// The IPAddressModel.
 @objc(QSIPAddressModel)
 public class IPAddressModel: BaseModel {
     /// Source IP
-    @objc public var sourceIP: [String]?
+    @objc public var sourceIP: [String]? = nil
 
     /// Initialize `IPAddressModel` with the specified `map`.
     public required init?(map: Map) {
@@ -332,14 +481,14 @@ public class IPAddressModel: BaseModel {
     /// Initialize `IPAddressModel` with the specified parameters.
     @objc public init(sourceIP: [String]? = nil) {
         super.init()
-
+        
         self.sourceIP = sourceIP
     }
 
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         sourceIP <- map["source_ip"]
     }
 
@@ -348,6 +497,7 @@ public class IPAddressModel: BaseModel {
         return nil
     }
 }
+
 
 /// The IsNullModel.
 @objc(QSIsNullModel)
@@ -363,14 +513,14 @@ public class IsNullModel: BaseModel {
     /// Initialize `IsNullModel` with the specified parameters.
     @objc public init(referer: Bool = false) {
         super.init()
-
+        
         self.referer = referer
     }
 
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         referer <- map["Referer"]
     }
 
@@ -380,19 +530,20 @@ public class IsNullModel: BaseModel {
     }
 }
 
+
 /// The KeyModel.
 @objc(QSKeyModel)
 public class KeyModel: BaseModel {
     /// Object created time
-    @objc public var created: Date?
+    @objc public var created: Date? = nil
     /// Whether this key is encrypted
     @objc public var encrypted: Bool = false
     /// MD5sum of the object
-    @objc public var etag: String?
+    @objc public var etag: String? = nil
     /// Object key
-    @objc public var key: String?
+    @objc public var key: String? = nil
     /// MIME type of the object
-    @objc public var mimeType: String?
+    @objc public var mimeType: String? = nil
     /// Last modified time in unix time format
     @objc public var modified: Int = 0
     /// Object content size
@@ -406,7 +557,7 @@ public class KeyModel: BaseModel {
     /// Initialize `KeyModel` with the specified parameters.
     @objc public init(created: Date? = nil, encrypted: Bool = false, etag: String? = nil, key: String? = nil, mimeType: String? = nil, modified: Int = 0, size: Int = 0) {
         super.init()
-
+        
         self.created = created
         self.encrypted = encrypted
         self.etag = etag
@@ -419,7 +570,7 @@ public class KeyModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         created <- (map["created"], ISO8601DateTransform())
         encrypted <- map["encrypted"]
         etag <- map["etag"]
@@ -435,15 +586,16 @@ public class KeyModel: BaseModel {
     }
 }
 
+
 /// The KeyDeleteErrorModel.
 @objc(QSKeyDeleteErrorModel)
 public class KeyDeleteErrorModel: BaseModel {
     /// Error code
-    @objc public var code: String?
+    @objc public var code: String? = nil
     /// Object key
-    @objc public var key: String?
+    @objc public var key: String? = nil
     /// Error message
-    @objc public var message: String?
+    @objc public var message: String? = nil
 
     /// Initialize `KeyDeleteErrorModel` with the specified `map`.
     public required init?(map: Map) {
@@ -453,7 +605,7 @@ public class KeyDeleteErrorModel: BaseModel {
     /// Initialize `KeyDeleteErrorModel` with the specified parameters.
     @objc public init(code: String? = nil, key: String? = nil, message: String? = nil) {
         super.init()
-
+        
         self.code = code
         self.key = key
         self.message = message
@@ -462,7 +614,7 @@ public class KeyDeleteErrorModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         code <- map["code"]
         key <- map["key"]
         message <- map["message"]
@@ -474,11 +626,12 @@ public class KeyDeleteErrorModel: BaseModel {
     }
 }
 
+
 /// The NotIPAddressModel.
 @objc(QSNotIPAddressModel)
 public class NotIPAddressModel: BaseModel {
     /// Source IP
-    @objc public var sourceIP: [String]?
+    @objc public var sourceIP: [String]? = nil
 
     /// Initialize `NotIPAddressModel` with the specified `map`.
     public required init?(map: Map) {
@@ -488,14 +641,14 @@ public class NotIPAddressModel: BaseModel {
     /// Initialize `NotIPAddressModel` with the specified parameters.
     @objc public init(sourceIP: [String]? = nil) {
         super.init()
-
+        
         self.sourceIP = sourceIP
     }
 
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         sourceIP <- map["source_ip"]
     }
 
@@ -505,13 +658,103 @@ public class NotIPAddressModel: BaseModel {
     }
 }
 
+
+/// The NotificationsModel.
+@objc(QSNotificationsModel)
+public class NotificationsModel: BaseModel {
+    /// Event processing service
+    /// cloudfunc's available values: create_object, delete_object, abort_multipart
+    @objc public var cloudfunc: String! // Required
+    @objc public var cloudfuncArgs: CloudfuncArgsModel? = nil
+    /// event types
+    @objc public var eventTypes: [String]! // Required
+    /// notification id
+    @objc public var id: String! // Required
+    /// notify url
+    @objc public var notifyURL: String? = nil
+    /// Object name matching rule
+    @objc public var objectFilters: String? = nil
+
+    /// Initialize `NotificationsModel` with the specified `map`.
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    /// Initialize `NotificationsModel` with the specified parameters.
+    @objc public init(cloudfunc: String, cloudfuncArgs: CloudfuncArgsModel? = nil, eventTypes: [String], id: String, notifyURL: String? = nil, objectFilters: String? = nil) {
+        super.init()
+        
+        self.cloudfunc = cloudfunc
+        self.cloudfuncArgs = cloudfuncArgs
+        self.eventTypes = eventTypes
+        self.id = id
+        self.notifyURL = notifyURL
+        self.objectFilters = objectFilters
+    }
+
+    /// Mapping process.
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        cloudfunc <- map["cloudfunc"]
+        cloudfuncArgs <- map["cloudfunc_args"]
+        eventTypes <- map["event_types"]
+        id <- map["id"]
+        notifyURL <- map["notify_url"]
+        objectFilters <- map["object_filters"]
+    }
+
+    /// Verify model data is valid.
+    @objc public override func validate() -> Error? {
+        if self.cloudfunc == nil {
+            return APIError.parameterRequiredError(name: "cloudfunc", parentName: "Notifications")
+        }
+        
+        if let cloudfunc = self.cloudfunc {
+            let cloudfuncValidValues: [String] = ["create_object", "delete_object", "abort_multipart"]
+            let cloudfuncParameterValue = "\(cloudfunc)"
+            var cloudfuncIsValid = false
+            for value in cloudfuncValidValues {
+                if value == cloudfuncParameterValue {
+                    cloudfuncIsValid = true
+                    break
+                }
+            }
+            if !cloudfuncIsValid {
+                return APIError.parameterValueNotAllowedError(name: "cloudfunc", value: cloudfuncParameterValue, allowedValues: cloudfuncValidValues)
+            }
+        }
+                
+        if let cloudfuncArgs = self.cloudfuncArgs {
+            if let error = cloudfuncArgs.validate() {
+                return error
+            }
+        }
+        
+        if self.eventTypes == nil {
+            return APIError.parameterRequiredError(name: "eventTypes", parentName: "Notifications")
+        }
+        
+        if self.eventTypes.count == 0 {
+            return APIError.parameterRequiredError(name: "eventTypes", parentName: "Notifications")
+        }
+            
+        if self.id == nil {
+            return APIError.parameterRequiredError(name: "id", parentName: "Notifications")
+        }
+        
+        return nil
+    }
+}
+
+
 /// The ObjectPartModel.
 @objc(QSObjectPartModel)
 public class ObjectPartModel: BaseModel {
     /// Object part created time
-    @objc public var created: Date?
+    @objc public var created: Date? = nil
     /// MD5sum of the object part
-    @objc public var etag: String?
+    @objc public var etag: String? = nil
     /// Object part number
     @objc public var partNumber: Int = 0 // Required
     /// Object part size
@@ -525,7 +768,7 @@ public class ObjectPartModel: BaseModel {
     /// Initialize `ObjectPartModel` with the specified parameters.
     @objc public init(created: Date? = nil, etag: String? = nil, partNumber: Int = 0, size: Int = 0) {
         super.init()
-
+        
         self.created = created
         self.etag = etag
         self.partNumber = partNumber
@@ -535,7 +778,7 @@ public class ObjectPartModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         created <- (map["created"], ISO8601DateTransform())
         etag <- map["etag"]
         partNumber <- map["part_number"]
@@ -548,13 +791,14 @@ public class ObjectPartModel: BaseModel {
     }
 }
 
+
 /// The OwnerModel.
 @objc(QSOwnerModel)
 public class OwnerModel: BaseModel {
     /// User ID
-    @objc public var id: String?
+    @objc public var id: String? = nil
     /// Username
-    @objc public var name: String?
+    @objc public var name: String? = nil
 
     /// Initialize `OwnerModel` with the specified `map`.
     public required init?(map: Map) {
@@ -564,7 +808,7 @@ public class OwnerModel: BaseModel {
     /// Initialize `OwnerModel` with the specified parameters.
     @objc public init(id: String? = nil, name: String? = nil) {
         super.init()
-
+        
         self.id = id
         self.name = name
     }
@@ -572,7 +816,7 @@ public class OwnerModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         id <- map["id"]
         name <- map["name"]
     }
@@ -583,19 +827,120 @@ public class OwnerModel: BaseModel {
     }
 }
 
+
+/// The RuleModel.
+@objc(QSRuleModel)
+public class RuleModel: BaseModel {
+    @objc public var abortIncompleteMultipartUpload: AbortIncompleteMultipartUploadModel? = nil
+    @objc public var expiration: ExpirationModel? = nil
+    @objc public var filter: FilterModel! // Required
+    /// rule id
+    @objc public var id: String! // Required
+    /// rule status
+    /// status's available values: enabled, disabled
+    @objc public var status: String! // Required
+    @objc public var transition: TransitionModel? = nil
+
+    /// Initialize `RuleModel` with the specified `map`.
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    /// Initialize `RuleModel` with the specified parameters.
+    @objc public init(abortIncompleteMultipartUpload: AbortIncompleteMultipartUploadModel? = nil, expiration: ExpirationModel? = nil, filter: FilterModel, id: String, status: String, transition: TransitionModel? = nil) {
+        super.init()
+        
+        self.abortIncompleteMultipartUpload = abortIncompleteMultipartUpload
+        self.expiration = expiration
+        self.filter = filter
+        self.id = id
+        self.status = status
+        self.transition = transition
+    }
+
+    /// Mapping process.
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        abortIncompleteMultipartUpload <- map["abort_incomplete_multipart_upload"]
+        expiration <- map["expiration"]
+        filter <- map["filter"]
+        id <- map["id"]
+        status <- map["status"]
+        transition <- map["transition"]
+    }
+
+    /// Verify model data is valid.
+    @objc public override func validate() -> Error? {
+        if let abortIncompleteMultipartUpload = self.abortIncompleteMultipartUpload {
+            if let error = abortIncompleteMultipartUpload.validate() {
+                return error
+            }
+        }
+        
+        if let expiration = self.expiration {
+            if let error = expiration.validate() {
+                return error
+            }
+        }
+        
+        if self.filter == nil {
+            return APIError.parameterRequiredError(name: "filter", parentName: "Rule")
+        }
+        
+        if let filter = self.filter {
+            if let error = filter.validate() {
+                return error
+            }
+        }
+        
+        if self.id == nil {
+            return APIError.parameterRequiredError(name: "id", parentName: "Rule")
+        }
+        
+        if self.status == nil {
+            return APIError.parameterRequiredError(name: "status", parentName: "Rule")
+        }
+        
+        if let status = self.status {
+            let statusValidValues: [String] = ["enabled", "disabled"]
+            let statusParameterValue = "\(status)"
+            var statusIsValid = false
+            for value in statusValidValues {
+                if value == statusParameterValue {
+                    statusIsValid = true
+                    break
+                }
+            }
+            if !statusIsValid {
+                return APIError.parameterValueNotAllowedError(name: "status", value: statusParameterValue, allowedValues: statusValidValues)
+            }
+        }
+                
+        if let transition = self.transition {
+            if let error = transition.validate() {
+                return error
+            }
+        }
+        
+        return nil
+    }
+}
+
+
 /// The StatementModel.
 @objc(QSStatementModel)
 public class StatementModel: BaseModel {
     /// QingStor API methods
     @objc public var action: [String]! // Required
-    @objc public var condition: ConditionModel?
+    @objc public var condition: ConditionModel? = nil
     /// Statement effect
     /// effect's available values: allow, deny
     @objc public var effect: String! // Required
     /// Bucket policy id, must be unique
     @objc public var id: String! // Required
     /// The resources to apply bucket policy
-    @objc public var resource: [String]?
+    @objc public var resource: [String]? = nil
     /// The user to apply bucket policy
     @objc public var user: [String]! // Required
 
@@ -607,7 +952,7 @@ public class StatementModel: BaseModel {
     /// Initialize `StatementModel` with the specified parameters.
     @objc public init(action: [String], condition: ConditionModel? = nil, effect: String, id: String, resource: [String]? = nil, user: [String]) {
         super.init()
-
+        
         self.action = action
         self.condition = condition
         self.effect = effect
@@ -619,7 +964,7 @@ public class StatementModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         action <- map["action"]
         condition <- map["condition"]
         effect <- map["effect"]
@@ -633,21 +978,21 @@ public class StatementModel: BaseModel {
         if self.action == nil {
             return APIError.parameterRequiredError(name: "action", parentName: "Statement")
         }
-
+        
         if self.action.count == 0 {
             return APIError.parameterRequiredError(name: "action", parentName: "Statement")
         }
-
+            
         if let condition = self.condition {
             if let error = condition.validate() {
                 return error
             }
         }
-
+        
         if self.effect == nil {
             return APIError.parameterRequiredError(name: "effect", parentName: "Statement")
         }
-
+        
         if let effect = self.effect {
             let effectValidValues: [String] = ["allow", "deny"]
             let effectParameterValue = "\(effect)"
@@ -662,28 +1007,29 @@ public class StatementModel: BaseModel {
                 return APIError.parameterValueNotAllowedError(name: "effect", value: effectParameterValue, allowedValues: effectValidValues)
             }
         }
-
+                
         if self.id == nil {
             return APIError.parameterRequiredError(name: "id", parentName: "Statement")
         }
-
+        
         if self.user == nil {
             return APIError.parameterRequiredError(name: "user", parentName: "Statement")
         }
-
+        
         if self.user.count == 0 {
             return APIError.parameterRequiredError(name: "user", parentName: "Statement")
         }
-
+            
         return nil
     }
 }
+
 
 /// The StringLikeModel.
 @objc(QSStringLikeModel)
 public class StringLikeModel: BaseModel {
     /// Refer url
-    @objc public var referer: [String]?
+    @objc public var referer: [String]? = nil
 
     /// Initialize `StringLikeModel` with the specified `map`.
     public required init?(map: Map) {
@@ -693,14 +1039,14 @@ public class StringLikeModel: BaseModel {
     /// Initialize `StringLikeModel` with the specified parameters.
     @objc public init(referer: [String]? = nil) {
         super.init()
-
+        
         self.referer = referer
     }
 
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         referer <- map["Referer"]
     }
 
@@ -710,11 +1056,12 @@ public class StringLikeModel: BaseModel {
     }
 }
 
+
 /// The StringNotLikeModel.
 @objc(QSStringNotLikeModel)
 public class StringNotLikeModel: BaseModel {
     /// Refer url
-    @objc public var referer: [String]?
+    @objc public var referer: [String]? = nil
 
     /// Initialize `StringNotLikeModel` with the specified `map`.
     public required init?(map: Map) {
@@ -724,14 +1071,14 @@ public class StringNotLikeModel: BaseModel {
     /// Initialize `StringNotLikeModel` with the specified parameters.
     @objc public init(referer: [String]? = nil) {
         super.init()
-
+        
         self.referer = referer
     }
 
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         referer <- map["Referer"]
     }
 
@@ -741,15 +1088,52 @@ public class StringNotLikeModel: BaseModel {
     }
 }
 
+
+/// The TransitionModel.
+@objc(QSTransitionModel)
+public class TransitionModel: BaseModel {
+    /// days
+    @objc public var days: Int = 0
+    /// storage class
+    @objc public var storageClass: Int = 0 // Required
+
+    /// Initialize `TransitionModel` with the specified `map`.
+    public required init?(map: Map) {
+        super.init(map: map)
+    }
+
+    /// Initialize `TransitionModel` with the specified parameters.
+    @objc public init(days: Int = 0, storageClass: Int = 0) {
+        super.init()
+        
+        self.days = days
+        self.storageClass = storageClass
+    }
+
+    /// Mapping process.
+    public override func mapping(map: Map) {
+        super.mapping(map: map)
+        
+        days <- map["days"]
+        storageClass <- map["storage_class"]
+    }
+
+    /// Verify model data is valid.
+    @objc public override func validate() -> Error? {
+        return nil
+    }
+}
+
+
 /// The UploadsModel.
 @objc(QSUploadsModel)
 public class UploadsModel: BaseModel {
     /// Object part created time
-    @objc public var created: Date?
+    @objc public var created: Date? = nil
     /// Object key
-    @objc public var key: String?
+    @objc public var key: String? = nil
     /// Object upload id
-    @objc public var uploadID: String?
+    @objc public var uploadID: String? = nil
 
     /// Initialize `UploadsModel` with the specified `map`.
     public required init?(map: Map) {
@@ -759,7 +1143,7 @@ public class UploadsModel: BaseModel {
     /// Initialize `UploadsModel` with the specified parameters.
     @objc public init(created: Date? = nil, key: String? = nil, uploadID: String? = nil) {
         super.init()
-
+        
         self.created = created
         self.key = key
         self.uploadID = uploadID
@@ -768,7 +1152,7 @@ public class UploadsModel: BaseModel {
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         created <- (map["created"], ISO8601DateTransform())
         key <- map["key"]
         uploadID <- map["upload_id"]
