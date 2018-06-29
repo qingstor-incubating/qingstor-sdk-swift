@@ -62,6 +62,13 @@ public protocol Signer: class {
     ///
     /// - returns: New signer instance.
     func rawCopy() -> Self
+    
+    /// Check the request build is need signature.
+    ///
+    /// - parameter requestBuilder: The request builder.
+    ///
+    /// - returns: Is need signature.
+    func precheck(from requestBuilder: RequestBuilder) -> Bool
 }
 
 /// QingStor signature type.
@@ -106,6 +113,22 @@ public enum SignatureResult {
 }
 
 public extension Signer {
+    public func precheck(from requestBuilder: RequestBuilder) -> Bool {
+        switch signatureType {
+        case .query:
+            if let items = requestBuilder.context.urlComponents.queryItems, items.contains(where: { $0.name == "signature" }) {
+                return false
+            }
+            
+        case .header:
+            if let authorization = requestBuilder.headers["Authorization"], !authorization.isEmpty {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
     public func signatureString(from requestBuilder: RequestBuilder) throws -> String {
         switch signatureType {
         case .query(let timeoutSeconds):

@@ -287,10 +287,12 @@ open class DefaultRequestBuilder: RequestBuilder, RequestAdapter {
             self.addHeaders(headers)
         }
 
-        do {
-            try self.signer.writeSignature(to: self)
-        } catch {
-            buildingRequestError = error
+        if self.signer.precheck(from: self) {
+            do {
+                try self.signer.writeSignature(to: self)
+            } catch {
+                buildingRequestError = error
+            }
         }
 
         request.url = self.context.url
