@@ -44,10 +44,18 @@ final public class QingStorSigner: NSObject, Signer {
     ///
     /// - returns: Signature result.
     public func querySignatureString(from requestBuilder: RequestBuilder, timeoutSeconds: Int) throws -> SignatureResult {
+        guard let accessKey = requestBuilder.context.accessKeyID else {
+            throw APIError.signatureError(info: "The access key should not be null")
+        }
+        
+        guard let secretAccessKey = requestBuilder.context.secretAccessKey else {
+            throw APIError.signatureError(info: "The secret access key should not be null")
+        }
+        
         let expires = self.expires(from: requestBuilder, timeoutSeconds: timeoutSeconds)
         let plainString = querySignaturePlainString(from: requestBuilder, timeoutSeconds: timeoutSeconds)
-        let signatureString = try plainString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
-        return .query(signature: signatureString, accessKey: requestBuilder.context.accessKeyID, expires: expires)
+        let signatureString = try plainString.hmacSHA256Data(key: secretAccessKey).base64EncodedString()
+        return .query(signature: signatureString, accessKey: accessKey, expires: expires)
     }
 
     /// Calculate header signature string from request builder.
@@ -58,9 +66,17 @@ final public class QingStorSigner: NSObject, Signer {
     ///
     /// - returns: Signature result.
     public func headerSignatureString(from requestBuilder: RequestBuilder) throws -> SignatureResult {
+        guard let accessKey = requestBuilder.context.accessKeyID else {
+            throw APIError.signatureError(info: "The access key should not be null")
+        }
+        
+        guard let secretAccessKey = requestBuilder.context.secretAccessKey else {
+            throw APIError.signatureError(info: "The secret access key should not be null")
+        }
+        
         let plainString = headerSignaturePlainString(from: requestBuilder)
-        let signatureString = try plainString.hmacSHA256Data(key: requestBuilder.context.secretAccessKey).base64EncodedString()
-        return .header(signature: signatureString, accessKey: requestBuilder.context.accessKeyID)
+        let signatureString = try plainString.hmacSHA256Data(key: secretAccessKey).base64EncodedString()
+        return .header(signature: signatureString, accessKey: accessKey)
     }
 
     /// Using raw data to copy singer.
