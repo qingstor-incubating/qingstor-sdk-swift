@@ -39,7 +39,7 @@ public class Registry: NSObject {
     /// - parameter baseURL:         The base url.
     /// - parameter accessKeyID:     The AccessKey.
     /// - parameter secretAccessKey: The SecretAccessKey.
-    @objc public static func register(baseURL: String?, accessKeyID: String, secretAccessKey: String) {
+    @objc public static func register(baseURL: String?, accessKeyID: String?, secretAccessKey: String?) {
         self.baseURL = baseURL
         self.accessKeyID = accessKeyID
         self.secretAccessKey = secretAccessKey
@@ -49,7 +49,7 @@ public class Registry: NSObject {
     ///
     /// - parameter accessKeyID:     The AccessKey.
     /// - parameter secretAccessKey: The SecretAccessKey.
-    @objc public static func register(accessKeyID: String, secretAccessKey: String) {
+    @objc public static func register(accessKeyID: String?, secretAccessKey: String?) {
         self.register(baseURL: nil, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
     }
 
@@ -75,15 +75,10 @@ public class Registry: NSObject {
         guard let config = NSDictionary(contentsOf: plist) as? Dictionary<String, String> else {
             throw APIError.registerError(info: "plist not found")
         }
-
-        guard let accessKeyID = config["access_key_id"] else {
-            throw APIError.registerError(info: "access_key_id not defined")
-        }
-
-        guard let secretAccessKey = config["secret_access_key"] else {
-            throw APIError.registerError(info: "secret_access_key not defined")
-        }
-
+        
+        let accessKeyID = config["access_key_id"]
+        let secretAccessKey = config["secret_access_key"]
+        
         if let `protocol` = config["protocol"], let host = config["host"] {
             var baseURL = "\(`protocol`)://\(host)"
             if let port = config["port"] {
@@ -208,10 +203,10 @@ public class APIContext: NSObject {
     }
 
     /// The `QingCloud` API access key.
-    @objc public private(set) var accessKeyID: String
+    @objc public private(set) var accessKeyID: String?
 
     /// The `QingCloud` API secret access key.
-    @objc public private(set) var secretAccessKey: String
+    @objc public private(set) var secretAccessKey: String?
 
     /// The `QingStor` server base url.
     @objc public let baseURL: String
@@ -227,8 +222,8 @@ public class APIContext: NSObject {
     ///
     /// - returns: The new `APIContext` instance.
     @objc public init(baseURL: String,
-                      accessKeyID: String,
-                      secretAccessKey: String) {
+                      accessKeyID: String?,
+                      secretAccessKey: String?) {
         self.baseURL = baseURL
         self.urlComponents = URLComponents(string: baseURL)!
         self.accessKeyID = accessKeyID
@@ -243,26 +238,14 @@ public class APIContext: NSObject {
     ///
     /// - returns: The new `APIContext` instance.
     @objc public convenience init(baseURL: String) {
-        guard let accessKeyID = Registry.accessKeyID else {
-            fatalError("The access key should not be null")
-        }
-
-        guard let secretAccessKey = Registry.secretAccessKey else {
-            fatalError("The secret access key should not be null")
-        }
-
-        self.init(baseURL: baseURL, accessKeyID: accessKeyID, secretAccessKey: secretAccessKey)
+        self.init(baseURL: baseURL, accessKeyID: Registry.accessKeyID, secretAccessKey: Registry.secretAccessKey)
     }
 
     /// Initialize APIContext, will using `Registry` baseURL and AccessKey data.
     ///
     /// - returns: The new `APIContext` instance.
     @objc public convenience override init() {
-        guard let baseURL = Registry.baseURL else {
-            fatalError("The base url should not be null")
-        }
-
-        self.init(baseURL: baseURL)
+        self.init(baseURL: Registry.baseURL ?? qingstorBaseURL)
     }
 
     /// Initialize `APIContext` from plist file.
