@@ -50,11 +50,12 @@ public class QingStor: QingStorAPI {
 
 }
 
+    
 /// The ListBuckets api input.
 @objc(QSListBucketsInput)
 public class ListBucketsInput: QingStorInput {
     /// Limits results to buckets that in the location
-    @objc public var location: String?
+    @objc public var location: String? = nil
 
     /// The request header properties.
     override var headerProperties: [String] {
@@ -79,25 +80,26 @@ public class ListBucketsInput: QingStorInput {
 
         location <- map["Location"]
     }
-
+        
     /// Verify input data is valid.
     @objc public override func validate() -> Error? {
         return nil
     }
 }
+    
 
 /// The ListBuckets api output.
 @objc(QSListBucketsOutput)
 public class ListBucketsOutput: QingStorOutput {
     /// Buckets information
-    @objc public var buckets: [BucketModel]?
+    @objc public var buckets: [BucketModel]? = nil
     /// Bucket count
     @objc public var count: Int = 0
 
     /// Mapping process.
     public override func mapping(map: Map) {
         super.mapping(map: map)
-
+        
         buckets <- map["buckets"]
         count <- map["count"]
     }
