@@ -52,11 +52,14 @@ extension APISender {
     }
 }
 
+
+    
+
 extension ListBucketsInput {
     /// Create empty `ListBucketsInput` instance.
     ///
     /// - returns: The new `ListBucketsInput` instance.
-    @objc public static func empty() -> ListBucketsInput {
+    @objc public static func empty() -> ListBucketsInput { 
         return ListBucketsInput(location: nil)
     }
 }

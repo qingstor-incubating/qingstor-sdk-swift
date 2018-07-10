@@ -20,146 +20,231 @@
 
 import Foundation
 
+extension AbortIncompleteMultipartUploadModel {
+    /// Create empty `AbortIncompleteMultipartUploadModel` instance.
+    ///
+    /// - returns: The new `AbortIncompleteMultipartUploadModel` instance.
+    @objc public static func empty() -> AbortIncompleteMultipartUploadModel { 
+        return AbortIncompleteMultipartUploadModel(daysAfterInitiation: 0)
+    }
+}
+
+
 extension ACLModel {
     /// Create empty `ACLModel` instance.
     ///
     /// - returns: The new `ACLModel` instance.
-    @objc public static func empty() -> ACLModel {
+    @objc public static func empty() -> ACLModel { 
         return ACLModel(grantee: GranteeModel.empty(), permission: "")
     }
 }
+
 
 extension BucketModel {
     /// Create empty `BucketModel` instance.
     ///
     /// - returns: The new `BucketModel` instance.
-    @objc public static func empty() -> BucketModel {
+    @objc public static func empty() -> BucketModel { 
         return BucketModel(created: nil, location: nil, name: nil, url: nil)
     }
 }
+
+
+extension CloudfuncArgsModel {
+    /// Create empty `CloudfuncArgsModel` instance.
+    ///
+    /// - returns: The new `CloudfuncArgsModel` instance.
+    @objc public static func empty() -> CloudfuncArgsModel { 
+        return CloudfuncArgsModel(action: "", keyPrefix: nil, keySeprate: nil, saveBucket: nil)
+    }
+}
+
 
 extension ConditionModel {
     /// Create empty `ConditionModel` instance.
     ///
     /// - returns: The new `ConditionModel` instance.
-    @objc public static func empty() -> ConditionModel {
+    @objc public static func empty() -> ConditionModel { 
         return ConditionModel(ipAddress: nil, isNull: nil, notIPAddress: nil, stringLike: nil, stringNotLike: nil)
     }
 }
+
 
 extension CORSRuleModel {
     /// Create empty `CORSRuleModel` instance.
     ///
     /// - returns: The new `CORSRuleModel` instance.
-    @objc public static func empty() -> CORSRuleModel {
+    @objc public static func empty() -> CORSRuleModel { 
         return CORSRuleModel(allowedHeaders: nil, allowedMethods: [], allowedOrigin: "", exposeHeaders: nil, maxAgeSeconds: 0)
     }
 }
+
+
+extension ExpirationModel {
+    /// Create empty `ExpirationModel` instance.
+    ///
+    /// - returns: The new `ExpirationModel` instance.
+    @objc public static func empty() -> ExpirationModel { 
+        return ExpirationModel(days: 0)
+    }
+}
+
+
+extension FilterModel {
+    /// Create empty `FilterModel` instance.
+    ///
+    /// - returns: The new `FilterModel` instance.
+    @objc public static func empty() -> FilterModel { 
+        return FilterModel(prefix: "")
+    }
+}
+
 
 extension GranteeModel {
     /// Create empty `GranteeModel` instance.
     ///
     /// - returns: The new `GranteeModel` instance.
-    @objc public static func empty() -> GranteeModel {
+    @objc public static func empty() -> GranteeModel { 
         return GranteeModel(id: nil, name: nil, type: "")
     }
 }
+
 
 extension IPAddressModel {
     /// Create empty `IPAddressModel` instance.
     ///
     /// - returns: The new `IPAddressModel` instance.
-    @objc public static func empty() -> IPAddressModel {
+    @objc public static func empty() -> IPAddressModel { 
         return IPAddressModel(sourceIP: nil)
     }
 }
+
 
 extension IsNullModel {
     /// Create empty `IsNullModel` instance.
     ///
     /// - returns: The new `IsNullModel` instance.
-    @objc public static func empty() -> IsNullModel {
+    @objc public static func empty() -> IsNullModel { 
         return IsNullModel(referer: false)
     }
 }
+
 
 extension KeyModel {
     /// Create empty `KeyModel` instance.
     ///
     /// - returns: The new `KeyModel` instance.
-    @objc public static func empty() -> KeyModel {
+    @objc public static func empty() -> KeyModel { 
         return KeyModel(created: nil, encrypted: false, etag: nil, key: nil, mimeType: nil, modified: 0, size: 0)
     }
 }
+
 
 extension KeyDeleteErrorModel {
     /// Create empty `KeyDeleteErrorModel` instance.
     ///
     /// - returns: The new `KeyDeleteErrorModel` instance.
-    @objc public static func empty() -> KeyDeleteErrorModel {
+    @objc public static func empty() -> KeyDeleteErrorModel { 
         return KeyDeleteErrorModel(code: nil, key: nil, message: nil)
     }
 }
+
 
 extension NotIPAddressModel {
     /// Create empty `NotIPAddressModel` instance.
     ///
     /// - returns: The new `NotIPAddressModel` instance.
-    @objc public static func empty() -> NotIPAddressModel {
+    @objc public static func empty() -> NotIPAddressModel { 
         return NotIPAddressModel(sourceIP: nil)
     }
 }
+
+
+extension NotificationModel {
+    /// Create empty `NotificationModel` instance.
+    ///
+    /// - returns: The new `NotificationModel` instance.
+    @objc public static func empty() -> NotificationModel { 
+        return NotificationModel(cloudfunc: "", cloudfuncArgs: nil, eventTypes: [], id: "", notifyURL: nil, objectFilters: nil)
+    }
+}
+
 
 extension ObjectPartModel {
     /// Create empty `ObjectPartModel` instance.
     ///
     /// - returns: The new `ObjectPartModel` instance.
-    @objc public static func empty() -> ObjectPartModel {
+    @objc public static func empty() -> ObjectPartModel { 
         return ObjectPartModel(created: nil, etag: nil, partNumber: 0, size: 0)
     }
 }
+
 
 extension OwnerModel {
     /// Create empty `OwnerModel` instance.
     ///
     /// - returns: The new `OwnerModel` instance.
-    @objc public static func empty() -> OwnerModel {
+    @objc public static func empty() -> OwnerModel { 
         return OwnerModel(id: nil, name: nil)
     }
 }
+
+
+extension RuleModel {
+    /// Create empty `RuleModel` instance.
+    ///
+    /// - returns: The new `RuleModel` instance.
+    @objc public static func empty() -> RuleModel { 
+        return RuleModel(abortIncompleteMultipartUpload: nil, expiration: nil, filter: FilterModel.empty(), id: "", status: "", transition: nil)
+    }
+}
+
 
 extension StatementModel {
     /// Create empty `StatementModel` instance.
     ///
     /// - returns: The new `StatementModel` instance.
-    @objc public static func empty() -> StatementModel {
+    @objc public static func empty() -> StatementModel { 
         return StatementModel(action: [], condition: nil, effect: "", id: "", resource: nil, user: [])
     }
 }
+
 
 extension StringLikeModel {
     /// Create empty `StringLikeModel` instance.
     ///
     /// - returns: The new `StringLikeModel` instance.
-    @objc public static func empty() -> StringLikeModel {
+    @objc public static func empty() -> StringLikeModel { 
         return StringLikeModel(referer: nil)
     }
 }
+
 
 extension StringNotLikeModel {
     /// Create empty `StringNotLikeModel` instance.
     ///
     /// - returns: The new `StringNotLikeModel` instance.
-    @objc public static func empty() -> StringNotLikeModel {
+    @objc public static func empty() -> StringNotLikeModel { 
         return StringNotLikeModel(referer: nil)
     }
 }
+
+
+extension TransitionModel {
+    /// Create empty `TransitionModel` instance.
+    ///
+    /// - returns: The new `TransitionModel` instance.
+    @objc public static func empty() -> TransitionModel { 
+        return TransitionModel(days: 0, storageClass: 0)
+    }
+}
+
 
 extension UploadsModel {
     /// Create empty `UploadsModel` instance.
     ///
     /// - returns: The new `UploadsModel` instance.
-    @objc public static func empty() -> UploadsModel {
+    @objc public static func empty() -> UploadsModel { 
         return UploadsModel(created: nil, key: nil, uploadID: nil)
     }
 }
